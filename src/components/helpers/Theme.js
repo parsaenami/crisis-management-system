@@ -1,6 +1,5 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { responsiveFontSizes } from "@material-ui/core/styles";
-import { routes } from "../../assets/routes";
 
 /**
  * A global theme for the app
@@ -11,9 +10,11 @@ let Theme = createMuiTheme({
   palette: {
     primary: {
       main: '#91DDEC',
+      dark: '#140053',
     },
     secondary: {
       main: '#F5F2EB',
+      light: '#FDFFFA',
     },
     info: {
       main: '#B8F4EC',
@@ -25,7 +26,8 @@ let Theme = createMuiTheme({
       hint: '#A5A5A5',
     },
     background: {
-      default: window.location.pathname === routes.HOME ? '#91DDEC' : '#F5F2EB',
+      default: 'red',
+      // default: window.location.pathname === routes.HOME ? '#91DDEC' : '#F5F2EB',
     },
   },
 });

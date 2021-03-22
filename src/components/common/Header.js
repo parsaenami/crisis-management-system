@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  AppBar,
-  Button, Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText, SwipeableDrawer,
-  Toolbar
-} from "@material-ui/core";
+import { AppBar, Button, IconButton, Toolbar } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
-import CloseIcon from '@material-ui/icons/Close';
 import { HeaderScrollEffect } from "../helpers/HeaderScrollEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "../Drawer";
@@ -22,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     color: theme.palette.text.secondary,
+    [theme.breakpoints.up('md')]: {
+      display: "none",
+    }
   },
 }));
 
