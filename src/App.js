@@ -11,6 +11,7 @@ import Theme from "./components/helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
 import styles from './App.scss';
 import classNames from 'classnames';
+import { routes } from "./assets/routes";
 
 export const history = createBrowserHistory();
 
@@ -35,7 +36,7 @@ function App(props) {
             <Header/>
             <Container maxWidth="lg" className={classes.root}>
               <Switch>
-                <Route path={'/'} component={Home}/>
+                <Route path={routes.HOME} component={Home}/>
               </Switch>
             </Container>
           </div>
