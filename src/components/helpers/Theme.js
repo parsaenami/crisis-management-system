@@ -26,7 +26,7 @@ let Theme = createMuiTheme({
       hint: '#A5A5A5',
     },
     background: {
-      default: 'red',
+      default: '#F5F2EB',
       // default: window.location.pathname === routes.HOME ? '#91DDEC' : '#F5F2EB',
     },
   },
