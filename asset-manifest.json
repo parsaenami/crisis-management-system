@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.72d2063c.chunk.css",
+    "main.js": "/static/js/main.fe75934a.chunk.js",
+    "main.js.map": "/static/js/main.fe75934a.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.8c790084.js",
+    "runtime-main.js.map": "/static/js/runtime-main.8c790084.js.map",
+    "static/css/2.dcb9beed.chunk.css": "/static/css/2.dcb9beed.chunk.css",
+    "static/js/2.54aa5032.chunk.js": "/static/js/2.54aa5032.chunk.js",
+    "static/js/2.54aa5032.chunk.js.map": "/static/js/2.54aa5032.chunk.js.map",
+    "static/js/3.cf9dc13e.chunk.js": "/static/js/3.cf9dc13e.chunk.js",
+    "static/js/3.cf9dc13e.chunk.js.map": "/static/js/3.cf9dc13e.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.dcb9beed.chunk.css.map": "/static/css/2.dcb9beed.chunk.css.map",
+    "static/css/main.72d2063c.chunk.css.map": "/static/css/main.72d2063c.chunk.css.map",
+    "static/js/2.54aa5032.chunk.js.LICENSE.txt": "/static/js/2.54aa5032.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/static/media/Anjoman-FaNum-UltraBoldItalic.c5336f84.woff",
+    "static/media/helping-hand.176d1a55.svg": "/static/media/helping-hand.176d1a55.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8c790084.js",
+    "static/css/2.dcb9beed.chunk.css",
+    "static/js/2.54aa5032.chunk.js",
+    "static/css/main.72d2063c.chunk.css",
+    "static/js/main.fe75934a.chunk.js"
+  ]
+}
