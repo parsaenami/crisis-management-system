@@ -1,8 +1,6 @@
 import { withStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 
-// const CustomButton = props => {
-
 export const CustomButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText(theme.palette.info.main),

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Divider, IconButton, List, ListItem, ListItemText, SwipeableDrawer } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
-import { routes } from "../assets/routes";
+import { routes } from "../../assets/routes";
 import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,7 +72,7 @@ const Drawer = props => {
 
   return (
       <nav>
-        <SwipeableDrawer anchor="right" open={props.open} onClose={props.toggleFn(false)} onOpen={props.toggleFn(true)}>
+        <SwipeableDrawer anchor="left" open={props.open} onClose={props.toggleFn(false)} onOpen={props.toggleFn(true)}>
           <div className={classes.close}>
             <IconButton edge="end" className={classes.icon} aria-label="close" onClick={props.toggleFn(false)}>
               <CloseIcon/>

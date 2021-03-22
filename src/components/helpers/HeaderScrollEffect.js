@@ -4,15 +4,15 @@ import PropTypes from "prop-types";
 
 export const HeaderScrollEffect = props => {
   const {children, window} = props;
-  const trigger = useScrollTrigger({target: window ? window() : undefined});
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+    target: window ? window() : undefined,
+  });
 
-  return (
-      <Slide appear={false} direction="down" in={!trigger}>
-        {React.cloneElement(children, {
-          elevation: trigger ? 4 : 0,
-        })}
-      </Slide>
-  );
+  return React.cloneElement(children, {
+    elevation: trigger ? 4 : 0,
+  });
 }
 
 HeaderScrollEffect.propTypes = {

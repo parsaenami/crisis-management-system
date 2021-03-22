@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Button, IconButton, Toolbar } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import { HeaderScrollEffect } from "../helpers/HeaderScrollEffect";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "../Drawer";
+import Drawer from "./Drawer";
+import { NavLink } from "react-router-dom";
+import { routes } from "../../assets/routes";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -16,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: "none",
     }
+  },
+  header: {
+    backgroundColor: theme.palette.secondary.light,
   },
 }));
 
@@ -33,9 +38,11 @@ const Header = props => {
 
   return (
       <HeaderScrollEffect {...props}>
-        <AppBar position={"sticky"}>
+        <AppBar position={"fixed"} className={classes.header}>
           <Toolbar>
-            <Button className={classes.btn} color="inherit">ورود | ثبت‌نام</Button>
+            <NavLink to={routes.SIGN_IN} className={classes.btn}>
+              <Button color="inherit">ورود | ثبت‌نام</Button>
+            </NavLink>
             {props.title}
             <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
               <MenuIcon/>
