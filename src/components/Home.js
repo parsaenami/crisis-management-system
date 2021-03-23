@@ -105,7 +105,7 @@ const Home = props => {
             در این سامانه شما می‌توانید در زمان وقوع بحران نیازهای خود را وارد کنید تا در اسرع وقت، برطرف شود.
           </Typography>
           <NavLink to={routes.ADD_NEED} className={classes.btnContainer}>
-            <CustomButton className={classes.btn} variant={"contained"}>شروع ثبت نیاز</CustomButton>
+            <CustomButton className={classes.btn} variant={"contained"} size={"large"}>ثبت نیاز</CustomButton>
           </NavLink>
         </div>
         <img className={classes.image} src={Hands} alt="hands"/>

@@ -24,6 +24,7 @@ let Theme = createMuiTheme({
       secondary: '#4D4D4D',
       disabled: '#A5A5A5',
       hint: '#A5A5A5',
+      light: '#707070',
     },
     background: {
       default: '#F5F2EB',

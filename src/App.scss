@@ -32,6 +32,7 @@ span, p {
   left: 0;
   padding: 16px;
   margin: 0;
+  z-index: 1000;
 
   & > * {
     margin: 8px;

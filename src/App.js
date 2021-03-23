@@ -1,7 +1,7 @@
 // @flow
 
 import './App.scss';
-import { Route, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
 import Home from "./components/Home";
 import { createBrowserHistory } from 'history';
 import Header from "./components/common/Header";
@@ -9,7 +9,7 @@ import { Container, CssBaseline, MuiThemeProvider } from "@material-ui/core";
 import Theme from "./components/helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
 import { routes } from "./assets/routes";
-import SignIn from "./components/SignIn";
+import Account from "./components/Account";
 import About from "./components/About";
 
 export const history = createBrowserHistory();
@@ -26,26 +26,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
+const App = () => {
   const classes = useStyles();
 
   return (
-      <Router history={history}>
+      <BrowserRouter history={history}>
         <MuiThemeProvider theme={Theme}>
-          {/*<div>*/}
-            <CssBaseline/>
-            <Header/>
+          <CssBaseline/>
+          <Switch>
             <Container maxWidth="lg" className={classes.root}>
-              <Switch>
-                <Route exact path={routes.HOME} component={Home}/>
-                <Route exact path={routes.SIGN_IN} component={SignIn}/>
-                <Route exact path={routes.ABOUT} component={About}/>
-              </Switch>
+              <Route path={routes.HOME} component={Header}/>
+              <Route exact path={routes.HOME} component={Home}/>
+              <Route exact path={routes.SIGN_IN} component={Account}/>
+              <Route exact path={routes.ABOUT} component={About}/>
             </Container>
-          {/*</div>*/}
+          </Switch>
         </MuiThemeProvider>
-      </Router>
+      </BrowserRouter>
   );
-}
+};
 
 export default App;

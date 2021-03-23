@@ -6,7 +6,7 @@ const Fab = props => {
   return (
       <div className={"fabContainer"}>
         {props.buttons.map((btn, i) => (
-          <CustomButton variant={"contained"} onClick={btn.onClickFn}>{btn.title}</CustomButton>
+          <CustomButton key={i} variant={"contained"} onClick={btn.onClickFn} size={"large"}>{btn.title}</CustomButton>
         ))}
       </div>
   );
