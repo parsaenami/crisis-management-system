@@ -9,8 +9,9 @@
       "type": "image/x-icon"
     }
   ],
+  "version": "0.0.1",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#91DDEC",
-  "background_color": "#ffffff"
+  "background_color": "#91DDEC"
 }
