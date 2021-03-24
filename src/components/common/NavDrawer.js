@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, IconButton, List, ListItem, ListItemText, SwipeableDrawer } from "@material-ui/core";
+import { Divider, IconButton, List, ListItem, ListItemText, Drawer } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { routes } from "../../assets/routes";
@@ -50,7 +50,7 @@ const listItems = [
   },
 ];
 
-const Drawer = props => {
+const NavDrawer = props => {
   const classes = useStyles();
 
   const list = (
@@ -72,21 +72,21 @@ const Drawer = props => {
 
   return (
       <nav>
-        <SwipeableDrawer anchor="left" open={props.open} onClose={props.toggleFn(false)} onOpen={props.toggleFn(true)}>
+        <Drawer anchor="left" open={props.open} onClose={props.toggleFn(false)} onOpen={props.toggleFn(true)}>
           <div className={classes.close}>
             <IconButton edge="end" className={classes.icon} aria-label="close" onClick={props.toggleFn(false)}>
               <CloseIcon/>
             </IconButton>
           </div>
           {list}
-        </SwipeableDrawer>
+        </Drawer>
       </nav>
   );
 };
 
-Drawer.propTypes = {
+NavDrawer.propTypes = {
   open: PropTypes.bool,
   toggleFn: PropTypes.func,
 };
 
-export default Drawer;
+export default NavDrawer;

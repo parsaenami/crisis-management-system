@@ -5,7 +5,7 @@ import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import { HeaderScrollEffect } from "../helpers/HeaderScrollEffect";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "./Drawer";
+import NavDrawer from "./NavDrawer";
 import { NavLink } from "react-router-dom";
 import { routes } from "../../assets/routes";
 import classnames from "classnames";
@@ -99,7 +99,7 @@ const Header = props => {
               <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
                 <MenuRoundedIcon/>
               </IconButton>
-              <Drawer open={open} toggleFn={toggleDrawer}/>
+              <NavDrawer open={open} toggleFn={toggleDrawer}/>
             </Toolbar>
           </Container>
         </AppBar>
