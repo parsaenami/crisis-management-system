@@ -1,27 +1,27 @@
 {
   "files": {
     "main.css": "/crisis-management-system/static/css/main.0300a012.chunk.css",
-    "main.js": "/crisis-management-system/static/js/main.567dfd00.chunk.js",
-    "main.js.map": "/crisis-management-system/static/js/main.567dfd00.chunk.js.map",
+    "main.js": "/crisis-management-system/static/js/main.65409f09.chunk.js",
+    "main.js.map": "/crisis-management-system/static/js/main.65409f09.chunk.js.map",
     "runtime-main.js": "/crisis-management-system/static/js/runtime-main.6fa78c4b.js",
     "runtime-main.js.map": "/crisis-management-system/static/js/runtime-main.6fa78c4b.js.map",
     "static/css/2.dcb9beed.chunk.css": "/crisis-management-system/static/css/2.dcb9beed.chunk.css",
-    "static/js/2.3370f043.chunk.js": "/crisis-management-system/static/js/2.3370f043.chunk.js",
-    "static/js/2.3370f043.chunk.js.map": "/crisis-management-system/static/js/2.3370f043.chunk.js.map",
+    "static/js/2.10699d09.chunk.js": "/crisis-management-system/static/js/2.10699d09.chunk.js",
+    "static/js/2.10699d09.chunk.js.map": "/crisis-management-system/static/js/2.10699d09.chunk.js.map",
     "static/js/3.f6925b0e.chunk.js": "/crisis-management-system/static/js/3.f6925b0e.chunk.js",
     "static/js/3.f6925b0e.chunk.js.map": "/crisis-management-system/static/js/3.f6925b0e.chunk.js.map",
     "index.html": "/crisis-management-system/index.html",
     "static/css/2.dcb9beed.chunk.css.map": "/crisis-management-system/static/css/2.dcb9beed.chunk.css.map",
     "static/css/main.0300a012.chunk.css.map": "/crisis-management-system/static/css/main.0300a012.chunk.css.map",
-    "static/js/2.3370f043.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.3370f043.chunk.js.LICENSE.txt",
+    "static/js/2.10699d09.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.10699d09.chunk.js.LICENSE.txt",
     "static/media/index.css": "/crisis-management-system/static/media/Anjoman-FaNum-UltraBoldItalic.c5336f84.woff",
     "static/media/helping-hand2.1e041efb.svg": "/crisis-management-system/static/media/helping-hand2.1e041efb.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.6fa78c4b.js",
     "static/css/2.dcb9beed.chunk.css",
-    "static/js/2.3370f043.chunk.js",
+    "static/js/2.10699d09.chunk.js",
     "static/css/main.0300a012.chunk.css",
-    "static/js/main.567dfd00.chunk.js"
+    "static/js/main.65409f09.chunk.js"
   ]
 }
