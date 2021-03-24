@@ -38,6 +38,7 @@ const OtpInput = props => {
       <TextField
           variant={"filled"}
           className={props.className}
+          autoComplete={"false"}
           label={props.label}
           value={props.value}
           onChange={props.onChangeFn}

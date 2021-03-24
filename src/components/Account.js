@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import classnames from 'classnames';
 import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme, withMobileDialog } from "@material-ui/core";
 import RTL from "../helpers/RTL";
@@ -12,6 +13,7 @@ import OtpForm from "./OtpForm";
 import { emptyUserInfo, UserInfoType } from '../types/userInfoType'
 import { usePosition } from "../hooks/usePosition";
 import { messages } from "../assets/messages";
+import { routes } from "../assets/routes";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -87,6 +89,7 @@ const Account = props => {
   const [isRegister, setIsRegister] = useState(true);
   const [isOtp, setIsOtp] = useState(false);
   const classes = useStyles({...props, breakpoint: isMobileDisplay, isOtp});
+  const history = useHistory();
 
   // otpForm state
   const [code, setCode] = useState('');
@@ -139,7 +142,8 @@ const Account = props => {
     if (code.length < 5) {
       setCodeError(messages.ERR_SHORT_OTP)
     } else {
-      alert(code)
+      alert(code);
+      history.push(routes.PROFILE);
     }
   }
 
