@@ -3,7 +3,7 @@ import { SvgIcon, Typography } from "@material-ui/core";
 import HealingIcon from '@material-ui/icons/Healing';
 import { makeStyles } from "@material-ui/core/styles";
 import { CustomButton } from "./common/CustomButton";
-import Hands from "../assets/icons/helping-hand (1).svg"
+import Hands from "../assets/icons/helping-hand2.svg"
 import SvgHelpingHand1 from "../assets/icons/SvgHelpingHand1";
 import { NavLink } from "react-router-dom";
 import { routes } from "../assets/routes";
@@ -45,10 +45,18 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(32),
     height: theme.spacing(32),
     margin: theme.spacing(1, 0),
-    filter: "contrast(0.4)",
+    // filter: "contrast(0.8)",
     flexBasis: "40%",
     [theme.breakpoints.down('sm')]: {
       display: "none",
+    },
+    '&#small': {
+      width: theme.spacing(8),
+      maxHeight: theme.spacing(8),
+      display: "block",
+      [theme.breakpoints.up('md')]: {
+        display: "none",
+      },
     }
   },
   hr: {
@@ -74,13 +82,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function HandIcon(props) {
-  return null
-  return (
-      <SvgIcon component={Hands} viewBox="0 0 600 476.6" {...props} />
-  );
-}
-
 const Home = props => {
   const classes = useStyles();
 
@@ -96,11 +97,10 @@ const Home = props => {
   return (
       <div className={classes.root}>
         <div className={classes.content}>
-          <HealingIcon className={classes.icon}/>
+          <img className={classes.image} id={'small'} src={Hands} alt="hands"/>
           <Typography variant="h4" className={classes.title}>
             سامانه‌ی ثبت نیازمندی‌ها
           </Typography>
-          {/*<hr className={classes.hr}/>*/}
           <Typography component="span" className={classes.text}>
             در این سامانه شما می‌توانید در زمان وقوع بحران نیازهای خود را وارد کنید تا در اسرع وقت، برطرف شود.
           </Typography>

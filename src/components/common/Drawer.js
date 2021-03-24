@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: 250,
+    width: "100vw",
     height: '100%',
     '& *': {
       textAlign: "center",
@@ -37,12 +37,12 @@ const listItems = [
     url: routes.HOME,
   },
   {
-    text: 'ثبت نیاز',
-    url: routes.ADD_NEED,
-  },
-  {
     text: 'ورود | ثبت‌نام',
     url: routes.SIGN_IN,
+  },
+  {
+    text: 'ثبت نیاز',
+    url: routes.ADD_NEED,
   },
   {
     text: 'درباره‌ی ما',

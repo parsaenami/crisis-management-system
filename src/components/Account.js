@@ -227,7 +227,7 @@ const Account = props => {
             </form>
             {!isMobileDisplay && <>
               <div className={"position-relative w-100 align-self-center"}>
-                <hr/>
+                <hr style={{borderWidth: 2}}/>
                 <ArrowBackIosRoundedIcon className={classes.icon}/>
               </div>
               {otpForm()}

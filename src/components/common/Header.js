@@ -13,18 +13,29 @@ import Logo from '../../assets/icons/helping-hand2.svg';
 
 const useStyles = makeStyles((theme) => ({
   btn: {
-    marginRight: "auto",
     color: theme.palette.text.secondary,
-    '& button': {
-      color: theme.palette.text.secondary,
+    '&#home': {
+      [theme.breakpoints.up('md')]: {
+        display: "none",
+      },
     },
     '& img': {
       width: theme.spacing(4),
       height: theme.spacing(4),
     },
   },
+  navContainer: {
+    display: "flex",
+    flexDirection: "row-reverse",
+    justifySelf: "flex-start",
+    width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      display: "none",
+    },
+  },
   icon: {
     color: theme.palette.text.secondary,
+    marginLeft: "auto",
     [theme.breakpoints.up('md')]: {
       display: "none",
     },
@@ -60,7 +71,7 @@ const Header = props => {
               {
                 props.location.pathname === routes.HOME
                     ?
-                    <NavLink to={routes.SIGN_IN} className={classes.btn}>
+                    <NavLink to={routes.SIGN_IN} className={classes.btn} id={'home'}>
                       <Button color="inherit">ورود | ثبت‌نام</Button>
                     </NavLink>
                     :
@@ -68,7 +79,23 @@ const Header = props => {
                       <IconButton edge="start"><img src={Logo} alt="logo"/></IconButton>
                     </NavLink>
               }
-              {props.title}
+              {/*{props.title}*/}
+              {
+                <div className={classes.navContainer}>
+                  <NavLink exact to={routes.HOME} className={classes.btn}>
+                    <Button color="inherit">صفحه‌ی اصلی</Button>
+                  </NavLink>
+                  <NavLink to={routes.ADD_NEED} className={classes.btn}>
+                    <Button color="inherit">ثبت نیاز</Button>
+                  </NavLink>
+                  <NavLink to={routes.ABOUT} className={classes.btn}>
+                    <Button color="inherit">درباره‌ی ما</Button>
+                  </NavLink>
+                  <NavLink to={routes.SIGN_IN} className={classes.btn}>
+                    <Button color="inherit">ورود | ثبت‌نام</Button>
+                  </NavLink>
+                </div>
+              }
               <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
                 <MenuRoundedIcon/>
               </IconButton>
