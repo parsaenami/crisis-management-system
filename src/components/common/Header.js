@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { AppBar, Button, Container, IconButton, Toolbar } from "@material-ui/core";
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
-import { HeaderScrollEffect } from "../helpers/HeaderScrollEffect";
+import { HeaderScrollEffect } from "../../helpers/HeaderScrollEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import NavDrawer from "./NavDrawer";
 import { NavLink } from "react-router-dom";
@@ -90,6 +90,9 @@ const Header = props => {
                   </NavLink>
                   <NavLink to={routes.ABOUT} className={classes.btn}>
                     <Button color="inherit">درباره‌ی ما</Button>
+                  </NavLink>
+                  <NavLink to={routes.PROFILE} className={classes.btn}>
+                    <Button color="inherit">پروفایل</Button>
                   </NavLink>
                   <NavLink to={routes.SIGN_IN} className={classes.btn}>
                     <Button color="inherit">ورود | ثبت‌نام</Button>

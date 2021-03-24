@@ -41,6 +41,10 @@ const listItems = [
     url: routes.SIGN_IN,
   },
   {
+    text: 'پروفایل',
+    url: routes.PROFILE,
+  },
+  {
     text: 'ثبت نیاز',
     url: routes.ADD_NEED,
   },

@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.6.0",
     "chokidar": "^3.5.1",
     "classnames": "^2.2.6",
+    "clsx": "^1.1.1",
     "flow-bin": "^0.146.0",
     "jss": "^10.5.1",
     "jss-rtl": "^0.3.0",
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.23",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.3",
     "bootstrap": "^4.6.0",

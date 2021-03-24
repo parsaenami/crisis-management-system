@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme, withMobileDialog } from "@material-ui/core";
-import RTL from "./helpers/RTL";
-import Theme from "./helpers/Theme";
+import RTL from "../helpers/RTL";
+import Theme from "../helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "./common/FAB";
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';

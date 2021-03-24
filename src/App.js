@@ -6,11 +6,12 @@ import Home from "./components/Home";
 import { createBrowserHistory } from 'history';
 import Header from "./components/common/Header";
 import { Container, CssBaseline, MuiThemeProvider } from "@material-ui/core";
-import Theme from "./components/helpers/Theme";
+import Theme from "./helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
 import { routes } from "./assets/routes";
 import Account from "./components/Account";
 import About from "./components/About";
+import Profile from "./components/Profile";
 
 export const history = createBrowserHistory();
 
@@ -39,6 +40,7 @@ const App = () => {
               <Route exact path={routes.HOME} component={Home}/>
               <Route exact path={routes.SIGN_IN} component={Account}/>
               <Route exact path={routes.ABOUT} component={About}/>
+              <Route exact path={routes.PROFILE} component={Profile}/>
             </Container>
           </Switch>
         </MuiThemeProvider>
