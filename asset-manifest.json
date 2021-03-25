@@ -1,27 +1,27 @@
 {
   "files": {
     "main.css": "/crisis-management-system/static/css/main.e8e28e89.chunk.css",
-    "main.js": "/crisis-management-system/static/js/main.16042e21.chunk.js",
-    "main.js.map": "/crisis-management-system/static/js/main.16042e21.chunk.js.map",
-    "runtime-main.js": "/crisis-management-system/static/js/runtime-main.a530c2ce.js",
-    "runtime-main.js.map": "/crisis-management-system/static/js/runtime-main.a530c2ce.js.map",
+    "main.js": "/crisis-management-system/static/js/main.22c517a5.chunk.js",
+    "main.js.map": "/crisis-management-system/static/js/main.22c517a5.chunk.js.map",
+    "runtime-main.js": "/crisis-management-system/static/js/runtime-main.28228a59.js",
+    "runtime-main.js.map": "/crisis-management-system/static/js/runtime-main.28228a59.js.map",
     "static/css/2.dcb9beed.chunk.css": "/crisis-management-system/static/css/2.dcb9beed.chunk.css",
-    "static/js/2.08765f94.chunk.js": "/crisis-management-system/static/js/2.08765f94.chunk.js",
-    "static/js/2.08765f94.chunk.js.map": "/crisis-management-system/static/js/2.08765f94.chunk.js.map",
-    "static/js/3.5d7e428d.chunk.js": "/crisis-management-system/static/js/3.5d7e428d.chunk.js",
-    "static/js/3.5d7e428d.chunk.js.map": "/crisis-management-system/static/js/3.5d7e428d.chunk.js.map",
+    "static/js/2.08c75b7c.chunk.js": "/crisis-management-system/static/js/2.08c75b7c.chunk.js",
+    "static/js/2.08c75b7c.chunk.js.map": "/crisis-management-system/static/js/2.08c75b7c.chunk.js.map",
+    "static/js/3.8a4f721f.chunk.js": "/crisis-management-system/static/js/3.8a4f721f.chunk.js",
+    "static/js/3.8a4f721f.chunk.js.map": "/crisis-management-system/static/js/3.8a4f721f.chunk.js.map",
     "index.html": "/crisis-management-system/index.html",
     "static/css/2.dcb9beed.chunk.css.map": "/crisis-management-system/static/css/2.dcb9beed.chunk.css.map",
     "static/css/main.e8e28e89.chunk.css.map": "/crisis-management-system/static/css/main.e8e28e89.chunk.css.map",
-    "static/js/2.08765f94.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.08765f94.chunk.js.LICENSE.txt",
+    "static/js/2.08c75b7c.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.08c75b7c.chunk.js.LICENSE.txt",
     "static/media/index.css": "/crisis-management-system/static/media/Anjoman-FaNum-UltraBoldItalic.c5336f84.woff",
     "static/media/helping-hand2.1e041efb.svg": "/crisis-management-system/static/media/helping-hand2.1e041efb.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.a530c2ce.js",
+    "static/js/runtime-main.28228a59.js",
     "static/css/2.dcb9beed.chunk.css",
-    "static/js/2.08765f94.chunk.js",
+    "static/js/2.08c75b7c.chunk.js",
     "static/css/main.e8e28e89.chunk.css",
-    "static/js/main.16042e21.chunk.js"
+    "static/js/main.22c517a5.chunk.js"
   ]
 }
