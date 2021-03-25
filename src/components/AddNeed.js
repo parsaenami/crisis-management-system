@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import PropTypes from 'prop-types';
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Accordion, AccordionDetails, AccordionSummary, Button, Chip, Collapse,
-  FormControl, IconButton,
-  InputLabel, List, ListItem, ListItemIcon, ListItemText,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Chip,
+  Collapse,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   ListSubheader,
-  MenuItem,
   MuiThemeProvider,
-  Select, Slider,
+  Slider,
   TextField,
-  Typography, useMediaQuery, useTheme
+  Typography,
+  useMediaQuery,
+  useTheme
 } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classnames from "classnames";
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
-import { disasterCategories, needCategories } from "../assets/categories";
+import { needCategories } from "../assets/categories";
 import Card from "./common/Card";
 import CardSlider from "./CardSlider";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
-import StopRoundedIcon from '@material-ui/icons/StopRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
-import { emptyNeed } from "../types/needType";
 import type { NeedType } from "../types/needType";
+import { emptyNeed } from "../types/needType";
 import FireIcon from "../assets/icons/iconComponents/FireIcon";
 import Fab from "./common/FAB";
 import EarthquakeIcon from "../assets/icons/iconComponents/EarthquakeIcon";
@@ -87,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     '& > .header': {
       backgroundColor: theme.palette.secondary.dark,
       borderRadius: theme.spacing(.5, .5, 0, 0),
-      borderBottom: "1px solid",
+      borderBottom: "2px solid",
       // backgroundColor: theme.palette.primary.main,
       color: theme.palette.primary.main,
       display: "flex",
@@ -218,7 +225,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddNeed = props => {
+const AddNeed = () => {
   const classes = useStyles()
   const theme = useTheme()
   const history = useHistory()
@@ -259,7 +266,7 @@ const AddNeed = props => {
     ])
   }
 
-  const selectNeed = (index, i, j) => e => {
+  const selectNeed = (index, i, j) => () => {
     setNeed([
       ...need.slice(0, index),
       {...need[index], category: i, title: j},
