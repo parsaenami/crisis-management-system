@@ -1,7 +1,7 @@
 // @flow
 
 import './App.scss';
-import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from "./components/Home";
 import { createBrowserHistory } from 'history';
 import Header from "./components/common/Header";
@@ -12,6 +12,7 @@ import { routes } from "./assets/routes";
 import Account from "./components/Account";
 import About from "./components/About";
 import Profile from "./components/Profile";
+import AddNeed from "./components/AddNeed";
 
 export const history = createBrowserHistory();
 
@@ -23,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     height: '100vh',
     paddingTop: theme.spacing(9),
-    // border: "1px solid red"
   },
 }));
 
@@ -41,6 +41,7 @@ const App = () => {
               <Route exact path={routes.SIGN_IN} component={Account}/>
               <Route exact path={routes.ABOUT} component={About}/>
               <Route exact path={routes.PROFILE} component={Profile}/>
+              <Route exact path={routes.ADD_NEED} component={AddNeed}/>
             </Container>
           </Switch>
         </MuiThemeProvider>

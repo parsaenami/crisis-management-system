@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Button, Container, IconButton, Toolbar } from "@material-ui/core";
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
-import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import { HeaderScrollEffect } from "../../helpers/HeaderScrollEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import NavDrawer from "./NavDrawer";
 import { NavLink } from "react-router-dom";
 import { routes } from "../../assets/routes";
-import classnames from "classnames";
 import Logo from '../../assets/icons/helping-hand2.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   navContainer: {
     display: "flex",
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifySelf: "flex-start",
     width: "100%",
     [theme.breakpoints.down('sm')]: {
@@ -68,17 +66,6 @@ const Header = props => {
         <AppBar position={"fixed"} className={classes.header}>
           <Container maxWidth="lg" className={classes.container}>
             <Toolbar>
-              {
-                props.location.pathname === routes.HOME
-                    ?
-                    <NavLink to={routes.SIGN_IN} className={classes.btn} id={'home'}>
-                      <Button color="inherit">ورود | ثبت‌نام</Button>
-                    </NavLink>
-                    :
-                    <NavLink to={routes.HOME} className={classes.btn}>
-                      <IconButton edge="start"><img src={Logo} alt="logo"/></IconButton>
-                    </NavLink>
-              }
               {/*{props.title}*/}
               {
                 <div className={classes.navContainer}>
@@ -102,6 +89,17 @@ const Header = props => {
               <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
                 <MenuRoundedIcon/>
               </IconButton>
+              {
+                props.location.pathname === routes.HOME
+                    ?
+                    <NavLink to={routes.SIGN_IN} className={classes.btn} id={'home'}>
+                      <Button color="inherit">ورود | ثبت‌نام</Button>
+                    </NavLink>
+                    :
+                    <NavLink to={routes.HOME} className={classes.btn}>
+                      <IconButton edge="start"><img src={Logo} alt="logo"/></IconButton>
+                    </NavLink>
+              }
               <NavDrawer open={open} toggleFn={toggleDrawer}/>
             </Toolbar>
           </Container>

@@ -64,20 +64,20 @@ const SignUpForm = props => {
             error={!!props.errors.address}
             helperText={props.errors.address}
         />
-        <FormControlLabel
-            control={
-              <Checkbox
-                  edge={"start"}
-                  checked={props.userInfo.location.allow}
-                  onChange={props.getLocation}
-                  name="location"
-                  color="primary"
-              />
-            }
-            label="استفاده از لوکیشن برای آدرس"
-        />
-        {!props.isMobileDisplay && <CustomButton variant={"contained"} size={"large"} onClick={props.submit}>ثبت‌نامم
-          کن</CustomButton>}
+        {/*<FormControlLabel*/}
+        {/*    control={*/}
+        {/*      <Checkbox*/}
+        {/*          edge={"start"}*/}
+        {/*          checked={props.userInfo.location.allow}*/}
+        {/*          onChange={props.getLocation}*/}
+        {/*          name="location"*/}
+        {/*          color="primary"*/}
+        {/*      />*/}
+        {/*    }*/}
+        {/*    label="استفاده از لوکیشن برای آدرس"*/}
+        {/*/>*/}
+        {!props.isMobileDisplay && <CustomButton variant={"contained"} size={"large"} onClick={props.submit}>
+          ثبت‌نامم کن</CustomButton>}
       </>
   );
 };

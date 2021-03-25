@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   close: {
     display: "flex",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
   },
   list: {
     display: "flex",

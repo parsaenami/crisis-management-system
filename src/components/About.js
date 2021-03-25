@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: "flex",
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",

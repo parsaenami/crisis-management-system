@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import classnames from 'classnames';
-import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme, withMobileDialog } from "@material-ui/core";
+import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(9),
     [theme.breakpoints.up('md')]: {
       display: "flex",
-      flexDirection: "row-reverse",
+      flexDirection: "row",
       alignItems: "flex-start",
     },
     '& hr': {
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: "flex",
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",

@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { SvgIcon, Typography } from "@material-ui/core";
-import HealingIcon from '@material-ui/icons/Healing';
+import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CustomButton } from "./common/CustomButton";
 import Hands from "../assets/icons/helping-hand2.svg"
-import SvgHelpingHand1 from "../assets/icons/SvgHelpingHand1";
 import { NavLink } from "react-router-dom";
 import { routes } from "../assets/routes";
 
@@ -12,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     display: "flex",
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     // background: '#91DDEC',
@@ -25,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     [theme.breakpoints.up('md')]: {
       // justifyContent: "flex-start",
-      alignItems: "flex-end",
+      alignItems: "flex-start",
       flexBasis: "50%",
     }
     // background: '#91DDEC',
@@ -82,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = props => {
+const Home = () => {
   const classes = useStyles();
 
   useEffect(() => {

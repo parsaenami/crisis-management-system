@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: "flex",
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     display: "flex",
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     flexWrap: "wrap",
   },
   btn: {
