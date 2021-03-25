@@ -460,69 +460,71 @@ const AddNeed = () => {
   }
 
   return (
-      <RTL>
-        <MuiThemeProvider theme={Theme}>
-          <div className={classes.container}>
-            <div className={classes.title}>
-              <Typography variant={"h3"}>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</Typography>
-            </div>
-            <hr/>
+      <div className={classes.container}>
+        <div className={classes.title}>
+          <Typography variant={"h3"}>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</Typography>
+        </div>
+        <hr/>
 
-            <div className={classnames(classes.media, {"receiptOnly": showReceipt})}>
-              {!showReceipt && <form className={classes.form}>
-                <Typography>نوع حادثه را مشخص کنید</Typography>
-                <CardSlider>
-                  <Card icon={EarthquakeIcon} selected={disaster === 'Earthquake'}
-                        onClick={handleDisaster('Earthquake')}>
-                    <div>زلزله</div>
-                  </Card>
-                  <Card icon={FloodIcon} selected={disaster === 'Flood'} onClick={handleDisaster('Flood')}>
-                    <div>سیل</div>
-                  </Card>
-                  <Card icon={FireIcon} selected={disaster === 'Fire'} onClick={handleDisaster('Fire')}>
-                    <div>آتش‌سوزی</div>
-                  </Card>
-                  <Card icon={TwisterIcon} selected={disaster === 'Twister'} onClick={handleDisaster('Twister')}>
-                    <div>طوفان</div>
-                  </Card>
-                  <Card icon={LandslideIcon} selected={disaster === 'Landslide'} onClick={handleDisaster('Landslide')}>
-                    <div>رانش زمین</div>
-                  </Card>
-                  <Card icon={AvalancheIcon} selected={disaster === 'Avalanche'} onClick={handleDisaster('Avalanche')}>
-                    <div>بهمن</div>
-                  </Card>
-                </CardSlider>
+        <div className={classnames(classes.media, {"receiptOnly": showReceipt})}>
+          {!showReceipt && <form className={classes.form}>
+            <Typography>نوع حادثه را مشخص کنید</Typography>
+            <CardSlider>
+              <Card icon={EarthquakeIcon} selected={disaster === 'Earthquake'}
+                    onClick={handleDisaster('Earthquake')}>
+                <div>زلزله</div>
+              </Card>
+              <Card icon={FloodIcon} selected={disaster === 'Flood'} onClick={handleDisaster('Flood')}>
+                <div>سیل</div>
+              </Card>
+              <Card icon={FireIcon} selected={disaster === 'Fire'} onClick={handleDisaster('Fire')}>
+                <div>آتش‌سوزی</div>
+              </Card>
+              <Card icon={TwisterIcon} selected={disaster === 'Twister'} onClick={handleDisaster('Twister')}>
+                <div>طوفان</div>
+              </Card>
+              <Card icon={LandslideIcon} selected={disaster === 'Landslide'} onClick={handleDisaster('Landslide')}>
+                <div>رانش زمین</div>
+              </Card>
+              <Card icon={AvalancheIcon} selected={disaster === 'Avalanche'} onClick={handleDisaster('Avalanche')}>
+                <div>بهمن</div>
+              </Card>
+            </CardSlider>
 
-                <Typography style={{marginTop: Theme.spacing(2)}} gutterBottom>درخواست‌های خود را با وارد کردن اطلاعات
-                  خواسته‌شده ثبت کنید</Typography>
+            <Typography style={{marginTop: Theme.spacing(2)}} gutterBottom>درخواست‌های خود را با وارد کردن اطلاعات
+              خواسته‌شده ثبت کنید</Typography>
+
+            <RTL>
+              <MuiThemeProvider theme={Theme}>
                 {need.map((n, i) => needItemForm(i))}
-              </form>}
-              {(showReceipt || !isMobileDisplay) && <div className={classes.receipt}>
-                <Receipt/>
-                <div className={classes.desktopBtn}>
-                  <CustomButton variant={"contained"} onClick={showReceipt ? handleShowReceipt : addRequest}>
-                    {showReceipt ? 'ویرایش' : 'درخواست جدید'}
-                  </CustomButton>
-                  <CustomButton variant={"contained"} onClick={showReceipt ? submitNeed : handleShowReceipt}>
-                    {showReceipt ? 'تأیید و ثبت' : 'مرحله‌ی بعد'}
-                  </CustomButton>
-                </div>
-              </div>}
-            </div>
+              </MuiThemeProvider>
+            </RTL>
 
-          </div>
-          {isMobileDisplay && <Fab buttons={[
-            {
-              title: showReceipt ? 'ویرایش' : 'درخواست جدید',
-              onClickFn: showReceipt ? handleShowReceipt : addRequest,
-            },
-            {
-              title: showReceipt ? 'تأیید و ثبت' : 'مرحله‌ی بعد',
-              onClickFn: showReceipt ? submitNeed : handleShowReceipt,
-            },
-          ]}/>}
-        </MuiThemeProvider>
-      </RTL>
+          </form>}
+          {(showReceipt || !isMobileDisplay) && <div className={classes.receipt}>
+            <Receipt/>
+            <div className={classes.desktopBtn}>
+              <CustomButton variant={"contained"} onClick={showReceipt ? handleShowReceipt : addRequest}>
+                {showReceipt ? 'ویرایش' : 'درخواست جدید'}
+              </CustomButton>
+              <CustomButton variant={"contained"} onClick={showReceipt ? submitNeed : handleShowReceipt}>
+                {showReceipt ? 'تأیید و ثبت' : 'مرحله‌ی بعد'}
+              </CustomButton>
+            </div>
+          </div>}
+        </div>
+
+        {isMobileDisplay && <Fab buttons={[
+          {
+            title: showReceipt ? 'ویرایش' : 'درخواست جدید',
+            onClickFn: showReceipt ? handleShowReceipt : addRequest,
+          },
+          {
+            title: showReceipt ? 'تأیید و ثبت' : 'مرحله‌ی بعد',
+            onClickFn: showReceipt ? submitNeed : handleShowReceipt,
+          },
+        ]}/>}
+      </div>
   );
 };
 
