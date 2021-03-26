@@ -5,6 +5,9 @@ import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
 import { CustomButton } from "./common/CustomButton";
 import DataTable from "./common/DataTable";
+import { useAlert } from "../hooks/useAlert";
+import FloatingAlert from "./common/FloatingAlert";
+import { messages } from "../assets/messages";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -89,6 +92,7 @@ const Profile = () => {
   });
   const [profile, setProfile] = useState(info);
   const [showConfirmBtn, setShowConfirmBtn] = useState(false);
+  const {open, message, type, duration, closeAlert, showAlert} = useAlert()
 
   const editField = value => {
     setEditMode({
@@ -106,7 +110,7 @@ const Profile = () => {
   }
 
   const confirmChanges = () => {
-    alert('تغییرات با موفقیت اعمال شد.');
+    showAlert(messages.INFO_CHANGES_SAVED, 'success');
     setShowConfirmBtn(false);
   }
 
@@ -146,6 +150,7 @@ const Profile = () => {
 
         <DataTable title={'وضعیت درخواست‌ها'}/>
 
+        <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
       </div>
   );
 };

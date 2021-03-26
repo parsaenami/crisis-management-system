@@ -25,7 +25,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classnames from "classnames";
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
-import { needCategories } from "../assets/categories";
+import { disasterCategories, needCategories } from "../assets/categories";
 import Card from "./common/Card";
 import CardSlider from "./common/CardSlider";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
@@ -43,6 +43,9 @@ import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { CustomButton } from "./common/CustomButton";
 import Receipt from "./common/Receipt";
 import { routes } from "../assets/routes";
+import FloatingAlert from "./common/FloatingAlert";
+import { useAlert } from "../hooks/useAlert";
+import { messages } from "../assets/messages";
 
 const emptyOpenList = {
   menu: false,
@@ -244,6 +247,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const disasterIcons = {
+  earthquake: EarthquakeIcon,
+  flood: FloodIcon,
+  fire: FireIcon,
+  twister: TwisterIcon,
+  landslide: LandslideIcon,
+  avalanche: AvalancheIcon,
+}
+
 const AddNeed = () => {
   const classes = useStyles()
   const theme = useTheme()
@@ -255,6 +267,7 @@ const AddNeed = () => {
   const [needError: NeedType[], setNeedError] = useState([emptyNeed])
   const [disaster, setDisaster] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
+  const {open, message, type, duration, closeAlert, showAlert} = useAlert()
 
   const handleOpenList = (e, name) => {
     setOpenList({
@@ -273,6 +286,7 @@ const AddNeed = () => {
 
   const handleShowReceipt = () => {
     if (checkError()) {
+      showAlert(messages.ERR_EMPTY_NEED, "error")
       return
     }
     setShowReceipt(!showReceipt)
@@ -349,8 +363,8 @@ const AddNeed = () => {
   }
 
   const submitNeed = () => {
-    alert('ثبت نیاز با موفقیت انجام شد.')
-    history.push(routes.DONE)
+    showAlert(messages.INFO_NEED_ADDED, "success", 3000, () => () => history.push(routes.DONE))
+    // history.push(routes.DONE)
   }
 
   const needItemForm = index => {
@@ -501,7 +515,7 @@ const AddNeed = () => {
               />
             </div>
             <div className={classes.needPart}>
-              <Typography>آیا توضیح خاصی لازم است؟</Typography>
+              <Typography>آیا توضیح خاصی لازم است؟ (اختیاری)</Typography>
               <TextField
                   multiline
                   variant={"filled"}
@@ -530,27 +544,14 @@ const AddNeed = () => {
 
         <div className={classnames(classes.media, {"receiptOnly": showReceipt})}>
           {!showReceipt && <div className={classes.form}>
-            <Typography>نوع حادثه را مشخص کنید</Typography>
+            <Typography>نوع حادثه را مشخص کنید (اختیاری)</Typography>
             <CardSlider>
-              <Card icon={EarthquakeIcon} selected={disaster === 'earthquake'}
-                    onClick={handleDisaster('earthquake')}>
-                <div>زلزله</div>
-              </Card>
-              <Card icon={FloodIcon} selected={disaster === 'flood'} onClick={handleDisaster('flood')}>
-                <div>سیل</div>
-              </Card>
-              <Card icon={FireIcon} selected={disaster === 'fire'} onClick={handleDisaster('fire')}>
-                <div>آتش‌سوزی</div>
-              </Card>
-              <Card icon={TwisterIcon} selected={disaster === 'twister'} onClick={handleDisaster('twister')}>
-                <div>طوفان</div>
-              </Card>
-              <Card icon={LandslideIcon} selected={disaster === 'landslide'} onClick={handleDisaster('landslide')}>
-                <div>رانش زمین</div>
-              </Card>
-              <Card icon={AvalancheIcon} selected={disaster === 'avalanche'} onClick={handleDisaster('avalanche')}>
-                <div>بهمن</div>
-              </Card>
+              {Object.keys(disasterCategories).map((d, i) => (
+                  <Card k={i} icon={disasterIcons[d]} selected={disaster === d}
+                        onClick={handleDisaster(d)}>
+                    <div>{disasterCategories[d]}</div>
+                  </Card>
+              ))}
             </CardSlider>
 
             <Typography style={{marginTop: Theme.spacing(2)}} gutterBottom>درخواست‌های خود را با وارد کردن اطلاعات
@@ -586,6 +587,8 @@ const AddNeed = () => {
             onClickFn: showReceipt ? submitNeed : handleShowReceipt,
           },
         ]}/>}
+
+        <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
       </div>
   );
 };

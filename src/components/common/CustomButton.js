@@ -6,7 +6,7 @@ export const CustomButton = withStyles((theme) => ({
     color: theme.palette.primary.main,
     backgroundColor: theme.palette.info.main,
     '&:hover': {
-      backgroundColor: theme.palette.info.light,
+      backgroundColor: theme.palette.info.main,
     }
   },
 }))(Button);

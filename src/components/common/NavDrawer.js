@@ -91,15 +91,20 @@ const NavDrawer = props => {
         >
           <div className={classes.swipeArea}/>
         </Swipe>
-
-        <Drawer anchor="left" open={props.open} onClose={props.toggleFn(false)}>
-          <div className={classes.close}>
-            <IconButton edge="end" className={classes.icon} aria-label="close" onClick={props.toggleFn(false)}>
-              <CloseIcon/>
-            </IconButton>
-          </div>
-          {list}
-        </Drawer>
+        <Swipe
+            nodeName="div"
+            onSwipedRight={props.toggleFn(false)}
+            detectTouch
+        >
+          <Drawer anchor="left" open={props.open} onClose={props.toggleFn(false)}>
+            <div className={classes.close}>
+              <IconButton edge="end" className={classes.icon} aria-label="close" onClick={props.toggleFn(false)}>
+                <CloseIcon/>
+              </IconButton>
+            </div>
+            {list}
+          </Drawer>
+        </Swipe>
       </nav>
   );
 };

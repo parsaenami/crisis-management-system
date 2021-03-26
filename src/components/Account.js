@@ -14,6 +14,8 @@ import { emptyUserInfo, UserInfoType } from '../types/userInfoType'
 import { usePosition } from "../hooks/usePosition";
 import { messages } from "../assets/messages";
 import { routes } from "../assets/routes";
+import FloatingAlert from "./common/FloatingAlert";
+import { useAlert } from "../hooks/useAlert";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -90,6 +92,7 @@ const Account = props => {
   const [isOtp, setIsOtp] = useState(false);
   const classes = useStyles({...props, breakpoint: isMobileDisplay, isOtp});
   const history = useHistory();
+  const {open, message, type, duration, closeAlert, showAlert} = useAlert();
 
   // otpForm state
   const [code, setCode] = useState('');
@@ -124,8 +127,8 @@ const Account = props => {
     setTimeout(() => {
       const otpRandom = Math.round(Math.random() * 100000).toString().padStart(5, "0")
       setOtpCode(otpRandom)
-      alert("کد شما: " + otpRandom)
-    }, 3000)
+      showAlert("کد شما: " + otpRandom, "success", 8000)
+    }, 4000)
   }
 
   const submit = e => {
@@ -149,7 +152,7 @@ const Account = props => {
         })
       }
     } else {
-      alert(`کد تأیید برای کاربر  شماره‌ی تماس / کد ملی ${method} ارسال شد.`);
+      showAlert(`کد تأیید برای کاربر با ${(signInWithNid ? 'کد ملی' : 'شماره‌ی تماس')} ${method} ارسال شد.`, "success", 3000);
       console.log(userInfo);
       setIsOtp(true);
       sendOtp()
@@ -164,8 +167,7 @@ const Account = props => {
     } else if (code !== otpCode) {
       setCodeError(messages.ERR_WRONG_OTP)
     } else {
-      alert(messages.INFO_CORRECT_OTP);
-      history.push(routes.PROFILE);
+      showAlert(messages.INFO_CORRECT_OTP, "success", 5000, () => () => history.push(routes.PROFILE));
     }
   }
 
@@ -276,6 +278,8 @@ const Account = props => {
               onClickFn: isOtp ? verify : submit,
             }
           ]}/>}
+
+          <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
         </MuiThemeProvider>
       </RTL>
   );
