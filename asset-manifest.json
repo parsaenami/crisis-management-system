@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/crisis-management-system/static/css/main.c6818c0a.chunk.css",
+    "main.css": "/crisis-management-system/static/css/main.e8e28e89.chunk.css",
     "main.js": "/crisis-management-system/static/js/main.711ff6ff.chunk.js",
     "main.js.map": "/crisis-management-system/static/js/main.711ff6ff.chunk.js.map",
     "runtime-main.js": "/crisis-management-system/static/js/runtime-main.23270a64.js",
@@ -12,7 +12,7 @@
     "static/js/3.003555e2.chunk.js.map": "/crisis-management-system/static/js/3.003555e2.chunk.js.map",
     "index.html": "/crisis-management-system/index.html",
     "static/css/2.dcb9beed.chunk.css.map": "/crisis-management-system/static/css/2.dcb9beed.chunk.css.map",
-    "static/css/main.c6818c0a.chunk.css.map": "/crisis-management-system/static/css/main.c6818c0a.chunk.css.map",
+    "static/css/main.e8e28e89.chunk.css.map": "/crisis-management-system/static/css/main.e8e28e89.chunk.css.map",
     "static/js/2.38a430f1.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.38a430f1.chunk.js.LICENSE.txt",
     "static/media/index.css": "/crisis-management-system/static/media/Anjoman-FaNum-UltraBoldItalic.c5336f84.woff",
     "static/media/helping-hand2.1e041efb.svg": "/crisis-management-system/static/media/helping-hand2.1e041efb.svg"
@@ -21,7 +21,7 @@
     "static/js/runtime-main.23270a64.js",
     "static/css/2.dcb9beed.chunk.css",
     "static/js/2.38a430f1.chunk.js",
-    "static/css/main.c6818c0a.chunk.css",
+    "static/css/main.e8e28e89.chunk.css",
     "static/js/main.711ff6ff.chunk.js"
   ]
 }
