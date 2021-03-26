@@ -5,6 +5,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { routes } from "../../assets/routes";
 import { NavLink } from "react-router-dom";
+import { Swipe } from "react-swipe-component";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -28,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
       justifyContent: "center",
     },
+  },
+  swipeArea: {
+    width: theme.spacing(2),
+    position: "fixed",
+    top: 0,
+    bottom: 0,
+    right: 0,
   },
 }));
 
@@ -76,7 +84,15 @@ const NavDrawer = props => {
 
   return (
       <nav>
-        <Drawer anchor="left" open={props.open} onClose={props.toggleFn(false)} onOpen={props.toggleFn(true)}>
+        <Swipe
+            nodeName="div"
+            onSwipedLeft={props.toggleFn(true)}
+            detectTouch
+        >
+          <div className={classes.swipeArea}/>
+        </Swipe>
+
+        <Drawer anchor="left" open={props.open} onClose={props.toggleFn(false)}>
           <div className={classes.close}>
             <IconButton edge="end" className={classes.icon} aria-label="close" onClick={props.toggleFn(false)}>
               <CloseIcon/>

@@ -27,9 +27,8 @@ import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
 import { needCategories } from "../assets/categories";
 import Card from "./common/Card";
-import CardSlider from "./CardSlider";
+import CardSlider from "./common/CardSlider";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
-import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import type { NeedType } from "../types/needType";
 import { emptyNeed } from "../types/needType";
 import FireIcon from "../assets/icons/iconComponents/FireIcon";
@@ -40,6 +39,7 @@ import TwisterIcon from "../assets/icons/iconComponents/TwisterIcon";
 import LandslideIcon from "../assets/icons/iconComponents/LandslideIcon";
 import AvalancheIcon from "../assets/icons/iconComponents/AvalancheIcon";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import { CustomButton } from "./common/CustomButton";
 import Receipt from "./common/Receipt";
 import { routes } from "../assets/routes";
@@ -86,11 +86,26 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
+    '& > .header': {
+      '& > div:first-child': {
+        display: "flex",
+        justifyContent: "space-between",
+      },
+      '&.error': {
+        backgroundColor: theme.palette.error.light,
+        '& > *': {
+          color: theme.palette.error.main,
+        },
+      },
+    },
   },
   list: {
     borderRadius: theme.spacing(.7, .7, .5, .5),
     border: "1px solid",
     position: "relative",
+    '&.error': {
+      borderColor: theme.palette.error.main,
+    },
     '& > .header': {
       backgroundColor: theme.palette.secondary.dark,
       borderRadius: theme.spacing(.5, .5, 0, 0),
@@ -100,6 +115,9 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
+      '&.error': {
+        color: theme.palette.error.main,
+      },
     },
   },
   listItem: {
@@ -127,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '&.suggest': {
       padding: theme.spacing(1),
-      backgroundColor: theme.palette.text.hint,
+      backgroundColor: theme.palette.background.box,
       borderRadius: theme.spacing(.5),
     },
   },
@@ -144,6 +162,7 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(12),
       textAlignLast: "center",
       '& input': {
+        direction: "ltr",
         padding: theme.spacing(.25, 0),
       },
     },
@@ -176,7 +195,7 @@ const useStyles = makeStyles((theme) => ({
   },
   suggestionCard: {
     display: "flex",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "column",
     height: "100%",
@@ -233,6 +252,7 @@ const AddNeed = () => {
   const [expanded, setExpanded] = React.useState('panel0')
   const [openList, setOpenList] = useState(emptyOpenList)
   const [need: NeedType[], setNeed] = useState([emptyNeed])
+  const [needError: NeedType[], setNeedError] = useState([emptyNeed])
   const [disaster, setDisaster] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
 
@@ -252,11 +272,16 @@ const AddNeed = () => {
   };
 
   const handleShowReceipt = () => {
+    if (checkError()) {
+      return
+    }
     setShowReceipt(!showReceipt)
   }
 
   const addRequest = () => {
     setNeed([...need, emptyNeed])
+    setNeedError([...needError, emptyNeed])
+    setExpanded('panel' + need.length)
   }
 
   const deleteRequest = index => () => {
@@ -264,6 +289,11 @@ const AddNeed = () => {
       ...need.slice(0, index),
       ...need.slice(index + 1),
     ])
+    setNeedError([
+      ...needError.slice(0, index),
+      ...needError.slice(index + 1),
+    ])
+    setExpanded(expanded && expanded.slice(5) !== "0" ? 'panel' + (parseInt(expanded.slice(5)) - 1) : false)
   }
 
   const selectNeed = (index, i, j) => () => {
@@ -271,6 +301,11 @@ const AddNeed = () => {
       ...need.slice(0, index),
       {...need[index], category: i, title: j},
       ...need.slice(index + 1),
+    ])
+    setNeedError([
+      ...needError.slice(0, index),
+      emptyNeed,
+      ...needError.slice(index + 1),
     ])
     setOpenList(emptyOpenList)
   }
@@ -281,6 +316,11 @@ const AddNeed = () => {
       {...need[index], [e.target.name]: e.target.value},
       ...need.slice(index + 1),
     ])
+    setNeedError([
+      ...needError.slice(0, index),
+      emptyNeed,
+      ...needError.slice(index + 1),
+    ])
   }
 
   const handleSliderChange = index => (event, newValue) => {
@@ -289,11 +329,28 @@ const AddNeed = () => {
       {...need[index], urgent: newValue},
       ...need.slice(index + 1),
     ])
-  };
+  }
+
+  const checkError = () => {
+    let errorState = []
+    let hasError = false
+
+    for (const n of need) {
+      hasError = hasError || n.amount === "" || n.title === ""
+      errorState.push({
+        ...(emptyNeed),
+        amount: n.amount === "",
+        title: n.title === "",
+      })
+    }
+
+    setNeedError(errorState)
+    return hasError
+  }
 
   const submitNeed = () => {
     alert('ثبت نیاز با موفقیت انجام شد.')
-    history.push(routes.PROFILE)
+    history.push(routes.DONE)
   }
 
   const needItemForm = index => {
@@ -325,14 +382,14 @@ const AddNeed = () => {
                    onChange={handleExpand(`panel${index}`)}>
           <AccordionSummary
               expandIcon={<ExpandMoreIcon/>}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
+              className={classnames('header', {"error": needError[index].amount || needError[index].title})}
           >
             <Typography>{need.length > 1 ? `جزئیات درخواست ${index + 1}` : `جزئیات درخواست`}</Typography>
+            {(needError[index].amount || needError[index].title) && <ErrorRoundedIcon/>}
           </AccordionSummary>
           <AccordionDetails className={"details"}>
             {index !== 0 && <div className={classnames(classes.needPart, "suggest")}>
-              <Typography>شاید به این موارد هم نیاز داشته باشید</Typography>
+              <Typography>شاید به این موارد هم نیاز داشته باشید:</Typography>
               <CardSlider>
                 {[[0, 12], [5, 2], [0, 3], [3, 8], [2, 12]].map(x => (
                     <Card
@@ -365,27 +422,28 @@ const AddNeed = () => {
                     className={"needAmount"}
                     value={need[index].amount ? need[index].amount : ''}
                     onChange={setNeedInfo(index)}
+                    error={needError[index].amount}
                 />
               </div>
               {need[index].category === '' || need[index].title === '' ? (
                   <List
                       disablePadding
-                      className={classes.list}
+                      className={classnames(classes.list, {"error": needError[index].amount || needError[index].title})}
                       subheader={
                         <ListSubheader
-                            className={'header'}
+                            className={classnames('header', {"error": needError[index].amount || needError[index].title})}
                             component="div"
                             id="nested-list-subheader"
                             onClick={e => handleOpenList(e, 'menu')}
                         >
                           <span>دسته‌بندی نیازمندی‌ها</span>
                           <div>
-                            <IconButton color={"inherit"} className={"d-none"}>
-                              <SearchRoundedIcon onClick={e => {
-                                e.stopPropagation();
-                                console.log(e)
-                              }}/>
-                            </IconButton>
+                            {/*<IconButton color={"inherit"} className={"d-none"}>*/}
+                            {/*  <SearchRoundedIcon onClick={e => {*/}
+                            {/*    e.stopPropagation();*/}
+                            {/*    console.log(e)*/}
+                            {/*  }}/>*/}
+                            {/*</IconButton>*/}
                             <IconButton edge={"end"} color={"inherit"}>
                               {openList.menu ? <ExpandLess/> : <ExpandMore/>}
                             </IconButton>
@@ -467,26 +525,26 @@ const AddNeed = () => {
         <hr/>
 
         <div className={classnames(classes.media, {"receiptOnly": showReceipt})}>
-          {!showReceipt && <form className={classes.form}>
+          {!showReceipt && <div className={classes.form}>
             <Typography>نوع حادثه را مشخص کنید</Typography>
             <CardSlider>
-              <Card icon={EarthquakeIcon} selected={disaster === 'Earthquake'}
-                    onClick={handleDisaster('Earthquake')}>
+              <Card icon={EarthquakeIcon} selected={disaster === 'earthquake'}
+                    onClick={handleDisaster('earthquake')}>
                 <div>زلزله</div>
               </Card>
-              <Card icon={FloodIcon} selected={disaster === 'Flood'} onClick={handleDisaster('Flood')}>
+              <Card icon={FloodIcon} selected={disaster === 'flood'} onClick={handleDisaster('flood')}>
                 <div>سیل</div>
               </Card>
-              <Card icon={FireIcon} selected={disaster === 'Fire'} onClick={handleDisaster('Fire')}>
+              <Card icon={FireIcon} selected={disaster === 'fire'} onClick={handleDisaster('fire')}>
                 <div>آتش‌سوزی</div>
               </Card>
-              <Card icon={TwisterIcon} selected={disaster === 'Twister'} onClick={handleDisaster('Twister')}>
+              <Card icon={TwisterIcon} selected={disaster === 'twister'} onClick={handleDisaster('twister')}>
                 <div>طوفان</div>
               </Card>
-              <Card icon={LandslideIcon} selected={disaster === 'Landslide'} onClick={handleDisaster('Landslide')}>
+              <Card icon={LandslideIcon} selected={disaster === 'landslide'} onClick={handleDisaster('landslide')}>
                 <div>رانش زمین</div>
               </Card>
-              <Card icon={AvalancheIcon} selected={disaster === 'Avalanche'} onClick={handleDisaster('Avalanche')}>
+              <Card icon={AvalancheIcon} selected={disaster === 'avalanche'} onClick={handleDisaster('avalanche')}>
                 <div>بهمن</div>
               </Card>
             </CardSlider>
@@ -500,9 +558,9 @@ const AddNeed = () => {
               </MuiThemeProvider>
             </RTL>
 
-          </form>}
+          </div>}
           {(showReceipt || !isMobileDisplay) && <div className={classes.receipt}>
-            <Receipt/>
+            <Receipt receipts={need} type={disaster} current={expanded ? parseInt(expanded.slice(5)) : 0}/>
             <div className={classes.desktopBtn}>
               <CustomButton variant={"contained"} onClick={showReceipt ? handleShowReceipt : addRequest}>
                 {showReceipt ? 'ویرایش' : 'درخواست جدید'}

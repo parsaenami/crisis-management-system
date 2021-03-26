@@ -1,7 +1,7 @@
 export interface NeedType {
   category: string,
   title: string,
-  amount: number,
+  amount: string,
   urgent: number,
   desc: string,
 }
@@ -9,7 +9,7 @@ export interface NeedType {
 export const emptyNeed = {
   category: '',
   title: '',
-  amount: 0,
+  amount: "",
   urgent: 3,
   desc: '',
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Grid, makeStyles, MobileStepper, Paper, useTheme } from "@material-ui/core";
@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import { Swipe } from "react-swipe-component"
+import { disasterCategories, needCategories } from "../../assets/categories";
 
 const translate = {
   type: 'حادثه',
@@ -59,6 +60,34 @@ const Receipt = props => {
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = props.receipts.length;
 
+  // useEffect(() => {
+  //   console.log(12)
+  //   setActiveStep(props.current)
+  // }, [props])
+
+  const printValues = (cat, val) => {
+      if (cat === "category") {
+        return needCategories[val.toString()].faName
+      } else if (cat === "title") {
+        return needCategories[props.receipts[activeStep].category.toString()].items[val]
+      } else if (cat === "urgent") {
+        switch (val) {
+          case 1:
+            return 'خیلی کم'
+          case 2:
+            return 'کم'
+          default:
+          case 3:
+            return 'متوسط'
+          case 4:
+            return 'زیاد'
+          case 5:
+            return 'خیلی زیاد'
+        }
+      }
+      return val
+  }
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -70,6 +99,7 @@ const Receipt = props => {
   const onSwipeLeftListener = () => {
     setActiveStep(activeStep > 0 ? activeStep - 1 : maxSteps - 1);
   }
+
   const onSwipeRightListener = () => {
     setActiveStep(activeStep < maxSteps - 1 ? activeStep + 1 : 0);
   }
@@ -77,7 +107,7 @@ const Receipt = props => {
   return (
       <div className={classnames(classes.root, props.className)}>
         <Paper elevation={0} className={classes.header}>
-          <Typography>{props.receipts[activeStep].label}</Typography>
+          <Typography>{`درخواست ${activeStep + 1}`}</Typography>
         </Paper>
         <Swipe
             nodeName="div"
@@ -87,12 +117,20 @@ const Receipt = props => {
         >
           <div className={classes.body}>
             <Grid container spacing={1}>
-              {Object.keys(props.receipts[activeStep]).slice(1).map(need => (<>
+              <Grid item xs={5}>
+                <Paper className={classes.key} elevation={0}>نوع حادثه</Paper>
+              </Grid>
+              <Grid item xs={7}>
+                <Paper className={classes.value} elevation={0}>{disasterCategories[props.type] ? disasterCategories[props.type] : '-'}</Paper>
+              </Grid>
+              {Object.keys(props.receipts[activeStep]).map(need => (<>
                 <Grid item xs={5}>
                   <Paper className={classes.key} elevation={0}>{translate[need]}</Paper>
                 </Grid>
                 <Grid item xs={7}>
-                  <Paper className={classes.value} elevation={0}>{props.receipts[activeStep][need]}</Paper>
+                  <Paper className={classes.value} elevation={0}>
+                    {props.receipts[activeStep][need] !== "" ? printValues(need, props.receipts[activeStep][need]) : '-'}
+                  </Paper>
                 </Grid>
               </>))}
             </Grid>
@@ -123,10 +161,10 @@ const Receipt = props => {
 
 Receipt.propTypes = {
   className: PropTypes.string,
+  type: PropTypes.string,
+  current: PropTypes.number,
   receipts: PropTypes.arrayOf(
       PropTypes.shape({
-        label: PropTypes.string,
-        type: PropTypes.string,
         category: PropTypes.string,
         title: PropTypes.string,
         amount: PropTypes.string,
@@ -137,33 +175,14 @@ Receipt.propTypes = {
 };
 
 Receipt.defaultProps = {
+  type: '-',
   receipts: [
     {
-      label: 'درخواست ۱',
-      type: 'زلزله',
-      category: 'لوازم گرمایشی',
-      title: 'هیتر برقی',
-      amount: '۲',
-      urgent: 'زیاد',
-      desc: 'ما اینجا خیلی داریم یخ می‌زنیم. اینجا بسیار هوا سرد است و ما هیتر برقی نداریم و بسیار لازم داریم تا آن را روشن کنیم و گرم شویم.',
-    },
-    {
-      label: 'درخواست ۲',
-      type: 'زلزله',
-      category: 'مواد غذایی',
-      title: 'کیک',
-      amount: '۱۰',
-      urgent: 'کم',
-      desc: 'ما اینجا خیلی داریم گشنگی می‌کشیم. اینجا بسیار غذا کم است و ما کیک نداریم و بسیار لازم داریم تا آن را بخوریم و سیر شویم.',
-    },
-    {
-      label: 'درخواست ۳',
-      type: 'زلزله',
-      category: 'افلام پزشکی',
-      title: 'چسب زخم',
-      amount: '۲۰',
-      urgent: 'خیلی زیاد',
-      desc: 'ما اینجا خیلی داریم زخم می‌شویم. اینجا بسیار موانع تیز موجود است و ما هی به آن‌ها می‌خوریم و زخم می‌شویم بسیار لازم داریم تا روی آن چسب زخم بزنیم تا خوب شویم.',
+      category: '-',
+      title: '-',
+      amount: '-',
+      urgent: '-',
+      desc: '-',
     },
   ],
 }

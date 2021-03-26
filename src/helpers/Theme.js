@@ -20,6 +20,11 @@ let Theme = createMuiTheme({
     info: {
       main: '#B8F4EC',
       light: '#D8ECEA',
+      dark: '#9EDDEC',
+    },
+    error: {
+      main: '#f44336',
+      light: '#f3c8c5',
     },
     text: {
       primary: '#140053',
@@ -30,6 +35,7 @@ let Theme = createMuiTheme({
     },
     background: {
       default: '#F5F2EB',
+      box: '#f4f4f4',
       // default: window.location.pathname === routes.HOME ? '#91DDEC' : '#F5F2EB',
     },
   },

@@ -13,6 +13,7 @@ import Account from "./components/Account";
 import About from "./components/About";
 import Profile from "./components/Profile";
 import AddNeed from "./components/AddNeed";
+import Done from "./components/Done";
 
 export const history = createBrowserHistory();
 
@@ -42,6 +43,7 @@ const App = () => {
               <Route exact path={routes.ABOUT} component={About}/>
               <Route exact path={routes.PROFILE} component={Profile}/>
               <Route exact path={routes.ADD_NEED} component={AddNeed}/>
+              <Route exact path={routes.DONE} component={Done}/>
             </Container>
           </Switch>
         </MuiThemeProvider>

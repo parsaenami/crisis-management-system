@@ -123,11 +123,11 @@ export const needCategories = {
   },
 };
 
-export const disasterCategories = [
-  "زلزله",
-  "سیل",
-  "طوفان",
-  "بهمن",
-  "رانش زمین",
-  "آتش‌سوزی",
-]
+export const disasterCategories = {
+  earthquake: "زلزله",
+  flood: "سیل",
+  fire: "آتش‌سوزی",
+  twister: "طوفان",
+  landslide: "رانش زمین",
+  avalanche: "بهمن",
+}

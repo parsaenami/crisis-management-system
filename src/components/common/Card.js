@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1.5),
     margin: theme.spacing(1, .5),
     '&:first-child': {
-      marginLeft: theme.spacing(0),
+      marginRight: theme.spacing(0),
     },
     '&:last-child': {
-      marginRight: theme.spacing(0),
+      marginLeft: theme.spacing(0),
     },
     '&.selected': {
       backgroundColor: theme.palette.primary.main,

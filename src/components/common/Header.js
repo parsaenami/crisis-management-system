@@ -54,7 +54,7 @@ const Header = props => {
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = open => event => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 

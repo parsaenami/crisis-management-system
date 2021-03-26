@@ -6,4 +6,5 @@ export const routes = {
   ADD_NEED: `${root}/add_need/`,
   ABOUT: `${root}/about/`,
   PROFILE: `${root}/profile/`,
+  DONE: `${root}/done/`,
 }

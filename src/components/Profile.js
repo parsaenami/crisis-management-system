@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   infoContainer: {
     border: "1px solid #e7e7e7",
-    backgroundColor: "#f4f4f4",
+    backgroundColor: theme.palette.background.box,
     borderRadius: theme.spacing(.5),
     padding: theme.spacing(1),
     margin: theme.spacing(.5),
