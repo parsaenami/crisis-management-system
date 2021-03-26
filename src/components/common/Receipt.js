@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Grid, makeStyles, MobileStepper, Paper, useTheme } from "@material-ui/core";
@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.hint,
     backgroundColor: "transparent",
     padding: theme.spacing(.5, 2),
+    whiteSpace: "pre-wrap",
+    overflowWrap: "anywhere",
   },
   footer: {
     borderRadius: theme.spacing(0, 0, .5, .5),
@@ -66,26 +68,26 @@ const Receipt = props => {
   // }, [props])
 
   const printValues = (cat, val) => {
-      if (cat === "category") {
-        return needCategories[val.toString()].faName
-      } else if (cat === "title") {
-        return needCategories[props.receipts[activeStep].category.toString()].items[val]
-      } else if (cat === "urgent") {
-        switch (val) {
-          case 1:
-            return 'خیلی کم'
-          case 2:
-            return 'کم'
-          default:
-          case 3:
-            return 'متوسط'
-          case 4:
-            return 'زیاد'
-          case 5:
-            return 'خیلی زیاد'
-        }
+    if (cat === "category") {
+      return needCategories[val.toString()].faName
+    } else if (cat === "title") {
+      return needCategories[props.receipts[activeStep].category.toString()].items[val]
+    } else if (cat === "urgent") {
+      switch (val) {
+        case 1:
+          return 'خیلی کم'
+        case 2:
+          return 'کم'
+        default:
+        case 3:
+          return 'متوسط'
+        case 4:
+          return 'زیاد'
+        case 5:
+          return 'خیلی زیاد'
       }
-      return val
+    }
+    return val
   }
 
   const handleNext = () => {
@@ -121,13 +123,14 @@ const Receipt = props => {
                 <Paper className={classes.key} elevation={0}>نوع حادثه</Paper>
               </Grid>
               <Grid item xs={7}>
-                <Paper className={classes.value} elevation={0}>{disasterCategories[props.type] ? disasterCategories[props.type] : '-'}</Paper>
+                <Paper className={classes.value}
+                       elevation={0}>{disasterCategories[props.type] ? disasterCategories[props.type] : '-'}</Paper>
               </Grid>
-              {Object.keys(props.receipts[activeStep]).map(need => (<>
-                <Grid item xs={5}>
+              {Object.keys(props.receipts[activeStep]).map((need, i) => (<>
+                <Grid key={i + 1} item xs={5}>
                   <Paper className={classes.key} elevation={0}>{translate[need]}</Paper>
                 </Grid>
-                <Grid item xs={7}>
+                <Grid key={-i} item xs={7}>
                   <Paper className={classes.value} elevation={0}>
                     {props.receipts[activeStep][need] !== "" ? printValues(need, props.receipts[activeStep][need]) : '-'}
                   </Paper>
@@ -161,14 +164,29 @@ const Receipt = props => {
 
 Receipt.propTypes = {
   className: PropTypes.string,
-  type: PropTypes.string,
+  type: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
   current: PropTypes.number,
   receipts: PropTypes.arrayOf(
       PropTypes.shape({
-        category: PropTypes.string,
-        title: PropTypes.string,
-        amount: PropTypes.string,
-        urgent: PropTypes.string,
+        category: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+        ]),
+        title: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+        ]),
+        amount: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+        ]),
+        urgent: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+        ]),
         desc: PropTypes.string,
       })
   )

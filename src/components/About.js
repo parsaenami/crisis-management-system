@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
     display: "flex",
     flexDirection: "column",
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const About = props => {
+const About = () => {
   const classes = useStyles();
 
   return (
@@ -29,10 +28,13 @@ const About = props => {
         </div>
         <hr/>
         <Typography gutterBottom color={"textSecondary"}>
-          همواره در زمان وقوع بحران‌هایی مانند سیل، زلزله، آتش‌سوزی و... و بخصوص پس از آن، مهم‌ترین اقدامی که باید صورت گیرد، عملیات امداد و کمک‌رسانی به بازماندگان و همچنین نجات‌یافتگان حادثه است.
+          همواره در زمان وقوع بحران‌هایی مانند سیل، زلزله، آتش‌سوزی و... و بخصوص پس از آن، مهم‌ترین اقدامی که باید صورت
+          گیرد، عملیات امداد و کمک‌رسانی به بازماندگان و همچنین نجات‌یافتگان حادثه است.
         </Typography>
         <Typography gutterBottom color={"textSecondary"}>
-          در شرایطی که به دلایل مختلف امکان تأخیر در دریافت کمک و یا عدم تطابق کمک‌های دریافتی با نیازهای واقعی موجود باشد، این سامانه می‌تواند با جمع‌آوری و دسته‌بندی نیازهای افراد آسیب‌دیده، فرآیند امدادرسانی به این دسته از افراد را تسریع بخشیده و کارآمدتر کند.
+          در شرایطی که به دلایل مختلف امکان تأخیر در دریافت کمک و یا عدم تطابق کمک‌های دریافتی با نیازهای واقعی موجود
+          باشد، این سامانه می‌تواند با جمع‌آوری و دسته‌بندی نیازهای افراد آسیب‌دیده، فرآیند امدادرسانی به این دسته از
+          افراد را تسریع بخشیده و کارآمدتر کند.
         </Typography>
       </div>
   );

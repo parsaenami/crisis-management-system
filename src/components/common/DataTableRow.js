@@ -13,7 +13,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import PropTypes from "prop-types";
-import { ClickAwayListener, Tooltip, Zoom } from "@material-ui/core";
+import { ClickAwayListener, Tooltip } from "@material-ui/core";
 
 const useRowStyles = makeStyles(theme => ({
   root: {

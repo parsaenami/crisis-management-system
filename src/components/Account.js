@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import classnames from 'classnames';
 import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme } from "@material-ui/core";
@@ -95,10 +95,19 @@ const Account = props => {
   const [code, setCode] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [codeError, setCodeError] = useState('');
+  const [countdown, setCountdown] = useState(30);
   // sign-in/sign-up states
   const [signInWithNid, setSignInWithNid] = useState(false);
   const [userInfo: UserInfoType, setUserInfo] = useState(emptyUserInfo);
   const [userInfoError: UserInfoType, setUserInfoError] = useState(emptyUserInfo);
+
+  useEffect(() => {
+    if (isOtp && countdown > 0) {
+      setTimeout(() => setCountdown(countdown - 1), 1000)
+    }
+
+    return clearTimeout()
+  }, [isOtp, countdown])
 
   const handleCodeChange = e => {
     setCode(e.target.value);
@@ -108,6 +117,15 @@ const Account = props => {
     } else {
       setCodeError('')
     }
+  }
+
+  const sendOtp = () => {
+    setCountdown(30)
+    setTimeout(() => {
+      const otpRandom = Math.round(Math.random() * 10000).toString().padStart(5, "0")
+      setOtpCode(otpRandom)
+      alert("کد شما: " + otpRandom)
+    }, 3000)
   }
 
   const submit = e => {
@@ -134,11 +152,7 @@ const Account = props => {
       alert(`کد تأیید برای کاربر  شماره‌ی تماس / کد ملی ${method} ارسال شد.`);
       console.log(userInfo);
       setIsOtp(true);
-      setTimeout(() => {
-        const otpRandom = Math.round(Math.random() * 10000).toString().padStart(5, "0")
-        setOtpCode(otpRandom)
-        alert("کد شما: " + otpRandom)
-      }, 3000)
+      sendOtp()
     }
   }
 
@@ -202,6 +216,9 @@ const Account = props => {
         submit={verify}
         error={codeError}
     />
+    <Button variant={"text"} color={"primary"} onClick={sendOtp} disabled={countdown > 0}>
+      {countdown > 0 ? `ارسال مجدد کد بعد از ${countdown} ثانیه` : 'ارسال مجدد'}
+    </Button>
   </div>
 
   return (

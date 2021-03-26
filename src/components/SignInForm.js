@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FormControlLabel, InputLabel, Switch, TextField, Typography } from "@material-ui/core";
 import { CustomButton } from "./common/CustomButton";
 import { makeStyles } from "@material-ui/core/styles";
-import OtpInput from "./common/OtpInput";
 
 const useStyle = makeStyles((theme) => ({
   switch: {

@@ -77,7 +77,7 @@ const info = {
   address: 'ایران - تهران - خیابان جمهوری - خیابان باستان جنوبی - خیابان حاج ملاعلی - پلاک ۴۹ - واحد ۵',
 }
 
-const Profile = props => {
+const Profile = () => {
   const classes = useStyles();
   const [editMode, setEditMode] = useState({
     firstName: false,
@@ -123,12 +123,17 @@ const Profile = props => {
                   <div className={classes.infoTitle}>
                     <Typography>{translate[value]}</Typography>
                     <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={() => editField(value)}>
-                      {!editMode[value] ? <EditRoundedIcon/> : <CheckRoundedIcon />}
+                      {!editMode[value] ? <EditRoundedIcon/> : <CheckRoundedIcon/>}
                     </IconButton>
                   </div>
                   {!editMode[value]
                       ? <Typography color={"textSecondary"}>{profile[value]}</Typography>
-                      : <TextField variant="standard" name={value} value={profile[value]} onChange={handleEditProfile}/>}
+                      : <TextField
+                          variant="standard"
+                          name={value}
+                          value={profile[value]}
+                          onChange={handleEditProfile}
+                      />}
                 </div>
             ))}
           </div>
@@ -139,7 +144,7 @@ const Profile = props => {
           >ثبت تغییرات</CustomButton>}
         </div>
 
-        <DataTable title={'وضعیت درخواست‌ها'} />
+        <DataTable title={'وضعیت درخواست‌ها'}/>
 
       </div>
   );

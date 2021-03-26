@@ -45,7 +45,7 @@ const OtpInput = props => {
           onBlur={props.onBlurFn}
           name="otp-input"
           id="otp-input"
-          error={props.error}
+          error={!!props.error}
           helperText={props.errorText}
           InputProps={{
             inputComponent: NumberFormatCustom,

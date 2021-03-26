@@ -379,7 +379,7 @@ const AddNeed = () => {
 
     return (
         <Accordion className={classes.accordion} expanded={expanded === `panel${index}`}
-                   onChange={handleExpand(`panel${index}`)}>
+                   onChange={handleExpand(`panel${index}`)} key={index}>
           <AccordionSummary
               expandIcon={<ExpandMoreIcon/>}
               className={classnames('header', {"error": needError[index].amount || needError[index].title})}
@@ -391,8 +391,9 @@ const AddNeed = () => {
             {index !== 0 && <div className={classnames(classes.needPart, "suggest")}>
               <Typography>شاید به این موارد هم نیاز داشته باشید:</Typography>
               <CardSlider>
-                {[[0, 12], [5, 2], [0, 3], [3, 8], [2, 12]].map(x => (
+                {[[0, 12], [5, 2], [0, 3], [3, 8], [2, 12]].map((x, k) => (
                     <Card
+                        k={k}
                         onClick={selectNeed(index, ...x)}
                         selected={x[0] === need[index].category && x[1] === need[index].title}
                     >
@@ -422,7 +423,7 @@ const AddNeed = () => {
                     className={"needAmount"}
                     value={need[index].amount ? need[index].amount : ''}
                     onChange={setNeedInfo(index)}
-                    error={needError[index].amount}
+                    error={!!needError[index].amount}
                 />
               </div>
               {need[index].category === '' || need[index].title === '' ? (
@@ -453,24 +454,27 @@ const AddNeed = () => {
                   >
                     <div className={classes.hideBorders}/>
                     <Collapse in={openList.menu} timeout="auto" unmountOnExit>
-                      {Object.values(needCategories).map((need, i) => (<>
-                        <ListItem key={need.enName} button onClick={e => handleOpenList(e, need.enName)}>
-                          <ListItemText primary={need.faName}/>
-                          {openList[need.enName] ? <ExpandLess/> : <ExpandMore/>}
-                        </ListItem>
-                        <Collapse in={openList[need.enName]} timeout="auto" unmountOnExit>
-                          <List component="div" disablePadding>
-                            {need.items.map((item, j) => (
-                                <ListItem className={classes.listItem} key={j} button onClick={selectNeed(index, i, j)}>
-                                  <ListItemIcon style={{minWidth: Theme.spacing(4)}}>
-                                    <span>{j + 1}</span>
-                                  </ListItemIcon>
-                                  <ListItemText primary={item}/>
-                                </ListItem>
-                            ))}
-                          </List>
-                        </Collapse>
-                      </>))}
+                      {Object.values(needCategories).map((need, i) => (
+                          <div key={need.enName}>
+                            <ListItem button onClick={e => handleOpenList(e, need.enName)}>
+                              <ListItemText primary={need.faName}/>
+                              {openList[need.enName] ? <ExpandLess/> : <ExpandMore/>}
+                            </ListItem>
+                            <Collapse in={openList[need.enName]} timeout="auto" unmountOnExit>
+                              <List component="div" disablePadding>
+                                {need.items.map((item, j) => (
+                                    <ListItem className={classes.listItem} key={j} button
+                                              onClick={selectNeed(index, i, j)}>
+                                      <ListItemIcon style={{minWidth: Theme.spacing(4)}}>
+                                        <span>{j + 1}</span>
+                                      </ListItemIcon>
+                                      <ListItemText primary={item}/>
+                                    </ListItem>
+                                ))}
+                              </List>
+                            </Collapse>
+                          </div>
+                      ))}
                     </Collapse>
                   </List>
               ) : (

@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, FormControlLabel, TextField, Typography } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import { CustomButton } from "./common/CustomButton";
-import { emptyUserInfo, UserInfoType } from '../types/userInfoType'
 
 const SignUpForm = props => {
   return (

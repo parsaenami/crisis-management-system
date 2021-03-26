@@ -52,8 +52,12 @@ const Card = props => {
   const classes = useStyles();
 
   return (
-      <div className={classnames(classes.container, {'selected': props.selected})} onClick={props.onClick}>
-        {props.icon && <SvgIcon component={props.icon} className={classes.icon} viewBox="0 0 512 512" />}
+      <div
+          key={props.k}
+          className={classnames(classes.container, {'selected': props.selected})}
+          onClick={props.onClick}
+      >
+        {props.icon && <SvgIcon component={props.icon} className={classes.icon} viewBox="0 0 512 512"/>}
         <div className={classes.body}>
           {props.children}
         </div>
@@ -65,6 +69,7 @@ Card.propTypes = {
   icon: PropTypes.elementType,
   selected: PropTypes.bool,
   onClick: PropTypes.func,
+  k: PropTypes.any,
 };
 
 export default Card;
