@@ -35,6 +35,7 @@ const SignInForm = props => {
                     color={"primary"}
                     value={props.type}
                     onChange={props.setType}
+                    checked={props.type}
                 />
               }
           />

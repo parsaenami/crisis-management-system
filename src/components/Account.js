@@ -93,6 +93,7 @@ const Account = props => {
 
   // otpForm state
   const [code, setCode] = useState('');
+  const [otpCode, setOtpCode] = useState('');
   const [codeError, setCodeError] = useState('');
   // sign-in/sign-up states
   const [signInWithNid, setSignInWithNid] = useState(false);
@@ -133,6 +134,11 @@ const Account = props => {
       alert(`کد تأیید برای کاربر  شماره‌ی تماس / کد ملی ${method} ارسال شد.`);
       console.log(userInfo);
       setIsOtp(true);
+      setTimeout(() => {
+        const otpRandom = Math.round(Math.random() * 10000).toString().padStart(5, "0")
+        setOtpCode(otpRandom)
+        alert("کد شما: " + otpRandom)
+      }, 3000)
     }
   }
 
@@ -141,8 +147,10 @@ const Account = props => {
 
     if (code.length < 5) {
       setCodeError(messages.ERR_SHORT_OTP)
+    } else if (code !== otpCode) {
+      setCodeError(messages.ERR_WRONG_OTP)
     } else {
-      alert(code);
+      alert(messages.INFO_CORRECT_OTP);
       history.push(routes.PROFILE);
     }
   }
@@ -180,6 +188,11 @@ const Account = props => {
     })
   }
 
+  const handleToggle = () => {
+    setIsRegister(!isRegister)
+    setUserInfoError(emptyUserInfo)
+  }
+
   const otpForm = () => <div className={classnames(classes.container, classes.blurOtp)}>
     {!isMobileDisplay && !isOtp && <div className={classes.overlay}/>}
     <OtpForm
@@ -200,12 +213,14 @@ const Account = props => {
             <Button
                 variant={"outlined"}
                 size={"small"}
-                onClick={() => setIsRegister(!isRegister)}>{isRegister ? 'ورود' : 'ثبت‌نام'}
+                onClick={handleToggle}
+            >
+              {isRegister ? 'ورود' : 'ثبت‌نام'}
             </Button>}
           </div>
           <hr/>
           <div className={classes.media}>
-            <form className={classnames(classes.container, classes.blurForm)}>
+            <form className={classnames(classes.container, classes.blurForm)} onSubmit={isOtp ? verify : submit}>
               {!isMobileDisplay && isOtp && <div className={classes.overlay}/>}
               {isMobileDisplay && isOtp
                   ? otpForm()

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { IconButton, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
@@ -11,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexDirection: "column",
-    // alignItems: "center",
     width: '100%',
     paddingBottom: theme.spacing(9),
   },
@@ -42,9 +40,6 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       direction: 'rtl',
     },
-    // '&:not(:last-child)': {
-    //   marginBottom: theme.spacing(1),
-    // }
   },
   cardContainer: {
     display: "flex",
@@ -60,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
   },
   btn: {
-    // width: "100%",
     margin: theme.spacing(.5),
   },
 }));
@@ -125,7 +119,7 @@ const Profile = props => {
         <div className={classes.cardContainer}>
           <div className={classes.card}>
             {Object.keys(profile).map((value, index) => (
-                <div className={classes.infoContainer}>
+                <div key={index} className={classes.infoContainer}>
                   <div className={classes.infoTitle}>
                     <Typography>{translate[value]}</Typography>
                     <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={() => editField(value)}>

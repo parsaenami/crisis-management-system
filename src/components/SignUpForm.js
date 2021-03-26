@@ -97,7 +97,18 @@ SignUpForm.propTypes = {
       long: PropTypes.string,
     },
   }),
-  errors: PropTypes.func,
+  errors: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    nationalId: PropTypes.string,
+    address: PropTypes.string,
+    location: {
+      allow: PropTypes.bool,
+      lat: PropTypes.string,
+      long: PropTypes.string,
+    },
+  }),
   onUserInfoChangeFn: PropTypes.func,
   getLocation: PropTypes.func,
 };
