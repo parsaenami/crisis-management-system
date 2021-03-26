@@ -122,7 +122,7 @@ const Account = props => {
   const sendOtp = () => {
     setCountdown(30)
     setTimeout(() => {
-      const otpRandom = Math.round(Math.random() * 10000).toString().padStart(5, "0")
+      const otpRandom = Math.round(Math.random() * 100000).toString().padStart(5, "0")
       setOtpCode(otpRandom)
       alert("کد شما: " + otpRandom)
     }, 3000)
