@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     fontSize: theme.spacing(10),
-    color: theme.palette.info.dark,
+    color: theme.palette.primary.light,
     margin: theme.spacing(5, 0),
   },
   desktopBtn: {

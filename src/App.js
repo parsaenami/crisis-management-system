@@ -1,7 +1,7 @@
 // @flow
 
 import './App.scss';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 import Home from "./components/Home";
 import { createBrowserHistory } from 'history';
 import Header from "./components/common/Header";
@@ -32,22 +32,28 @@ const App = () => {
   const classes = useStyles();
 
   return (
-      <BrowserRouter history={history}>
+      <Router history={history}>
         <MuiThemeProvider theme={Theme}>
           <CssBaseline/>
           <Switch>
             <Container maxWidth="lg" className={classes.root}>
               <Route path={routes.HOME} component={Header}/>
               <Route exact path={routes.HOME} component={Home}/>
-              <Route exact path={routes.SIGN_IN} component={Account}/>
-              <Route exact path={routes.ABOUT} component={About}/>
-              <Route exact path={routes.PROFILE} component={Profile}/>
-              <Route exact path={routes.ADD_NEED} component={AddNeed}/>
-              <Route exact path={routes.DONE} component={Done}/>
+              <Route path={routes.SIGN_IN} component={Account}/>
+              <Route path={routes.ABOUT} component={About}/>
+              <Route path={routes.PROFILE} component={Profile}/>
+              <Route path={routes.ADD_NEED} component={AddNeed}/>
+              <Route path={routes.DONE} component={Done}/>
+
+              {/*<Redirect*/}
+              {/*    to={{*/}
+              {/*      pathname: routes.HOME,*/}
+              {/*    }}*/}
+              {/*/>*/}
             </Container>
           </Switch>
         </MuiThemeProvider>
-      </BrowserRouter>
+      </Router>
   );
 };
 

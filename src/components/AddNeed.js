@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -46,6 +46,7 @@ import { routes } from "../assets/routes";
 import FloatingAlert from "./common/FloatingAlert";
 import { useAlert } from "../hooks/useAlert";
 import { messages } from "../assets/messages";
+import Loader from "./common/Loader";
 
 const emptyOpenList = {
   menu: false,
@@ -261,6 +262,7 @@ const AddNeed = () => {
   const theme = useTheme()
   const history = useHistory()
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'))
+  const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = React.useState('panel0')
   const [openList, setOpenList] = useState(emptyOpenList)
   const [need: NeedType[], setNeed] = useState([emptyNeed])
@@ -268,6 +270,10 @@ const AddNeed = () => {
   const [disaster, setDisaster] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000)
+  }, [])
 
   const handleOpenList = (e, name) => {
     setOpenList({
@@ -535,7 +541,7 @@ const AddNeed = () => {
     )
   }
 
-  return (
+  return loading ? <Loader /> : (
       <div className={classes.container}>
         <div className={classes.title}>
           <Typography variant={"h3"}>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</Typography>
