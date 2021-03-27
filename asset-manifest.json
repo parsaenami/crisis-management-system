@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/crisis-management-system/static/css/main.e8e28e89.chunk.css",
-    "main.js": "/crisis-management-system/static/js/main.a69f782f.chunk.js",
-    "main.js.map": "/crisis-management-system/static/js/main.a69f782f.chunk.js.map",
-    "runtime-main.js": "/crisis-management-system/static/js/runtime-main.9be8621f.js",
-    "runtime-main.js.map": "/crisis-management-system/static/js/runtime-main.9be8621f.js.map",
+    "main.css": "/crisis-management-system/static/css/main.89ac2079.chunk.css",
+    "main.js": "/crisis-management-system/static/js/main.7d089e31.chunk.js",
+    "main.js.map": "/crisis-management-system/static/js/main.7d089e31.chunk.js.map",
+    "runtime-main.js": "/crisis-management-system/static/js/runtime-main.ba713e00.js",
+    "runtime-main.js.map": "/crisis-management-system/static/js/runtime-main.ba713e00.js.map",
     "static/css/2.dcb9beed.chunk.css": "/crisis-management-system/static/css/2.dcb9beed.chunk.css",
-    "static/js/2.797acb4b.chunk.js": "/crisis-management-system/static/js/2.797acb4b.chunk.js",
-    "static/js/2.797acb4b.chunk.js.map": "/crisis-management-system/static/js/2.797acb4b.chunk.js.map",
-    "static/js/3.78c1708b.chunk.js": "/crisis-management-system/static/js/3.78c1708b.chunk.js",
-    "static/js/3.78c1708b.chunk.js.map": "/crisis-management-system/static/js/3.78c1708b.chunk.js.map",
+    "static/js/2.228b364a.chunk.js": "/crisis-management-system/static/js/2.228b364a.chunk.js",
+    "static/js/2.228b364a.chunk.js.map": "/crisis-management-system/static/js/2.228b364a.chunk.js.map",
+    "static/js/3.81b05e3a.chunk.js": "/crisis-management-system/static/js/3.81b05e3a.chunk.js",
+    "static/js/3.81b05e3a.chunk.js.map": "/crisis-management-system/static/js/3.81b05e3a.chunk.js.map",
     "index.html": "/crisis-management-system/index.html",
     "static/css/2.dcb9beed.chunk.css.map": "/crisis-management-system/static/css/2.dcb9beed.chunk.css.map",
-    "static/css/main.e8e28e89.chunk.css.map": "/crisis-management-system/static/css/main.e8e28e89.chunk.css.map",
-    "static/js/2.797acb4b.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.797acb4b.chunk.js.LICENSE.txt",
+    "static/css/main.89ac2079.chunk.css.map": "/crisis-management-system/static/css/main.89ac2079.chunk.css.map",
+    "static/js/2.228b364a.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.228b364a.chunk.js.LICENSE.txt",
     "static/media/index.css": "/crisis-management-system/static/media/Anjoman-FaNum-UltraBoldItalic.c5336f84.woff",
     "static/media/helping-hand2.1e041efb.svg": "/crisis-management-system/static/media/helping-hand2.1e041efb.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.9be8621f.js",
+    "static/js/runtime-main.ba713e00.js",
     "static/css/2.dcb9beed.chunk.css",
-    "static/js/2.797acb4b.chunk.js",
-    "static/css/main.e8e28e89.chunk.css",
-    "static/js/main.a69f782f.chunk.js"
+    "static/js/2.228b364a.chunk.js",
+    "static/css/main.89ac2079.chunk.css",
+    "static/js/main.7d089e31.chunk.js"
   ]
 }
