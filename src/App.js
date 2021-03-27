@@ -1,7 +1,7 @@
 // @flow
 
 import './App.scss';
-import { Route, Router, Switch } from 'react-router-dom';
+import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import Home from "./components/Home";
 import { createBrowserHistory } from 'history';
 import Header from "./components/common/Header";
@@ -45,11 +45,11 @@ const App = () => {
               <Route path={routes.ADD_NEED} component={AddNeed}/>
               <Route path={routes.DONE} component={Done}/>
 
-              {/*<Redirect*/}
-              {/*    to={{*/}
-              {/*      pathname: routes.HOME,*/}
-              {/*    }}*/}
-              {/*/>*/}
+              <Redirect
+                  to={{
+                    pathname: routes.HOME,
+                  }}
+              />
             </Container>
           </Switch>
         </MuiThemeProvider>
