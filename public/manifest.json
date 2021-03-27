@@ -19,6 +19,6 @@
   "scope": "/crisis-management-system",
   "start_url": "/crisis-management-system/",
   "display": "standalone",
-  "theme_color": "#91DDEC",
+  "theme_color": "#FDFFFA",
   "background_color": "#91DDEC"
 }
