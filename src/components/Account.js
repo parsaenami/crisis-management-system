@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import classnames from 'classnames';
-import {
-  Button,
-  Dialog, DialogActions,
-  DialogContent, DialogContentText,
-  DialogTitle,
-  MuiThemeProvider,
-  Typography,
-  useMediaQuery,
-  useTheme
-} from "@material-ui/core";
+import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,6 +16,7 @@ import { messages } from "../assets/messages";
 import { routes } from "../assets/routes";
 import FloatingAlert from "./common/FloatingAlert";
 import { useAlert } from "../hooks/useAlert";
+import Popup from "./common/Popup";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -303,27 +295,16 @@ const Account = props => {
 
           </div>
 
-          <Dialog
+          <Popup
               open={dialogOpen}
-              onClose={handleDialogClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">اجازه‌ی دسترسی به موقعیت مکانی</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {messages.INFO_ALLOW_LOCATION}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDialogClose(false)} color="primary">
-                فعلاً نه
-              </Button>
-              <Button variant={"contained"} onClick={handleDialogClose(true)} color="primary" autoFocus>
-                قبول
-              </Button>
-            </DialogActions>
-          </Dialog>
+              onClose={handleDialogClose(false)}
+              onDeny={handleDialogClose(false)}
+              onConfirm={handleDialogClose(true)}
+              title={'اجازه‌ی دسترسی به موقعیت مکانی'}
+              text={messages.INFO_ALLOW_LOCATION}
+              denyBtn={'فعلاً نه'}
+              confirmBtn={'قبول'}
+          />
 
           {isMobileDisplay && <Fab buttons={[
             {
