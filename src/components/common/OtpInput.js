@@ -38,7 +38,7 @@ const OtpInput = props => {
       <TextField
           variant={"filled"}
           className={props.className}
-          autoComplete={"false"}
+          autoComplete={"off"}
           label={props.label}
           value={props.value}
           onChange={props.onChangeFn}
@@ -49,6 +49,7 @@ const OtpInput = props => {
           helperText={props.errorText}
           InputProps={{
             inputComponent: NumberFormatCustom,
+            autoComplete: "off",
           }}
           style={{
             textAlignLast: "center",

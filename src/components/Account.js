@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import classnames from 'classnames';
-import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Button,
+  Dialog, DialogActions,
+  DialogContent, DialogContentText,
+  DialogTitle,
+  MuiThemeProvider,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from "@material-ui/core";
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
@@ -87,7 +96,9 @@ const useStyles = makeStyles((theme) => ({
 const Account = props => {
   const theme = useTheme();
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'));
-  const {latitude, longitude, error} = usePosition();
+  const [permission, setPermission] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const [isRegister, setIsRegister] = useState(true);
   const [isOtp, setIsOtp] = useState(false);
   const classes = useStyles({...props, breakpoint: isMobileDisplay, isOtp});
@@ -104,6 +115,10 @@ const Account = props => {
   const [userInfo: UserInfoType, setUserInfo] = useState(emptyUserInfo);
   const [userInfoError: UserInfoType, setUserInfoError] = useState(emptyUserInfo);
 
+  useEffect(() => setDialogOpen(true), [])
+  // useEffect(() => setX(window.confirm(messages.INFO_ALLOW_LOCATION)), [])
+  const {latitude, longitude, error} = usePosition(permission);
+
   useEffect(() => {
     if (isOtp && countdown > 0) {
       setTimeout(() => setCountdown(countdown - 1), 1000)
@@ -111,6 +126,11 @@ const Account = props => {
 
     return clearTimeout()
   }, [isOtp, countdown])
+
+  const handleDialogClose = confirmed => () => {
+    setPermission(confirmed)
+    setDialogOpen(false);
+  };
 
   const handleCodeChange = e => {
     setCode(e.target.value);
@@ -152,8 +172,18 @@ const Account = props => {
         })
       }
     } else {
+      if (isRegister) {
+        setUserInfo({
+          ...userInfo,
+          location: {
+            allow: permission,
+            lat: !error ? latitude : '',
+            long: !error ? longitude : '',
+          }
+        })
+      }
       showAlert(`کد تأیید برای کاربر با ${(signInWithNid ? 'کد ملی' : 'شماره‌ی تماس')} ${method} ارسال شد.`, "success", 3000);
-      console.log(userInfo);
+      console.log({...userInfo, locationAccess: permission});
       setIsOtp(true);
       sendOtp()
     }
@@ -193,16 +223,16 @@ const Account = props => {
     })
   }
 
-  const getLocation = e => {
-    setUserInfo({
-      ...userInfo,
-      location: {
-        allow: e.target.checked,
-        lat: e.target.checked && !error ? latitude : '',
-        long: e.target.checked && !error ? longitude : '',
-      }
-    })
-  }
+  // const getLocation = e => {
+  //   setUserInfo({
+  //     ...userInfo,
+  //     location: {
+  //       allow: e.target.checked,
+  //       lat: e.target.checked && !error ? latitude : '',
+  //       long: e.target.checked && !error ? longitude : '',
+  //     }
+  //   })
+  // }
 
   const handleToggle = () => {
     setIsRegister(!isRegister)
@@ -250,7 +280,7 @@ const Account = props => {
                           userInfo={userInfo}
                           errors={userInfoError}
                           onUserInfoChangeFn={handleSignUp}
-                          getLocation={getLocation}
+                          // accessLocation={x}
                       />
                       : <SignInForm
                           isMobileDisplay={isMobileDisplay}
@@ -272,6 +302,29 @@ const Account = props => {
             </>}
 
           </div>
+
+          <Dialog
+              open={dialogOpen}
+              onClose={handleDialogClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">اجازه‌ی دسترسی به موقعیت مکانی</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {messages.INFO_ALLOW_LOCATION}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose(false)} color="primary">
+                فعلاً نه
+              </Button>
+              <Button variant={"contained"} onClick={handleDialogClose(true)} color="primary" autoFocus>
+                قبول
+              </Button>
+            </DialogActions>
+          </Dialog>
+
           {isMobileDisplay && <Fab buttons={[
             {
               title: isOtp ? 'تأیید' : isRegister ? 'ثبت‌نامم کن' : 'ورود به حساب کاربری',

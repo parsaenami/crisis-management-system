@@ -109,7 +109,7 @@ SignUpForm.propTypes = {
     },
   }),
   onUserInfoChangeFn: PropTypes.func,
-  getLocation: PropTypes.func,
+  // accessLocation: PropTypes.bool,
 };
 
 export default SignUpForm;
