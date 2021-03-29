@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TextField, Typography } from "@material-ui/core";
-import { CustomButton } from "./common/CustomButton";
+import { CustomButton } from "../buttons/CustomButton";
 
 const SignUpForm = props => {
   return (

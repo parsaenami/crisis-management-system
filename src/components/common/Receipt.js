@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Grid, makeStyles, MobileStepper, Paper, useTheme } from "@material-ui/core";
@@ -61,11 +61,7 @@ const Receipt = props => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = props.receipts.length;
-
-  // useEffect(() => {
-  //   console.log(12)
-  //   setActiveStep(props.current)
-  // }, [props])
+  const [topPosition, setTopPosition] = useState(0)
 
   const printValues = (cat, val) => {
     if (cat === "category") {
@@ -106,6 +102,14 @@ const Receipt = props => {
     setActiveStep(activeStep < maxSteps - 1 ? activeStep + 1 : 0);
   }
 
+  const onSwipingVertically = position => {
+    window.scrollTo(0, topPosition - position)
+  }
+
+  const onSwipingEnd = () => {
+    setTopPosition(window.pageYOffset)
+  }
+
   return (
       <div className={classnames(classes.root, props.className)}>
         <Paper elevation={0} className={classes.header}>
@@ -113,9 +117,13 @@ const Receipt = props => {
         </Paper>
         <Swipe
             nodeName="div"
+            detectTouch
+            delta={20}
             onSwipedLeft={onSwipeLeftListener}
             onSwipedRight={onSwipeRightListener}
-            detectTouch
+            onSwipingUp={onSwipingVertically}
+            onSwipingDown={onSwipingVertically}
+            onSwipeEnd={onSwipingEnd}
         >
           <div className={classes.body}>
             <Grid container spacing={1}>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { CustomButton } from "./common/CustomButton";
+import { CustomButton } from "./buttons/CustomButton";
 import Hands from "../assets/icons/helping-hand2.svg"
 import { NavLink } from "react-router-dom";
 import { routes } from "../assets/routes";

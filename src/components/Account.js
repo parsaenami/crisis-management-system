@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import classnames from 'classnames';
 import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
 import { makeStyles } from "@material-ui/core/styles";
-import Fab from "./common/FAB";
+import Fab from "./buttons/FAB";
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import SignUpForm from "./SignUpForm";
-import SignInForm from "./SignInForm";
-import OtpForm from "./OtpForm";
+import SignUpForm from "./forms/SignUpForm";
+import SignInForm from "./forms/SignInForm";
+import OtpForm from "./forms/OtpForm";
 import { emptyUserInfo, UserInfoType } from '../types/userInfoType'
 import { usePosition } from "../hooks/usePosition";
 import { messages } from "../assets/messages";
@@ -17,6 +17,7 @@ import { routes } from "../assets/routes";
 import FloatingAlert from "./common/FloatingAlert";
 import { useAlert } from "../hooks/useAlert";
 import Popup from "./common/Popup";
+import { Context } from "../Context";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -87,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Account = props => {
   const theme = useTheme();
+  const {setContext} = useContext(Context)
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'));
   const [permission, setPermission] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -107,8 +109,11 @@ const Account = props => {
   const [userInfo: UserInfoType, setUserInfo] = useState(emptyUserInfo);
   const [userInfoError: UserInfoType, setUserInfoError] = useState(emptyUserInfo);
 
+  useEffect(() => {
+    setContext(isOtp ? 'تأیید شماره‌ی تماس' : isRegister ? 'ثبت‌نام' : 'ورود')
+  }, [setContext, isOtp, isRegister])
+
   useEffect(() => setDialogOpen(true), [])
-  // useEffect(() => setX(window.confirm(messages.INFO_ALLOW_LOCATION)), [])
   const {latitude, longitude, error} = usePosition(permission);
 
   useEffect(() => {

@@ -2,9 +2,9 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import Fab from "./common/FAB";
+import Fab from "./buttons/FAB";
 import { routes } from "../assets/routes";
-import { CustomButton } from "./common/CustomButton";
+import { CustomButton } from "./buttons/CustomButton";
 
 const useStyles = makeStyles((theme) => ({
   container: {

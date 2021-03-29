@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { AppBar, Button, Container, IconButton, Toolbar } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Container,
+  IconButton,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useScrollTrigger, useTheme
+} from "@material-ui/core";
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import { HeaderScrollEffect } from "../../helpers/HeaderScrollEffect";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,6 +17,7 @@ import NavDrawer from "./NavDrawer";
 import { NavLink } from "react-router-dom";
 import { routes } from "../../assets/routes";
 import Logo from '../../assets/icons/helping-hand2.svg';
+import { Context } from "../../Context";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -50,8 +60,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = props => {
+  const {window} = props;
   const classes = useStyles();
+  const {context} = useContext(Context);
   const [open, setOpen] = useState(false);
+  const theme = useTheme()
+  const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'))
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 80,
+    target: window ? window() : undefined,
+  });
 
   const toggleDrawer = open => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -66,7 +85,6 @@ const Header = props => {
         <AppBar position={"fixed"} className={classes.header}>
           <Container maxWidth="lg" className={classes.container}>
             <Toolbar>
-              {/*{props.title}*/}
               {
                 <div className={classes.navContainer}>
                   <NavLink exact to={routes.HOME} className={classes.btn}>
@@ -89,6 +107,7 @@ const Header = props => {
               <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
                 <MenuRoundedIcon/>
               </IconButton>
+              {isMobileDisplay && trigger && <Typography color={"textSecondary"} className="ml-auto">{context}</Typography>}
               {
                 props.location.pathname === routes.HOME
                     ?

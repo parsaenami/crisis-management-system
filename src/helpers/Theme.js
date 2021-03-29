@@ -36,7 +36,6 @@ let Theme = createMuiTheme({
     background: {
       default: '#F5F2EB',
       box: '#f4f4f4',
-      // default: window.location.pathname === routes.HOME ? '#91DDEC' : '#F5F2EB',
     },
   },
 });

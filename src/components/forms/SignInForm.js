@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormControlLabel, InputLabel, Switch, TextField, Typography } from "@material-ui/core";
-import { CustomButton } from "./common/CustomButton";
+import { CustomButton } from "../buttons/CustomButton";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyle = makeStyles((theme) => ({

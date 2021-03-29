@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -26,13 +26,13 @@ import classnames from "classnames";
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
 import { disasterCategories, needCategories } from "../assets/categories";
-import Card from "./common/Card";
-import CardSlider from "./common/CardSlider";
+import Card from "./card/Card";
+import CardSlider from "./card/CardSlider";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import type { NeedType } from "../types/needType";
 import { emptyNeed } from "../types/needType";
 import FireIcon from "../assets/icons/iconComponents/FireIcon";
-import Fab from "./common/FAB";
+import Fab from "./buttons/FAB";
 import EarthquakeIcon from "../assets/icons/iconComponents/EarthquakeIcon";
 import FloodIcon from "../assets/icons/iconComponents/FloodIcon";
 import TwisterIcon from "../assets/icons/iconComponents/TwisterIcon";
@@ -40,13 +40,14 @@ import LandslideIcon from "../assets/icons/iconComponents/LandslideIcon";
 import AvalancheIcon from "../assets/icons/iconComponents/AvalancheIcon";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
-import { CustomButton } from "./common/CustomButton";
+import { CustomButton } from "./buttons/CustomButton";
 import Receipt from "./common/Receipt";
 import { routes } from "../assets/routes";
 import FloatingAlert from "./common/FloatingAlert";
 import { useAlert } from "../hooks/useAlert";
 import { messages } from "../assets/messages";
 import Loader from "./common/Loader";
+import { Context } from "../Context";
 
 const emptyOpenList = {
   menu: false,
@@ -259,6 +260,7 @@ const disasterIcons = {
 
 const AddNeed = () => {
   const classes = useStyles()
+  const {setContext} = useContext(Context)
   const theme = useTheme()
   const history = useHistory()
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'))
@@ -270,6 +272,10 @@ const AddNeed = () => {
   const [disaster, setDisaster] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
+
+  useEffect(() => {
+    setContext(showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز')
+  }, [setContext, showReceipt])
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 3000)

@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IconButton, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
-import { CustomButton } from "./common/CustomButton";
-import DataTable from "./common/DataTable";
+import { CustomButton } from "./buttons/CustomButton";
+import DataTable from "./table/DataTable";
 import { useAlert } from "../hooks/useAlert";
 import FloatingAlert from "./common/FloatingAlert";
 import { messages } from "../assets/messages";
+import { Context } from "../Context";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -82,6 +83,7 @@ const info = {
 
 const Profile = () => {
   const classes = useStyles();
+  const {setContext} = useContext(Context)
   const [editMode, setEditMode] = useState({
     firstName: false,
     lastName: false,
@@ -93,6 +95,10 @@ const Profile = () => {
   const [profile, setProfile] = useState(info);
   const [showConfirmBtn, setShowConfirmBtn] = useState(false);
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
+
+  useEffect(() => {
+    setContext('پروفایل')
+  }, [setContext])
 
   const editField = value => {
     setEditMode({

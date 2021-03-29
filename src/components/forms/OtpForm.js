@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from "@material-ui/core";
-import OtpInput from "./common/OtpInput";
-import { CustomButton } from "./common/CustomButton";
+import OtpInput from "../common/OtpInput";
+import { CustomButton } from "../buttons/CustomButton";
 
 const OtpForm = props => {
   return (
