@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/crisis-management-system/static/css/main.9a3eda94.chunk.css",
-    "main.js": "/crisis-management-system/static/js/main.8e007ab8.chunk.js",
-    "main.js.map": "/crisis-management-system/static/js/main.8e007ab8.chunk.js.map",
+    "main.js": "/crisis-management-system/static/js/main.f864bda5.chunk.js",
+    "main.js.map": "/crisis-management-system/static/js/main.f864bda5.chunk.js.map",
     "runtime-main.js": "/crisis-management-system/static/js/runtime-main.eb79b761.js",
     "runtime-main.js.map": "/crisis-management-system/static/js/runtime-main.eb79b761.js.map",
     "static/css/2.dcb9beed.chunk.css": "/crisis-management-system/static/css/2.dcb9beed.chunk.css",
@@ -23,6 +23,6 @@
     "static/css/2.dcb9beed.chunk.css",
     "static/js/2.b9b582f3.chunk.js",
     "static/css/main.9a3eda94.chunk.css",
-    "static/js/main.8e007ab8.chunk.js"
+    "static/js/main.f864bda5.chunk.js"
   ]
 }
