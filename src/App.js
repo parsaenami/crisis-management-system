@@ -52,7 +52,7 @@ const App = () => {
 
               <Redirect
                   to={{
-                    pathname: routes.NOT_FOUND,
+                    pathname: routes.HOME,
                   }}
               />
             </Router>
