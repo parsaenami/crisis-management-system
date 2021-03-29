@@ -16,7 +16,6 @@
     }
   ],
   "version": "0.0.1",
-  "scope": "/crisis-management-system",
   "start_url": "/crisis-management-system/",
   "display": "standalone",
   "theme_color": "#FDFFFA",

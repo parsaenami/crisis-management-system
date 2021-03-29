@@ -1,27 +1,28 @@
 {
   "files": {
     "main.css": "/crisis-management-system/static/css/main.9a3eda94.chunk.css",
-    "main.js": "/crisis-management-system/static/js/main.e4d4ba55.chunk.js",
-    "main.js.map": "/crisis-management-system/static/js/main.e4d4ba55.chunk.js.map",
+    "main.js": "/crisis-management-system/static/js/main.dca5f25f.chunk.js",
+    "main.js.map": "/crisis-management-system/static/js/main.dca5f25f.chunk.js.map",
     "runtime-main.js": "/crisis-management-system/static/js/runtime-main.eb79b761.js",
     "runtime-main.js.map": "/crisis-management-system/static/js/runtime-main.eb79b761.js.map",
     "static/css/2.dcb9beed.chunk.css": "/crisis-management-system/static/css/2.dcb9beed.chunk.css",
-    "static/js/2.a480e2c9.chunk.js": "/crisis-management-system/static/js/2.a480e2c9.chunk.js",
-    "static/js/2.a480e2c9.chunk.js.map": "/crisis-management-system/static/js/2.a480e2c9.chunk.js.map",
+    "static/js/2.bc6246d1.chunk.js": "/crisis-management-system/static/js/2.bc6246d1.chunk.js",
+    "static/js/2.bc6246d1.chunk.js.map": "/crisis-management-system/static/js/2.bc6246d1.chunk.js.map",
     "static/js/3.d0a3ca16.chunk.js": "/crisis-management-system/static/js/3.d0a3ca16.chunk.js",
     "static/js/3.d0a3ca16.chunk.js.map": "/crisis-management-system/static/js/3.d0a3ca16.chunk.js.map",
     "index.html": "/crisis-management-system/index.html",
     "static/css/2.dcb9beed.chunk.css.map": "/crisis-management-system/static/css/2.dcb9beed.chunk.css.map",
     "static/css/main.9a3eda94.chunk.css.map": "/crisis-management-system/static/css/main.9a3eda94.chunk.css.map",
-    "static/js/2.a480e2c9.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.a480e2c9.chunk.js.LICENSE.txt",
+    "static/js/2.bc6246d1.chunk.js.LICENSE.txt": "/crisis-management-system/static/js/2.bc6246d1.chunk.js.LICENSE.txt",
     "static/media/index.css": "/crisis-management-system/static/media/Anjoman-FaNum-UltraBoldItalic.c5336f84.woff",
+    "static/media/error (1).411c5a0a.svg": "/crisis-management-system/static/media/error (1).411c5a0a.svg",
     "static/media/helping-hand2.1e041efb.svg": "/crisis-management-system/static/media/helping-hand2.1e041efb.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.eb79b761.js",
     "static/css/2.dcb9beed.chunk.css",
-    "static/js/2.a480e2c9.chunk.js",
+    "static/js/2.bc6246d1.chunk.js",
     "static/css/main.9a3eda94.chunk.css",
-    "static/js/main.e4d4ba55.chunk.js"
+    "static/js/main.dca5f25f.chunk.js"
   ]
 }
