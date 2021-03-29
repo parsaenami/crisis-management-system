@@ -1,4 +1,4 @@
-const root = '';
+const root = '/crisis-management-system';
 
 export const routes = {
   HOME: `${root}/`,
