@@ -38,7 +38,7 @@ const App = () => {
   return (
       <Context.Provider value={{context, setContext}}>
         <MuiThemeProvider theme={Theme}>
-          <Router history={history}>
+          <BrowserRouter basename={process.env.PUBLIC_URL} history={history}>
             <CssBaseline/>
             <Container maxWidth="lg" className={classes.root} id="app">
               <Route path={routes.HOME} component={Header}/>
@@ -50,13 +50,13 @@ const App = () => {
               <Route path={routes.DONE} component={Done}/>
               <Route path={routes.NOT_FOUND} component={NotFound}/>
 
-              {/*<Redirect*/}
-              {/*    to={{*/}
-              {/*      pathname: routes.HOME,*/}
-              {/*    }}*/}
-              {/*/>*/}
+              <Redirect
+                  to={{
+                    pathname: routes.NOT_FOUND,
+                  }}
+              />
             </Container>
-          </Router>
+          </BrowserRouter>
         </MuiThemeProvider>
       </Context.Provider>
   );
