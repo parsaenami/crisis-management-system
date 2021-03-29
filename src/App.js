@@ -38,9 +38,9 @@ const App = () => {
   return (
       <Context.Provider value={{context, setContext}}>
         <MuiThemeProvider theme={Theme}>
-          <BrowserRouter basename={process.env.PUBLIC_URL} history={history}>
-            <CssBaseline/>
-            <Container maxWidth="lg" className={classes.root} id="app">
+          <CssBaseline/>
+          <Container maxWidth="lg" className={classes.root} id="app">
+            <HashRouter>
               <Route path={routes.HOME} component={Header}/>
               <Route exact path={routes.HOME} component={Home}/>
               <Route path={routes.SIGN_IN} component={Account}/>
@@ -55,8 +55,8 @@ const App = () => {
                     pathname: routes.NOT_FOUND,
                   }}
               />
-            </Container>
-          </BrowserRouter>
+            </HashRouter>
+          </Container>
         </MuiThemeProvider>
       </Context.Provider>
   );
