@@ -1,7 +1,7 @@
 // @flow
 
 import './App.scss';
-import { BrowserRouter, HashRouter, Redirect, Route, Router } from 'react-router-dom';
+import { Redirect, Route, Router } from 'react-router-dom';
 import Home from "./components/Home";
 import { createBrowserHistory } from 'history';
 import Header from "./components/common/Header";
@@ -40,7 +40,7 @@ const App = () => {
         <MuiThemeProvider theme={Theme}>
           <CssBaseline/>
           <Container maxWidth="lg" className={classes.root} id="app">
-            <HashRouter>
+            <Router history={history}>
               <Route path={routes.HOME} component={Header}/>
               <Route exact path={routes.HOME} component={Home}/>
               <Route path={routes.SIGN_IN} component={Account}/>
@@ -55,7 +55,7 @@ const App = () => {
                     pathname: routes.NOT_FOUND,
                   }}
               />
-            </HashRouter>
+            </Router>
           </Container>
         </MuiThemeProvider>
       </Context.Provider>
