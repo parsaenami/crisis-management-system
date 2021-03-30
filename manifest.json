@@ -1,5 +1,4 @@
 {
-  "homepage": "https://parsaenami.github.io/crisis-management-system/",
   "short_name": "سیمرغ",
   "author": "Parsa Enami",
   "name": "سامانه‌ی یکپارچه‌ی مدیریت رویدادهای غیرمترقبه",
@@ -16,7 +15,7 @@
     }
   ],
   "version": "0.0.1",
-  "start_url": "/crisis-management-system/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#FDFFFA",
   "background_color": "#91DDEC"
