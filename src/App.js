@@ -1,7 +1,7 @@
 // @flow
 
 import './App.scss';
-import { Redirect, Route, Router } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from "./components/Home";
 import { createBrowserHistory } from 'history';
 import Header from "./components/common/Header";
@@ -36,29 +36,25 @@ const App = () => {
   const [context, setContext] = useState("default");
 
   return (
-      <Context.Provider value={{context, setContext}}>
-        <MuiThemeProvider theme={Theme}>
-          <CssBaseline/>
-          <Container maxWidth="lg" className={classes.root} id="app">
-            <Router history={history}>
+      <BrowserRouter>
+        <Context.Provider value={{context, setContext}}>
+          <MuiThemeProvider theme={Theme}>
+            <CssBaseline/>
+            <Container maxWidth="lg" className={classes.root} id="app">
               <Route path={routes.HOME} component={Header}/>
-              <Route exact path={routes.HOME} component={Home}/>
-              <Route path={routes.SIGN_IN} component={Account}/>
-              <Route path={routes.ABOUT} component={About}/>
-              <Route path={routes.PROFILE} component={Profile}/>
-              <Route path={routes.ADD_NEED} component={AddNeed}/>
-              <Route path={routes.DONE} component={Done}/>
-              <Route path={routes.NOT_FOUND} component={NotFound}/>
-
-              <Redirect
-                  to={{
-                    pathname: routes.HOME,
-                  }}
-              />
-            </Router>
-          </Container>
-        </MuiThemeProvider>
-      </Context.Provider>
+              <Switch>
+                <Route exact path={routes.HOME} component={Home}/>
+                <Route path={routes.SIGN_IN} component={Account}/>
+                <Route path={routes.ABOUT} component={About}/>
+                <Route path={routes.PROFILE} component={Profile}/>
+                <Route path={routes.ADD_NEED} component={AddNeed}/>
+                <Route path={routes.DONE} component={Done}/>
+                <Route exact path={'*'} component={NotFound}/>
+              </Switch>
+            </Container>
+          </MuiThemeProvider>
+        </Context.Provider>
+      </BrowserRouter>
   );
 };
 

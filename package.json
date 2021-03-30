@@ -1,7 +1,7 @@
 {
   "homepage": "https://crisis-management-system-front.herokuapp.com/",
-  "name": "help",
-  "version": "0.1.0",
+  "name": "simorgh",
+  "version": "1.0.0",
   "private": true,
   "engines": {
     "node": "10.23.0",
@@ -23,6 +23,7 @@
     "clsx": "^1.1.1",
     "flow-bin": "^0.146.0",
     "gh-pages": "^3.1.0",
+    "history": "^4.10.1",
     "jss": "^10.5.1",
     "jss-rtl": "^0.3.0",
     "node-sass": "^4.14.1",
@@ -62,6 +63,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {}
+  }
 }
