@@ -160,16 +160,41 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: theme.spacing(2),
-    '& > span': {
+    '& > div': {
+      display: "flex",
+      alignItems: "center",
       marginRight: "auto",
-      marginLeft: theme.spacing(1),
     },
-    '& > .needAmount': {
+    '& .amountBtn': {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+      width: theme.spacing(3),
+      height: theme.spacing(3),
+      borderRadius: theme.spacing(.5),
+      margin: theme.spacing(0, .5),
+      fontSize: theme.spacing(4),
+      cursor: "pointer",
+      '&:last-child': {
+        marginLeft: 0,
+      },
+    },
+    '& .needAmount': {
       width: theme.spacing(12),
+      height: theme.spacing(3),
       textAlignLast: "center",
       '& input': {
         direction: "ltr",
         padding: theme.spacing(.25, 0),
+        '&[type=number]': {
+          MozAppearance: "textfield",
+        },
+        '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button,': {
+          WebkitAppearance: "none",
+          margin: 0,
+        },
       },
     },
   },
@@ -350,6 +375,21 @@ const AddNeed = () => {
     ])
   }
 
+  const setNeedAmountBtn = (index, val) => () => {
+    const tempAmount = parseInt(need[index].amount) ? parseInt(need[index].amount) : 0
+
+    setNeed([
+      ...need.slice(0, index),
+      {...need[index], amount: (tempAmount + val >= 0 ? tempAmount + val : 0).toString()},
+      ...need.slice(index + 1),
+    ])
+    setNeedError([
+      ...needError.slice(0, index),
+      emptyNeed,
+      ...needError.slice(index + 1),
+    ])
+  }
+
   const handleSliderChange = index => (event, newValue) => {
     setNeed([
       ...need.slice(0, index),
@@ -363,7 +403,7 @@ const AddNeed = () => {
     let hasError = false
 
     for (const n of need) {
-      hasError = hasError || n.amount === "" || n.title === ""
+      hasError = hasError || n.amount === "" || parseInt(n.amount) < 0 || n.title === ""
       errorState.push({
         ...(emptyNeed),
         amount: n.amount === "",
@@ -411,7 +451,9 @@ const AddNeed = () => {
               expandIcon={<ExpandMoreIcon/>}
               className={classnames('header', {"error": needError[index].amount || needError[index].title})}
           >
-            <Typography>{need.length > 1 ? `جزئیات درخواست ${index + 1}` : `جزئیات درخواست`}</Typography>
+            <span>
+              {need[index].title ? `درخواست برای ${needCategories[need[index].category.toString()].items[need[index].title]}` : need.length > 1 ? `جزئیات درخواست ${index + 1}` : `جزئیات درخواست`}
+            </span>
             {(needError[index].amount || needError[index].title) && <ErrorRoundedIcon/>}
           </AccordionSummary>
           <AccordionDetails className={"details"}>
@@ -440,18 +482,24 @@ const AddNeed = () => {
             <div className={classes.needPart}>
               <div className={classes.headerAmount}>
                 <Typography>چه نیازی دارید؟</Typography>
-                <span>تعداد:</span>
-                <TextField
-                    placeholder={'?'}
-                    type={"number"}
-                    variant={"outlined"}
-                    size={"small"}
-                    name={'amount'}
-                    className={"needAmount"}
-                    value={need[index].amount ? need[index].amount : ''}
-                    onChange={setNeedInfo(index)}
-                    error={!!needError[index].amount}
-                />
+                <div>
+                  <div className="amountBtn" onClick={setNeedAmountBtn(index, 1)}>+</div>
+                  <TextField
+                      placeholder={'تعداد'}
+                      type={"number"}
+                      variant={"outlined"}
+                      size={"small"}
+                      inputProps={{
+                        "min": 0
+                      }}
+                      name={'amount'}
+                      className={"needAmount"}
+                      value={need[index].amount ? need[index].amount.toLocaleString() : ''}
+                      onChange={setNeedInfo(index)}
+                      error={!!needError[index].amount}
+                  />
+                  <div className="amountBtn" onClick={setNeedAmountBtn(index, -1)}>-</div>
+                </div>
               </div>
               {need[index].category === '' || need[index].title === '' ? (
                   <List
@@ -548,7 +596,7 @@ const AddNeed = () => {
     )
   }
 
-  return loading ? <Loader /> : (
+  return loading ? <Loader/> : (
       <div className={classes.container}>
         <Helmet><title>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</title></Helmet>
         <div className={classes.title}>
