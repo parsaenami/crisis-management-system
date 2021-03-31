@@ -18,6 +18,7 @@ import FloatingAlert from "./common/FloatingAlert";
 import { useAlert } from "../hooks/useAlert";
 import Popup from "./common/Popup";
 import { Context } from "../Context";
+import Helmet from 'react-helmet';
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -253,6 +254,7 @@ const Account = props => {
   return (
       <RTL>
         <MuiThemeProvider theme={Theme}>
+          <Helmet><title>{isOtp ? 'تأیید شماره‌ی تماس' : isRegister ? 'ثبت‌نام' : 'ورود'}</title></Helmet>
           <div className={classes.title}>
             <Typography variant={"h3"}>{isOtp ? 'تأیید شماره‌ی تماس' : isRegister ? 'ثبت‌نام' : 'ورود'}</Typography>
             {!isOtp &&

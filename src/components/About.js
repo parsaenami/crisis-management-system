@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Helmet from 'react-helmet';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -23,6 +24,7 @@ const About = () => {
 
   return (
       <div className={classes.container}>
+        <Helmet><title>درباره‌ی ما</title></Helmet>
         <div className={classes.title}>
           <Typography variant={"h3"}>درباره‌ی ما</Typography>
         </div>

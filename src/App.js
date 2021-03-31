@@ -7,6 +7,7 @@ import HttpsRedirect from 'react-https-redirect';
 import { createBrowserHistory } from 'history';
 import { Container, CssBaseline, MuiThemeProvider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Helmet from 'react-helmet';
 import Theme from "./helpers/Theme";
 import { Context } from "./Context";
 import Header from "./components/common/Header";
@@ -43,6 +44,7 @@ const App = () => {
           <Context.Provider value={{context, setContext}}>
             <MuiThemeProvider theme={Theme}>
               <CssBaseline/>
+              <Helmet defaultTitle="سیمرغ" titleTemplate="سیمرغ | %s"/>
               <Container maxWidth="lg" className={classes.root} id="app">
                 <Route path={routes.HOME} component={Header}/>
                 <Switch>

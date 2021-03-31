@@ -23,6 +23,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classnames from "classnames";
+import Helmet from 'react-helmet';
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
 import { disasterCategories, needCategories } from "../assets/categories";
@@ -549,6 +550,7 @@ const AddNeed = () => {
 
   return loading ? <Loader /> : (
       <div className={classes.container}>
+        <Helmet><title>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</title></Helmet>
         <div className={classes.title}>
           <Typography variant={"h3"}>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</Typography>
         </div>

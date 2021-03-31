@@ -4,6 +4,7 @@ import { makeStyles, Typography } from "@material-ui/core";
 import { CustomButton } from "./buttons/CustomButton";
 import { routes } from "../assets/routes";
 import Logo404 from "../assets/icons/error (1).svg";
+import Helmet from 'react-helmet';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,6 +31,7 @@ const NotFound = () => {
 
   return (
       <div className={classes.container}>
+        <Helmet><title>۴۰۴</title></Helmet>
         <img src={Logo404} alt={'404'}/>
         <Typography gutterBottom variant={"h5"}>
           متأسفانه این‌جا چیزی نیست :(

@@ -9,6 +9,7 @@ import { useAlert } from "../hooks/useAlert";
 import FloatingAlert from "./common/FloatingAlert";
 import { messages } from "../assets/messages";
 import { Context } from "../Context";
+import Helmet from 'react-helmet';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -122,6 +123,7 @@ const Profile = () => {
 
   return (
       <div className={classes.container}>
+        <Helmet><title>پروفایل</title></Helmet>
         <div className={classes.title}>
           <Typography variant={"h3"}>پروفایل</Typography>
         </div>
