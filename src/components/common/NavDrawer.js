@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, IconButton, List, ListItem, ListItemText, Drawer } from "@material-ui/core";
+import { Divider, Drawer, IconButton, List, ListItem, ListItemText } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { routes } from "../../assets/routes";
 import { NavLink } from "react-router-dom";
 import { Swipe } from "react-swipe-component";
+import Footer from "./Footer";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -103,6 +104,7 @@ const NavDrawer = props => {
               </IconButton>
             </div>
             {list}
+            <Footer />
           </Drawer>
         </Swipe>
       </nav>

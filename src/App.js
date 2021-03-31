@@ -18,6 +18,7 @@ import AddNeed from "./components/AddNeed";
 import Done from "./components/Done";
 import NotFound from "./components/NotFound";
 import { routes } from "./assets/routes";
+import Footer from "./components/common/Footer";
 
 export const history = createBrowserHistory();
 
@@ -53,6 +54,7 @@ const App = () => {
                   <Route path={routes.DONE} component={Done}/>
                   <Route exact path={'*'} component={NotFound}/>
                 </Switch>
+                <Footer className="footer"/>
               </Container>
             </MuiThemeProvider>
           </Context.Provider>

@@ -33,11 +33,15 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2, 0),
     color: theme.palette.text.secondary,
   },
-  title: {
+  h4: {
     textAlign: "center",
     fontSize: theme.spacing(5),
     fontWeight: "bold",
     color: theme.palette.text.secondary,
+  },
+  h6: {
+    textAlign: "center",
+    color: theme.palette.text.hint,
   },
   image: {
     width: theme.spacing(32),
@@ -96,8 +100,11 @@ const Home = () => {
       <div className={classes.root}>
         <div className={classes.content}>
           <img className={classes.image} id={'small'} src={Hands} alt="hands"/>
-          <Typography variant="h4" className={classes.title}>
-            سامانه‌ی ثبت نیازمندی‌ها
+          <Typography gutterBottom variant="h4" className={classes.h4}>
+            سیمرغ
+          </Typography>
+          <Typography variant="h6" className={classes.h6}>
+            سامانه‌ی یکپارچه‌ی مدیریت رویدادهای غیرمترقبه
           </Typography>
           <Typography component="span" className={classes.text}>
             در این سامانه شما می‌توانید در زمان وقوع بحران نیازهای خود را وارد کنید تا در اسرع وقت، برطرف شود.
