@@ -406,7 +406,7 @@ const AddNeed = () => {
       hasError = hasError || n.amount === "" || parseInt(n.amount) < 0 || n.title === ""
       errorState.push({
         ...(emptyNeed),
-        amount: n.amount === "",
+        amount: n.amount === "" || parseInt(n.amount) < 0,
         title: n.title === "",
       })
     }
