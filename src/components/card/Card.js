@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.info.light,
     },
+    '&.error': {
+      borderColor: theme.palette.error.main,
+    },
     '&:hover': {
       boxShadow: "0 0 3px 1px",
     },
@@ -54,7 +57,7 @@ const Card = props => {
   return (
       <div
           key={props.k}
-          className={classnames(classes.container, {'selected': props.selected})}
+          className={classnames(classes.container, {'selected': props.selected, 'error': props.error})}
           onClick={props.onClick}
       >
         {props.icon && <SvgIcon component={props.icon} className={classes.icon} viewBox="0 0 512 512"/>}
@@ -69,6 +72,7 @@ Card.propTypes = {
   icon: PropTypes.elementType,
   selected: PropTypes.bool,
   onClick: PropTypes.func,
+  error: PropTypes.bool,
   k: PropTypes.any,
 };
 

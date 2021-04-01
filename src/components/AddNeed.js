@@ -73,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   accordion: {
-    direction: "rtl",
     width: "100%",
     backgroundColor: theme.palette.secondary.light,
     '& .details': {
@@ -96,6 +95,10 @@ const useStyles = makeStyles((theme) => ({
       '& > div:first-child': {
         display: "flex",
         justifyContent: "space-between",
+      },
+      '& > div:last-child': {
+        marginLeft: -12,
+        marginRight: 0,
       },
       '&.error': {
         backgroundColor: theme.palette.error.light,
@@ -297,6 +300,7 @@ const AddNeed = () => {
   const [need: NeedType[], setNeed] = useState([emptyNeed])
   const [needError: NeedType[], setNeedError] = useState([emptyNeed])
   const [disaster, setDisaster] = useState(false)
+  const [disasterError, setDisasterError] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
 
@@ -320,7 +324,8 @@ const AddNeed = () => {
   };
 
   const handleDisaster = dis => () => {
-    setDisaster(disaster === dis ? false : dis);
+    setDisaster(disaster === dis ? false : dis)
+    setDisasterError(false)
   };
 
   const handleShowReceipt = () => {
@@ -404,12 +409,16 @@ const AddNeed = () => {
     let hasError = false
 
     for (const n of need) {
-      hasError = hasError || n.amount === "" || parseInt(n.amount) < 0 || n.title === ""
+      hasError = hasError || n.amount === "" || parseInt(n.amount) <= 0 || n.title === ""
       errorState.push({
         ...(emptyNeed),
-        amount: n.amount === "" || parseInt(n.amount) < 0,
+        amount: n.amount === "" || parseInt(n.amount) <= 0,
         title: n.title === "",
       })
+    }
+    hasError = hasError || !disaster
+    if (!disaster) {
+      setDisasterError(true)
     }
 
     setNeedError(errorState)
@@ -453,7 +462,11 @@ const AddNeed = () => {
               className={classnames('header', {"error": needError[index].amount || needError[index].title})}
           >
             <span>
-              {need[index].title ? `درخواست برای ${needCategories[need[index].category.toString()].items[need[index].title]}` : need.length > 1 ? `جزئیات درخواست ${index + 1}` : `جزئیات درخواست`}
+              {need[index].title !== ""
+                  ? `درخواست برای ${needCategories[need[index].category.toString()].items[need[index].title]}`
+                  : need.length > 1
+                      ? `جزئیات درخواست ${index + 1}`
+                      : `جزئیات درخواست`}
             </span>
             {(needError[index].amount || needError[index].title) && <ErrorRoundedIcon/>}
           </AccordionSummary>
@@ -611,11 +624,16 @@ const AddNeed = () => {
 
         <div className={classnames(classes.media, {"receiptOnly": showReceipt})}>
           {!showReceipt && <div className={classes.form}>
-            <Typography>نوع حادثه را مشخص کنید (اختیاری)</Typography>
+            <Typography color={disasterError ? "error" : "inherit"}>نوع حادثه را مشخص کنید</Typography>
             <CardSlider>
               {Object.keys(disasterCategories).map((d, i) => (
-                  <Card k={i} icon={disasterIcons[d]} selected={disaster === d}
-                        onClick={handleDisaster(d)}>
+                  <Card
+                      k={i}
+                      icon={disasterIcons[d]}
+                      selected={disaster === d}
+                      onClick={handleDisaster(d)}
+                      error={disasterError}
+                  >
                     <div>{disasterCategories[d]}</div>
                   </Card>
               ))}
