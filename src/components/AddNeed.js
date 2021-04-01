@@ -176,13 +176,14 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: theme.spacing(.5),
       margin: theme.spacing(0, .5),
       fontSize: theme.spacing(4),
+      userSelect: "none",
       cursor: "pointer",
       '&:last-child': {
         marginLeft: 0,
       },
     },
     '& .needAmount': {
-      width: theme.spacing(12),
+      width: theme.spacing(10),
       height: theme.spacing(3),
       textAlignLast: "center",
       '& input': {
@@ -479,113 +480,117 @@ const AddNeed = () => {
                 ))}
               </CardSlider>
             </div>}
-            <div className={classes.needPart}>
-              <div className={classes.headerAmount}>
-                <Typography>چه نیازی دارید؟</Typography>
-                <div>
-                  <div className="amountBtn" onClick={setNeedAmountBtn(index, 1)}>+</div>
-                  <TextField
-                      placeholder={'تعداد'}
-                      type={"number"}
-                      variant={"outlined"}
-                      size={"small"}
-                      inputProps={{
-                        "min": 0
-                      }}
-                      name={'amount'}
-                      className={"needAmount"}
-                      value={need[index].amount ? need[index].amount.toLocaleString() : ''}
-                      onChange={setNeedInfo(index)}
-                      error={!!needError[index].amount}
-                  />
-                  <div className="amountBtn" onClick={setNeedAmountBtn(index, -1)}>-</div>
-                </div>
-              </div>
-              {need[index].category === '' || need[index].title === '' ? (
-                  <List
-                      disablePadding
-                      className={classnames(classes.list, {"error": needError[index].amount || needError[index].title})}
-                      subheader={
-                        <ListSubheader
-                            className={classnames('header', {"error": needError[index].amount || needError[index].title})}
-                            component="div"
-                            id="nested-list-subheader"
-                            onClick={e => handleOpenList(e, 'menu')}
-                        >
-                          <span>دسته‌بندی نیازمندی‌ها</span>
-                          <div>
-                            {/*<IconButton color={"inherit"} className={"d-none"}>*/}
-                            {/*  <SearchRoundedIcon onClick={e => {*/}
-                            {/*    e.stopPropagation();*/}
-                            {/*    console.log(e)*/}
-                            {/*  }}/>*/}
-                            {/*</IconButton>*/}
-                            <IconButton edge={"end"} color={"inherit"}>
-                              {openList.menu ? <ExpandLess/> : <ExpandMore/>}
-                            </IconButton>
-                          </div>
-                        </ListSubheader>
-                      }
-                  >
-                    <div className={classes.hideBorders}/>
-                    <Collapse in={openList.menu} timeout="auto" unmountOnExit>
-                      {Object.values(needCategories).map((need, i) => (
-                          <div key={need.enName}>
-                            <ListItem button onClick={e => handleOpenList(e, need.enName)}>
-                              <ListItemText primary={need.faName}/>
-                              {openList[need.enName] ? <ExpandLess/> : <ExpandMore/>}
-                            </ListItem>
-                            <Collapse in={openList[need.enName]} timeout="auto" unmountOnExit>
-                              <List component="div" disablePadding>
-                                {need.items.map((item, j) => (
-                                    <ListItem className={classes.listItem} key={j} button
-                                              onClick={selectNeed(index, i, j)}>
-                                      <ListItemIcon style={{minWidth: Theme.spacing(4)}}>
-                                        <span>{j + 1}</span>
-                                      </ListItemIcon>
-                                      <ListItemText primary={item}/>
-                                    </ListItem>
-                                ))}
-                              </List>
-                            </Collapse>
-                          </div>
-                      ))}
-                    </Collapse>
-                  </List>
-              ) : (
-                  <div className={classes.selectedNeed}>
-                    <Chip color={"primary"} label={needCategories[need[index].category.toString()].faName}/>
-                    <span>{needCategories[need[index].category.toString()].items[need[index].title]}</span>
-                    <IconButton edge={"end"} color={"inherit"} onClick={selectNeed(index, '', '')}>
-                      <EditRoundedIcon/>
-                    </IconButton>
+            <RTL>
+              <MuiThemeProvider theme={Theme}>
+                <div className={classes.needPart}>
+                  <div className={classes.headerAmount}>
+                    <Typography>چه نیازی دارید؟</Typography>
+                    <div>
+                      <div className="amountBtn" onClick={setNeedAmountBtn(index, 1)}>+</div>
+                      <TextField
+                          placeholder={'تعداد'}
+                          type={"number"}
+                          variant={"outlined"}
+                          size={"small"}
+                          inputProps={{
+                            "min": 0
+                          }}
+                          name={'amount'}
+                          className={"needAmount"}
+                          value={need[index].amount ? need[index].amount.toLocaleString() : ''}
+                          onChange={setNeedInfo(index)}
+                          error={!!needError[index].amount}
+                      />
+                      <div className="amountBtn" onClick={setNeedAmountBtn(index, -1)}>-</div>
+                    </div>
                   </div>
-              )}
-            </div>
-            <div className={classes.needPart}>
-              <Typography>نیازتان چقدر ضروری است؟</Typography>
-              <Slider
-                  min={1}
-                  max={5}
-                  step={1}
-                  marks={marks}
-                  defaultValue={1}
-                  name={'urgent'}
-                  value={need[index].urgent}
-                  onChange={handleSliderChange(index)}
-              />
-            </div>
-            <div className={classes.needPart}>
-              <Typography>آیا توضیح خاصی لازم است؟ (اختیاری)</Typography>
-              <TextField
-                  multiline
-                  variant={"filled"}
-                  label={"توضیحات"}
-                  name={'desc'}
-                  value={need[index].desc}
-                  onChange={setNeedInfo(index)}
-              />
-            </div>
+                  {need[index].category === '' || need[index].title === '' ? (
+                      <List
+                          disablePadding
+                          className={classnames(classes.list, {"error": needError[index].amount || needError[index].title})}
+                          subheader={
+                            <ListSubheader
+                                className={classnames('header', {"error": needError[index].amount || needError[index].title})}
+                                component="div"
+                                id="nested-list-subheader"
+                                onClick={e => handleOpenList(e, 'menu')}
+                            >
+                              <span>دسته‌بندی نیازمندی‌ها</span>
+                              <div>
+                                {/*<IconButton color={"inherit"} className={"d-none"}>*/}
+                                {/*  <SearchRoundedIcon onClick={e => {*/}
+                                {/*    e.stopPropagation();*/}
+                                {/*    console.log(e)*/}
+                                {/*  }}/>*/}
+                                {/*</IconButton>*/}
+                                <IconButton edge={"end"} color={"inherit"}>
+                                  {openList.menu ? <ExpandLess/> : <ExpandMore/>}
+                                </IconButton>
+                              </div>
+                            </ListSubheader>
+                          }
+                      >
+                        <div className={classes.hideBorders}/>
+                        <Collapse in={openList.menu} timeout="auto" unmountOnExit>
+                          {Object.values(needCategories).map((need, i) => (
+                              <div key={need.enName}>
+                                <ListItem button onClick={e => handleOpenList(e, need.enName)}>
+                                  <ListItemText primary={need.faName}/>
+                                  {openList[need.enName] ? <ExpandLess/> : <ExpandMore/>}
+                                </ListItem>
+                                <Collapse in={openList[need.enName]} timeout="auto" unmountOnExit>
+                                  <List component="div" disablePadding>
+                                    {need.items.map((item, j) => (
+                                        <ListItem className={classes.listItem} key={j} button
+                                                  onClick={selectNeed(index, i, j)}>
+                                          <ListItemIcon style={{minWidth: Theme.spacing(4)}}>
+                                            <span>{j + 1}</span>
+                                          </ListItemIcon>
+                                          <ListItemText primary={item}/>
+                                        </ListItem>
+                                    ))}
+                                  </List>
+                                </Collapse>
+                              </div>
+                          ))}
+                        </Collapse>
+                      </List>
+                  ) : (
+                      <div className={classes.selectedNeed}>
+                        <Chip color={"primary"} label={needCategories[need[index].category.toString()].faName}/>
+                        <span>{needCategories[need[index].category.toString()].items[need[index].title]}</span>
+                        <IconButton edge={"end"} color={"inherit"} onClick={selectNeed(index, '', '')}>
+                          <EditRoundedIcon/>
+                        </IconButton>
+                      </div>
+                  )}
+                </div>
+                <div className={classes.needPart}>
+                  <Typography>نیازتان چقدر ضروری است؟</Typography>
+                  <Slider
+                      min={1}
+                      max={5}
+                      step={1}
+                      marks={marks}
+                      defaultValue={1}
+                      name={'urgent'}
+                      value={need[index].urgent}
+                      onChange={handleSliderChange(index)}
+                  />
+                </div>
+                <div className={classes.needPart}>
+                  <Typography>آیا توضیح خاصی لازم است؟ (اختیاری)</Typography>
+                  <TextField
+                      multiline
+                      variant={"filled"}
+                      label={"توضیحات"}
+                      name={'desc'}
+                      value={need[index].desc}
+                      onChange={setNeedInfo(index)}
+                  />
+                </div>
+              </MuiThemeProvider>
+            </RTL>
             {need.length > 1 && <div className={classnames(classes.needPart, "deleteBtn")}>
               <Button variant={"outlined"} color={"primary"} size={"small"} onClick={deleteRequest(index)}>
                 حذف درخواست
@@ -619,11 +624,7 @@ const AddNeed = () => {
             <Typography style={{marginTop: Theme.spacing(2)}} gutterBottom>درخواست‌های خود را با وارد کردن اطلاعات
               خواسته‌شده ثبت کنید</Typography>
 
-            <RTL>
-              <MuiThemeProvider theme={Theme}>
-                {need.map((n, i) => needItemForm(i))}
-              </MuiThemeProvider>
-            </RTL>
+            {need.map((n, i) => needItemForm(i))}
 
           </div>}
           {(showReceipt || !isMobileDisplay) && <div className={classes.receipt}>

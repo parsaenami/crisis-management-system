@@ -36,12 +36,13 @@ const useStyles = makeStyles((theme) => ({
   h4: {
     textAlign: "center",
     fontSize: theme.spacing(5),
-    fontWeight: "bold",
+    fontWeight: 800,
     color: theme.palette.text.secondary,
   },
   h6: {
     textAlign: "center",
-    color: theme.palette.text.hint,
+    color: theme.palette.text.light,
+    fontWeight: 400
   },
   image: {
     width: theme.spacing(32),

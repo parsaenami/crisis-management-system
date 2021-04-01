@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: theme.spacing(30),
     padding: theme.spacing(1, 2),
-    color: theme.palette.text.hint,
+    color: theme.palette.text.light,
     '& > p': {
       textAlign: "center",
       fontSize: theme.spacing(1.5),
