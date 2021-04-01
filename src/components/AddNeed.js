@@ -497,7 +497,7 @@ const AddNeed = () => {
                           }}
                           name={'amount'}
                           className={"needAmount"}
-                          value={need[index].amount ? need[index].amount.toLocaleString() : ''}
+                          value={need[index].amount || ''}
                           onChange={setNeedInfo(index)}
                           error={!!needError[index].amount}
                       />
