@@ -15,7 +15,7 @@
       "sizes": "512x512 256x256 192x192 128x128"
     }
   ],
-  "version": "0.0.1",
+  "version": "1.0.0",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
