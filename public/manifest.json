@@ -16,8 +16,7 @@
     }
   ],
   "version": "1.0.0",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#FDFFFA",
   "background_color": "#91DDEC"
