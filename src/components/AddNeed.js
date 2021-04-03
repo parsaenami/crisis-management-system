@@ -344,7 +344,7 @@ const AddNeed = () => {
 
   const handleShowReceipt = () => {
     if (checkError()) {
-      showAlert(messages.ERR_EMPTY_NEED, "error")
+      showAlert(messages.ERR_EMPTY_NEED, "error", 3000)
       return
     }
     setShowReceipt(!showReceipt)
