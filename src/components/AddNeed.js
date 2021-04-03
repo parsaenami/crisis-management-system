@@ -6,7 +6,8 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
-  Chip, CircularProgress,
+  Chip,
+  CircularProgress,
   Collapse,
   IconButton,
   List,
@@ -26,7 +27,6 @@ import classnames from "classnames";
 import Helmet from 'react-helmet';
 import RTL from "../helpers/RTL";
 import Theme from "../helpers/Theme";
-import { disasterCategories, needCategories } from "../assets/categories";
 import Card from "./card/Card";
 import CardSlider from "./card/CardSlider";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
@@ -41,6 +41,8 @@ import LandslideIcon from "../assets/icons/iconComponents/LandslideIcon";
 import AvalancheIcon from "../assets/icons/iconComponents/AvalancheIcon";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
+import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
+import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import { CustomButton } from "./buttons/CustomButton";
 import Receipt from "./common/Receipt";
 import { routes } from "../assets/routes";
@@ -302,13 +304,15 @@ const AddNeed = () => {
   const [disasterCategories, setDisasterCategories] = useState(true)
   const [expanded, setExpanded] = React.useState('panel0')
   const [openList, setOpenList] = useState(emptyOpenList)
+  const [isSearchMode, setIsSearchMode] = useState(false)
+  const [search, setSearch] = useState('')
   const [need: NeedType[], setNeed] = useState([emptyNeed])
   const [needError: NeedType[], setNeedError] = useState([emptyNeed])
   const [disaster, setDisaster] = useState(false)
   const [disasterError, setDisasterError] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
-  const {latitude, longitude, error} = usePosition(get_user_info().allow_location);
+  const {latitude, longitude} = usePosition(get_user_info().allow_location);
 
   useEffect(() => {
     api.get(rest.getNeeds)
@@ -459,6 +463,19 @@ const AddNeed = () => {
         .finally(() => setLoading(false))
   }
 
+  const toggleSearchMode = e => {
+    e.stopPropagation()
+    setIsSearchMode(!isSearchMode)
+    if (isSearchMode) {
+      setSearch('')
+    }
+  }
+
+  const searchNeed = e => {
+    setOpenList({...openList, menu: !!e.target.value.length})
+    setSearch(e.target.value)
+  }
+
   const needItemForm = index => {
     const marks = [
       {
@@ -557,14 +574,20 @@ const AddNeed = () => {
                                 id="nested-list-subheader"
                                 onClick={e => handleOpenList(e, 'menu')}
                             >
-                              <span>دسته‌بندی نیازمندی‌ها</span>
+                              {isSearchMode
+                                  ? <TextField
+                                      style={{width: 150}}
+                                      size={"small"}
+                                      value={search}
+                                      onChange={searchNeed}
+                                      onClick={e => e.stopPropagation()}
+                                      autoFocus
+                                  />
+                                  : <span>دسته‌بندی نیازمندی‌ها</span>}
                               <div>
-                                {/*<IconButton color={"inherit"} className={"d-none"}>*/}
-                                {/*  <SearchRoundedIcon onClick={e => {*/}
-                                {/*    e.stopPropagation();*/}
-                                {/*    console.log(e)*/}
-                                {/*  }}/>*/}
-                                {/*</IconButton>*/}
+                                <IconButton color={"inherit"} className={""} onClick={toggleSearchMode}>
+                                  {isSearchMode ? <CloseRoundedIcon/> : <SearchRoundedIcon/>}
+                                </IconButton>
                                 <IconButton edge={"end"} color={"inherit"}>
                                   {openList.menu ? <ExpandLess/> : <ExpandMore/>}
                                 </IconButton>
@@ -574,7 +597,9 @@ const AddNeed = () => {
                       >
                         <div className={classes.hideBorders}/>
                         <Collapse in={openList.menu} timeout="auto" unmountOnExit>
-                          {Object.values(needCategories).map((n, i) => (
+                          {Object.values(needCategories).filter(val => {
+                            return Object.values(val.items).join().indexOf(search) >= 0
+                          }).map((n, i) => (
                               <div key={n.enName}>
                                 <ListItem button onClick={e => handleOpenList(e, n.enName)}>
                                   <ListItemText primary={n.faName}/>
@@ -582,7 +607,9 @@ const AddNeed = () => {
                                 </ListItem>
                                 <Collapse in={openList[n.enName]} timeout="auto" unmountOnExit>
                                   <List component="div" disablePadding>
-                                    {Object.keys(n.items).map((item, j) => (
+                                    {Object.keys(n.items).filter(value => {
+                                      return n.items[value].indexOf(search) >= 0
+                                    }).map((item, j) => (
                                         <ListItem
                                             className={classes.listItem}
                                             key={j}
