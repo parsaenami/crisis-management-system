@@ -163,7 +163,9 @@ const Account = props => {
 
   const sendOtpAgain = () => {
     setCountdown(30)
-    api.patch(rest.getOtp, {}, config("json"))
+    api.patch(rest.getOtp, {
+      [signInWithNid ? 'nationalId' : 'phoneNumber']: signInWithNid ? userInfo.nationalId : userInfo.phoneNumber
+    }, config("json"))
         .then((res) => {
           setTimeout(() => {
             showAlert("کد شما: " + res.data.otp.code, "success", 8000)
