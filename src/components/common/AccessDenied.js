@@ -12,7 +12,7 @@ const AccessDenied = props => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">خطای دسترسی</DialogTitle>
+        {/*<DialogTitle id="alert-dialog-title">خطای دسترسی</DialogTitle>*/}
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             برای ورود به این قسمت باید وارد حساب کاربری خود شوید و اگر حساب کاربری ندارید ثبت‌نام کنید.
