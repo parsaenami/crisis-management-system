@@ -580,6 +580,7 @@ const AddNeed = () => {
                                       size={"small"}
                                       value={search}
                                       onChange={searchNeed}
+                                      placeholder={"عنوان نیاز"}
                                       onClick={e => e.stopPropagation()}
                                       autoFocus
                                   />
