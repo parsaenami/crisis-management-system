@@ -17,7 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavDrawer from "./NavDrawer";
 import { NavLink } from "react-router-dom";
 import { routes } from "../../assets/routes";
-import Logo from '../../assets/icons/helping-hand2.svg';
+import Logo from '../../assets/icons/simorgh.svg';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import { Context } from "../../Context";
 import { get_token } from "../../helpers/api";
@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     '& img': {
-      width: theme.spacing(4),
-      height: theme.spacing(4),
+      width: theme.spacing(5),
+      height: theme.spacing(5),
     },
     '& > button > span': {
       direction: "ltr",

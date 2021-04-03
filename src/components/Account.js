@@ -98,7 +98,7 @@ const Account = props => {
   const {context, setContext} = useContext(Context)
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'));
   const [pageLoading, setPageLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({otp: false, account: false});
   const [permission, setPermission] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -204,13 +204,13 @@ const Account = props => {
 
   const submit = e => {
     e.preventDefault();
-    setLoading(true)
     const signInMethod = signInWithNid ? userInfo.nationalId : userInfo.phoneNumber;
     let data = {};
 
     console.log('error:', checkError())
 
     if (!checkError()) {
+      setLoading({...loading, account: true})
       if (isRegister) {
         data = {
           firstName: userInfo.firstName,
@@ -237,13 +237,13 @@ const Account = props => {
           .catch((err) => {
             showAlert(err.response.data.error, "error", 3000);
           })
-          .finally(() => setLoading(false))
+          .finally(() => setLoading({...loading, account: false}))
     }
   }
 
   const verify = e => {
     e.preventDefault();
-    setLoading(true)
+    setLoading({...loading, otp: true})
 
     if (code.length < 5) {
       setCodeError(messages.ERR_SHORT_OTP)
@@ -259,7 +259,7 @@ const Account = props => {
           .catch((err) => {
             showAlert(err.response.data.error, "error", 3000);
           })
-          .finally(() => setLoading(false))
+          .finally(() => setLoading({...loading, otp: false}))
     }
   }
 
@@ -309,7 +309,7 @@ const Account = props => {
         handleChange={handleCodeChange}
         submit={verify}
         error={codeError}
-        loading={loading}
+        loading={loading.otp}
     />
     <Button variant={"text"} color={"primary"} onClick={sendOtp} disabled={countdown > 0}>
       {countdown > 0 ? `ارسال مجدد کد بعد از ${countdown} ثانیه` : 'ارسال مجدد'}
@@ -344,7 +344,7 @@ const Account = props => {
                           userInfo={userInfo}
                           errors={userInfoError}
                           onUserInfoChangeFn={handleSignUp}
-                          loading={loading}
+                          loading={loading.account}
                           // accessLocation={x}
                       />
                       : <SignInForm
@@ -355,7 +355,7 @@ const Account = props => {
                           onUserNumberChangeFn={handleSignIn}
                           setType={e => setSignInWithNid(e.target.checked)}
                           error={signInWithNid ? userInfoError.nationalId : userInfoError.phoneNumber}
-                          loading={loading}
+                          loading={loading.account}
                       />
               }
             </form>
@@ -382,7 +382,7 @@ const Account = props => {
 
           {isMobileDisplay && <Fab buttons={[
             {
-              loading: loading,
+              loading: isOtp ? loading.otp : loading.account,
               title: isOtp ? 'تأیید' : isRegister ? 'ثبت‌نامم کن' : 'ورود به حساب کاربری',
               onClickFn: isOtp ? verify : submit,
             }

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CustomButton } from "./buttons/CustomButton";
-import Hands from "../assets/icons/helping-hand2.svg"
+import Logo from "../assets/icons/simorgh.svg"
 import { NavLink } from "react-router-dom";
 import { routes } from "../assets/routes";
 import { api, get_token, rest } from "../helpers/api";
@@ -58,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
     '&#small': {
-      width: theme.spacing(8),
-      maxHeight: theme.spacing(8),
+      width: theme.spacing(20),
+      maxHeight: theme.spacing(20),
       display: "block",
       [theme.breakpoints.up('md')]: {
         display: "none",
@@ -127,7 +127,7 @@ const Home = () => {
   return (
       <div className={classes.root}>
         <div className={classes.content}>
-          <img className={classes.image} id={'small'} src={Hands} alt="hands"/>
+          <img className={classes.image} id={'small'} src={Logo} alt="hands"/>
           <Typography gutterBottom variant="h4" className={classes.h4}>
             سیمرغ
           </Typography>
@@ -143,7 +143,7 @@ const Home = () => {
             <CustomButton className={classes.btn} variant={"contained"} size={"large"}>ثبت نیاز</CustomButton>
           </div>}
         </div>
-        <img className={classes.image} src={Hands} alt="hands"/>
+        <img className={classes.image} src={Logo} alt="hands"/>
         <AccessDenied open={open} handleClose={handleClose} action={() => history.push(routes.ADD_NEED)}/>
       </div>
   );
