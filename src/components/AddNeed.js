@@ -384,6 +384,8 @@ const AddNeed = () => {
       ...needError.slice(index + 1),
     ])
     setOpenList(emptyOpenList)
+    setSearch('')
+    setIsSearchMode(false)
   }
 
   const setNeedInfo = index => e => {
