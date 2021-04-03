@@ -157,9 +157,21 @@ const Account = props => {
   const sendOtp = (code) => {
     setCountdown(30)
     setTimeout(() => {
-      // setOtpCode(code)
       showAlert("کد شما: " + code, "success", 8000)
     }, 4000)
+  }
+
+  const sendOtpAgain = () => {
+    setCountdown(30)
+    api.patch(rest.getOtp, {}, config("json"))
+        .then((res) => {
+          setTimeout(() => {
+            showAlert("کد شما: " + res.data.otp.code, "success", 8000)
+          }, 4000)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
   }
 
   const checkError = () => {
@@ -243,11 +255,11 @@ const Account = props => {
 
   const verify = e => {
     e.preventDefault();
-    setLoading({...loading, otp: true})
 
     if (code.length < 5) {
       setCodeError(messages.ERR_SHORT_OTP)
     } else {
+      setLoading({...loading, otp: true})
       const infoType = !isRegister && signInWithNid
       const infoTemp = infoType ? userInfo.nationalId : userInfo.phoneNumber
       api.get(`${rest.verify}/${infoType}/${infoTemp}/${code}`)
@@ -311,7 +323,7 @@ const Account = props => {
         error={codeError}
         loading={loading.otp}
     />
-    <Button variant={"text"} color={"primary"} onClick={sendOtp} disabled={countdown > 0}>
+    <Button variant={"text"} color={"primary"} onClick={sendOtpAgain} disabled={countdown > 0}>
       {countdown > 0 ? `ارسال مجدد کد بعد از ${countdown} ثانیه` : 'ارسال مجدد'}
     </Button>
   </div>

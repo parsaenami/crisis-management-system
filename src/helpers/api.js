@@ -15,6 +15,7 @@ const rest = {
   request: '/request',
   getNeeds: '/get-needs',
   profile: '/profile',
+  getOtp: '/otp',
 };
 
 const set_token = token => {
