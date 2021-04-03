@@ -9,7 +9,7 @@ export const useAlert = () => {
 
   useEffect(() => {
     if (open && callBack) {
-      setTimeout(callBack, 5000);
+      setTimeout(callBack, 3000);
     }
   }, [callBack, open])
 

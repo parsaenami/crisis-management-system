@@ -13,7 +13,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import PropTypes from "prop-types";
-import { ClickAwayListener, Tooltip } from "@material-ui/core";
+import { ClickAwayListener, Tooltip, useMediaQuery, useTheme, withStyles } from "@material-ui/core";
 
 const useRowStyles = makeStyles(theme => ({
   root: {
@@ -26,22 +26,27 @@ const useRowStyles = makeStyles(theme => ({
     overflow: "hidden"
   },
   tooltip: {
-    '& + div': {
-      '& > div': {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.secondary.light,
-        fontSize: theme.spacing(2),
-        lineHeight: theme.spacing(0.2),
-      },
-    },
+    // maxWidth: theme.spacing(25),
   },
 }));
+
+const CustomTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    boxShadow: theme.shadows[1],
+    fontSize: theme.spacing(1.75),
+    lineHeight: theme.spacing(0.2),
+  },
+}))(Tooltip);
 
 const DataTableRow = props => {
   const {row} = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
   const [openTooltip, setOpenTooltip] = React.useState(false);
+  const theme = useTheme()
+  const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'))
 
   const handleTooltipClose = () => {
     setOpenTooltip(false);
@@ -53,7 +58,7 @@ const DataTableRow = props => {
 
   return (
       <React.Fragment>
-        <TableRow>
+        <TableRow key={props.k + Math.random()}>
           <TableCell>
             <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
               {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -62,31 +67,33 @@ const DataTableRow = props => {
           <TableCell align="right" component="th" scope="row">
             {row.name}
           </TableCell>
-          <TableCell align="right">{row.amount}</TableCell>
-          <TableCell align="right">{row.urgent}</TableCell>
-          <TableCell align="right">{row.askDate}</TableCell>
-          <TableCell align="right">{row.helpDate}</TableCell>
-          <TableCell align="right">{row.status}</TableCell>
-          <TableCell align="right">{row.type}</TableCell>
+          <TableCell align="right">{row.amount || '-'}</TableCell>
+          <TableCell align="right">{row.urgent || '-'}</TableCell>
+          <TableCell align="right">{row.askDate || '-'}</TableCell>
+          <TableCell align="right">{row.changeDate || '-'}</TableCell>
+          <TableCell align="right">{row.helpDate || '-'}</TableCell>
+          <TableCell align="right">{row.status || '-'}</TableCell>
+          <TableCell align="right">{row.type || '-'}</TableCell>
           <ClickAwayListener onClickAway={handleTooltipClose}>
-            <Tooltip
-                PopperProps={{disablePortal: true}}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
+            <CustomTooltip
+                // PopperProps={{disablePortal: false}}
+                disableFocusListener={isMobileDisplay}
+                disableHoverListener={isMobileDisplay}
+                // disableTouchListener
                 open={openTooltip}
                 onClose={handleTooltipClose}
                 title={row.desc}
                 placement="right"
                 className={classes.tooltip}
+                classes={{tooltip: classes.tooltip}}
             >
               <TableCell className={classes.desc} onClick={handleTooltipOpen} align="right">
                 <HelpOutlineRoundedIcon/>
               </TableCell>
-            </Tooltip>
+            </CustomTooltip>
           </ClickAwayListener>
         </TableRow>
-        <TableRow>
+        <TableRow key={props.k + Math.random()}>
           <TableCell className={classes.root} style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box margin={1}>
@@ -118,6 +125,7 @@ const DataTableRow = props => {
 };
 
 DataTableRow.propTypes = {
+  k: PropTypes.any,
   row: PropTypes.shape({
     info: PropTypes.shape({
       address: PropTypes.string.isRequired,
@@ -128,9 +136,10 @@ DataTableRow.propTypes = {
     }).isRequired,
     name: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
-    urgent: PropTypes.number.isRequired,
+    urgent: PropTypes.string.isRequired,
     askDate: PropTypes.string.isRequired,
-    helpDate: PropTypes.string.isRequired,
+    changeDate: PropTypes.string,
+    helpDate: PropTypes.string,
     type: PropTypes.string,
     status: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,

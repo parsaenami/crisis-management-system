@@ -14,38 +14,12 @@ import DataTableRow from "./DataTableRow";
 import DataTableHead from "./DataTableHead";
 
 
-const createData = (name, amount, urgent, askDate, helpDate, status, type, desc, address, lat, long) => ({
-  name,
-  amount,
-  urgent,
-  askDate,
-  helpDate,
-  status,
-  type,
-  desc,
-  info: {
-    address: address,
-    location: {lat, long},
-  },
-});
-
-const rows = [
-  createData('پتو', 13, 3, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('مسواک', 12, 2, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('لباس زیر', 13, 3, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('دست مصنوعی', 13, 3, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('حوله', 13, 3, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('شلوار', 11, 1, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('لیوان', 13, 3, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('کتاب', 12, 2, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-  createData('مچ‌بند', 12, 2, '1399/10/21', '1400/01/02', 'انتظار', 'زلزله', 'توضیحات مسخره و به درد نخور و بی‌فایده و الکی طولانی برای اینکه صرفا بدون ارائه‌ی هیچ گونه محتوای خاصی، یک جای به نسبت زیادی را اشغال کند.', 'انگلیس - منچستر - پلاک ۳', '12.3254163', '45.732849248'),
-];
-
 const columns = [
   {id: 'name', numeric: false, disablePadding: false, label: 'عنوان نیاز'},
   {id: 'amount', numeric: true, disablePadding: false, label: 'تعداد'},
   {id: 'urgent', numeric: true, disablePadding: false, label: 'ضروری'},
   {id: 'askDate', numeric: false, disablePadding: false, label: 'تاریخ درخواست'},
+  {id: 'changeDate', numeric: false, disablePadding: false, label: 'آخرین بروزرسانی'},
   {id: 'helpDate', numeric: false, disablePadding: false, label: 'تاریخ امدادرسانی'},
   {id: 'status', numeric: false, disablePadding: false, label: 'وضعیت'},
   {id: 'type', numeric: false, disablePadding: false, label: 'نوع حادثه'},
@@ -142,7 +116,7 @@ const DataTable = props => {
     setPage(0);
   };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.rows.length - page * rowsPerPage);
 
   return (
       <div className={classes.root}>
@@ -165,12 +139,12 @@ const DataTable = props => {
                   order={order}
                   orderBy={orderBy}
                   onRequestSort={handleRequestSort}
-                  rowCount={rows.length}
+                  rowCount={props.rows.length}
               />
               <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
+                {stableSort(props.rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(row => <DataTableRow key={row.name} row={row}/>)}
+                    .map(row => <DataTableRow k={row.name} row={row}/>)}
                 {props.showEmptyRows && emptyRows > 0 && (
                     <TableRow style={{height: 53 * emptyRows}}>
                       <TableCell colSpan={6}/>
@@ -182,7 +156,7 @@ const DataTable = props => {
           <TablePagination
               rowsPerPageOptions={[5, 10, 25, 50]}
               component="div"
-              count={rows.length}
+              count={props.rows.length}
               rowsPerPage={rowsPerPage}
               labelDisplayedRows={({from, to, count}) => `[${from} تا ${to}] از ${count}`}
               labelRowsPerPage={'تعداد:'}
@@ -199,6 +173,24 @@ const DataTable = props => {
 DataTable.propTypes = {
   title: PropTypes.string,
   showEmptyRows: PropTypes.bool,
+  rows: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired,
+    urgent: PropTypes.string.isRequired,
+    askDate: PropTypes.string.isRequired,
+    changeDate: PropTypes.string,
+    helpDate: PropTypes.string,
+    type: PropTypes.string,
+    status: PropTypes.string.isRequired,
+    desc: PropTypes.string.isRequired,
+    info: PropTypes.shape({
+      address: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        lat: PropTypes.string,
+        long: PropTypes.string,
+      }),
+    }).isRequired,
+  })).isRequired,
 }
 
 export default DataTable;

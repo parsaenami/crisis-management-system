@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomButton } from "./CustomButton";
+import { CircularProgress } from "@material-ui/core";
 
 const Fab = props => {
   return (
@@ -11,7 +12,7 @@ const Fab = props => {
                 variant={"contained"}
                 onClick={btn.onClickFn}
                 size={"large"}>
-              {btn.title}
+              {btn.loading ? <CircularProgress size={26}/> :btn.title}
             </CustomButton>
         ))}
       </div>
@@ -20,6 +21,7 @@ const Fab = props => {
 
 Fab.propTypes = {
   buttons: PropTypes.arrayOf(PropTypes.shape({
+    loading: PropTypes.bool,
     title: PropTypes.string,
     onClickFn: PropTypes.func,
   }))

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Typography } from "@material-ui/core";
+import { CircularProgress, TextField, Typography } from "@material-ui/core";
 import { CustomButton } from "../buttons/CustomButton";
 
 const SignUpForm = props => {
@@ -76,7 +76,8 @@ const SignUpForm = props => {
         {/*    label="استفاده از لوکیشن برای آدرس"*/}
         {/*/>*/}
         {!props.isMobileDisplay && <CustomButton variant={"contained"} size={"large"} onClick={props.submit}>
-          ثبت‌نامم کن</CustomButton>}
+          {props.loading ? <CircularProgress size={26}/> : 'ثبت‌نامم کن'}
+        </CustomButton>}
       </>
   );
 };
@@ -109,7 +110,7 @@ SignUpForm.propTypes = {
     },
   }),
   onUserInfoChangeFn: PropTypes.func,
-  // accessLocation: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export default SignUpForm;

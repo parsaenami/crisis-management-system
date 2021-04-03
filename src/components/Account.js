@@ -19,6 +19,8 @@ import { useAlert } from "../hooks/useAlert";
 import Popup from "./common/Popup";
 import { Context } from "../Context";
 import Helmet from 'react-helmet';
+import { api, config, get_token, rest, set_token } from "../helpers/api";
+import Loader from "./common/Loader";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -87,10 +89,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const objectCheckEmpty = obj => {
+  return Object.values(obj).join('') === ''
+}
+
 const Account = props => {
   const theme = useTheme();
-  const {setContext} = useContext(Context)
+  const {context, setContext} = useContext(Context)
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'));
+  const [pageLoading, setPageLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [permission, setPermission] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -102,13 +110,19 @@ const Account = props => {
 
   // otpForm state
   const [code, setCode] = useState('');
-  const [otpCode, setOtpCode] = useState('');
   const [codeError, setCodeError] = useState('');
   const [countdown, setCountdown] = useState(30);
   // sign-in/sign-up states
   const [signInWithNid, setSignInWithNid] = useState(false);
-  const [userInfo: UserInfoType, setUserInfo] = useState(emptyUserInfo);
-  const [userInfoError: UserInfoType, setUserInfoError] = useState(emptyUserInfo);
+  const [userInfo, setUserInfo] = useState(emptyUserInfo);
+  const [userInfoError, setUserInfoError] = useState(emptyUserInfo);
+
+  useEffect(() => {
+    if (get_token()) {
+      history.push(routes.PROFILE)
+    }
+    setPageLoading(false)
+  }, [])
 
   useEffect(() => {
     setContext(isOtp ? 'تأیید شماره‌ی تماس' : isRegister ? 'ثبت‌نام' : 'ورود')
@@ -140,62 +154,112 @@ const Account = props => {
     }
   }
 
-  const sendOtp = () => {
+  const sendOtp = (code) => {
     setCountdown(30)
     setTimeout(() => {
-      const otpRandom = Math.round(Math.random() * 100000).toString().padStart(5, "0")
-      setOtpCode(otpRandom)
-      showAlert("کد شما: " + otpRandom, "success", 8000)
+      // setOtpCode(code)
+      showAlert("کد شما: " + code, "success", 8000)
     }, 4000)
+  }
+
+  const checkError = () => {
+    const errors = {
+      fn: !userInfo.firstName.length ? messages.ERR_EMPTY : '',
+      ln: !userInfo.lastName.length ? messages.ERR_EMPTY : '',
+      pn: !userInfo.phoneNumber.length
+          ? messages.ERR_EMPTY
+          : !(userInfo.phoneNumber.startsWith('09') || userInfo.phoneNumber.startsWith('+989'))
+              ? messages.ERR_WRONG_PHONE
+              : '',
+      ni: !userInfo.nationalId.length
+          ? messages.ERR_EMPTY
+          : userInfo.nationalId.length !== 10
+              ? messages.ERR_WRONG_NID_LENGTH
+              : '',
+      ad: !userInfo.address.length ? messages.ERR_EMPTY : '',
+    }
+
+    if (isRegister) {
+      setUserInfoError({
+        ...userInfoError,
+        firstName: errors.fn,
+        lastName: errors.ln,
+        phoneNumber: errors.pn,
+        nationalId: errors.ni,
+        address: errors.ad,
+      })
+    } else {
+      const errMsg = signInWithNid ? errors.ni : errors.pn;
+
+      setUserInfoError({
+        ...userInfoError,
+        [signInWithNid ? 'nationalId' : 'phoneNumber']: errMsg,
+      })
+    }
+
+    return !objectCheckEmpty(isRegister
+        ? errors
+        : {[signInWithNid ? 'nationalId' : 'phoneNumber']: signInWithNid ? errors.ni : errors.pn})
   }
 
   const submit = e => {
     e.preventDefault();
-    const method = signInWithNid ? userInfo.nationalId : userInfo.phoneNumber;
+    setLoading(true)
+    const signInMethod = signInWithNid ? userInfo.nationalId : userInfo.phoneNumber;
+    let data = {};
 
-    if (!method.length) {
+    console.log('error:', checkError())
+
+    if (!checkError()) {
       if (isRegister) {
-        setUserInfoError({
-          ...userInfoError,
-          firstName: userInfo.firstName.length ? '' : messages.ERR_EMPTY,
-          lastName: userInfo.lastName.length ? '' : messages.ERR_EMPTY,
-          phoneNumber: userInfo.phoneNumber.length ? '' : messages.ERR_EMPTY,
-          nationalId: userInfo.nationalId.length ? '' : messages.ERR_EMPTY,
-          address: userInfo.address.length ? '' : messages.ERR_EMPTY,
-        })
+        data = {
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          phoneNumber: userInfo.phoneNumber,
+          nationalId: userInfo.nationalId,
+          address: userInfo.address,
+          locationAccess: permission,
+          lat: latitude,
+          long: longitude,
+        }
       } else {
-        setUserInfoError({
-          ...userInfoError,
-          [signInWithNid ? 'nationalId' : 'phoneNumber']: messages.ERR_EMPTY,
-        })
+        data = {
+          [signInWithNid ? 'nationalId' : 'phoneNumber']: signInMethod,
+        }
       }
-    } else {
-      if (isRegister) {
-        setUserInfo({
-          ...userInfo,
-          location: {
-            allow: permission,
-            lat: !error ? latitude : '',
-            long: !error ? longitude : '',
-          }
-        })
-      }
-      showAlert(`کد تأیید برای کاربر با ${(signInWithNid ? 'کد ملی' : 'شماره‌ی تماس')} ${method} ارسال شد.`, "success", 3000);
-      console.log({...userInfo, locationAccess: permission});
-      setIsOtp(true);
-      sendOtp()
+
+      api.post(isRegister ? rest.signUp : rest.signIn, data, config('json'))
+          .then((res) => {
+            showAlert(res.data.msg, "success", 3000);
+            setIsOtp(true);
+            sendOtp(res.data.otp.code)
+          })
+          .catch((err) => {
+            showAlert(err.response.data.error, "error", 3000);
+          })
+          .finally(() => setLoading(false))
     }
   }
 
   const verify = e => {
     e.preventDefault();
+    setLoading(true)
 
     if (code.length < 5) {
       setCodeError(messages.ERR_SHORT_OTP)
-    } else if (code !== otpCode) {
-      setCodeError(messages.ERR_WRONG_OTP)
     } else {
-      showAlert(messages.INFO_CORRECT_OTP, "success", 5000, () => () => history.push(routes.PROFILE));
+      const infoType = !isRegister && signInWithNid
+      const infoTemp = infoType ? userInfo.nationalId : userInfo.phoneNumber
+      api.get(`${rest.verify}/${infoType}/${infoTemp}/${code}`)
+          .then((res) => {
+            set_token(res.data.token)
+            showAlert(res.data.msg, "success", 5000);
+            history.push(routes.PROFILE)
+          })
+          .catch((err) => {
+            showAlert(err.response.data.error, "error", 3000);
+          })
+          .finally(() => setLoading(false))
     }
   }
 
@@ -245,13 +309,14 @@ const Account = props => {
         handleChange={handleCodeChange}
         submit={verify}
         error={codeError}
+        loading={loading}
     />
     <Button variant={"text"} color={"primary"} onClick={sendOtp} disabled={countdown > 0}>
       {countdown > 0 ? `ارسال مجدد کد بعد از ${countdown} ثانیه` : 'ارسال مجدد'}
     </Button>
   </div>
 
-  return (
+  return pageLoading ? <Loader/> : (
       <RTL>
         <MuiThemeProvider theme={Theme}>
           <Helmet><title>{isOtp ? 'تأیید شماره‌ی تماس' : isRegister ? 'ثبت‌نام' : 'ورود'}</title></Helmet>
@@ -279,6 +344,7 @@ const Account = props => {
                           userInfo={userInfo}
                           errors={userInfoError}
                           onUserInfoChangeFn={handleSignUp}
+                          loading={loading}
                           // accessLocation={x}
                       />
                       : <SignInForm
@@ -289,6 +355,7 @@ const Account = props => {
                           onUserNumberChangeFn={handleSignIn}
                           setType={e => setSignInWithNid(e.target.checked)}
                           error={signInWithNid ? userInfoError.nationalId : userInfoError.phoneNumber}
+                          loading={loading}
                       />
               }
             </form>
@@ -315,6 +382,7 @@ const Account = props => {
 
           {isMobileDisplay && <Fab buttons={[
             {
+              loading: loading,
               title: isOtp ? 'تأیید' : isRegister ? 'ثبت‌نامم کن' : 'ورود به حساب کاربری',
               onClickFn: isOtp ? verify : submit,
             }

@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CustomButton } from "./buttons/CustomButton";
 import Hands from "../assets/icons/helping-hand2.svg"
 import { NavLink } from "react-router-dom";
 import { routes } from "../assets/routes";
+import { api, get_token, rest } from "../helpers/api";
+import { Context } from "../Context";
+import AccessDenied from "./common/AccessDenied";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,6 +91,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     document.getElementsByTagName("body")[0].style.backgroundColor = '#91DDEC';
@@ -96,6 +102,27 @@ const Home = () => {
       document.getElementsByTagName("header")[0].style.backgroundColor = '#FDFFFA';
     }
   }, []);
+
+  useEffect(() => {
+    api.get(`/${get_token()}`)
+        .then((res) => {
+          if (!res.data.status) {
+            localStorage.removeItem('token')
+          }
+        })
+  }, [])
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDialogOpen = () => {
+    if (get_token()) {
+      history.push(routes.ADD_NEED)
+    } else {
+      setOpen(true);
+    }
+  };
 
   return (
       <div className={classes.root}>
@@ -110,11 +137,14 @@ const Home = () => {
           <Typography component="span" className={classes.text}>
             در این سامانه شما می‌توانید در زمان وقوع بحران نیازهای خود را وارد کنید تا در اسرع وقت، برطرف شود.
           </Typography>
-          <NavLink to={routes.ADD_NEED} className={classes.btnContainer}>
+          {get_token() ?  <NavLink to={routes.ADD_NEED} className={classes.btnContainer}>
             <CustomButton className={classes.btn} variant={"contained"} size={"large"}>ثبت نیاز</CustomButton>
-          </NavLink>
+          </NavLink> : <div onClick={handleDialogOpen} className={classes.btnContainer}>
+            <CustomButton className={classes.btn} variant={"contained"} size={"large"}>ثبت نیاز</CustomButton>
+          </div>}
         </div>
         <img className={classes.image} src={Hands} alt="hands"/>
+        <AccessDenied open={open} handleClose={handleClose} action={() => history.push(routes.ADD_NEED)}/>
       </div>
   );
 };

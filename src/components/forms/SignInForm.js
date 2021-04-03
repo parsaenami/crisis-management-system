@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormControlLabel, InputLabel, Switch, TextField, Typography } from "@material-ui/core";
+import { CircularProgress, FormControlLabel, InputLabel, Switch, TextField, Typography } from "@material-ui/core";
 import { CustomButton } from "../buttons/CustomButton";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -50,8 +50,9 @@ const SignInForm = props => {
             helperText={props.error}
         />
         {!props.isMobileDisplay &&
-        <CustomButton variant={"contained"} size={"large"} onClick={props.submit}>ورود به حساب
-          کاربری</CustomButton>}
+        <CustomButton variant={"contained"} size={"large"} onClick={props.submit}>
+          {props.loading ? <CircularProgress size={26}/> : 'ورود به حساب کاربری'}
+        </CustomButton>}
       </>
   );
 };
@@ -60,6 +61,7 @@ SignInForm.propTypes = {
   isMobileDisplay: PropTypes.bool,
   submit: PropTypes.func,
   type: PropTypes.bool,
+  loading: PropTypes.bool,
   setType: PropTypes.func,
   userNumber: PropTypes.string,
   onUserNumberChangeFn: PropTypes.func,

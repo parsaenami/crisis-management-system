@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from "@material-ui/core";
+import { CircularProgress, Typography } from "@material-ui/core";
 import OtpInput from "../common/OtpInput";
 import { CustomButton } from "../buttons/CustomButton";
 
@@ -19,13 +19,16 @@ const OtpForm = props => {
             errorText={props.error}
         />
         {!props.isMobileDisplay &&
-        <CustomButton variant={"contained"} size={"large"} onClick={props.submit}>تأیید</CustomButton>}
+        <CustomButton variant={"contained"} size={"large"} onClick={props.submit}>
+          {props.loading ? <CircularProgress size={26}/> : 'تأیید'}
+        </CustomButton>}
       </>
   );
 };
 
 OtpForm.propTypes = {
   isMobileDisplay: PropTypes.bool,
+  loading: PropTypes.bool,
   code: PropTypes.string,
   submit: PropTypes.func,
   handleChange: PropTypes.func,

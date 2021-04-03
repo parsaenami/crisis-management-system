@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import { Swipe } from "react-swipe-component"
-import { disasterCategories, needCategories } from "../../assets/categories";
 
 const translate = {
   type: 'حادثه',
@@ -65,9 +64,9 @@ const Receipt = props => {
 
   const printValues = (cat, val) => {
     if (cat === "category") {
-      return needCategories[val.toString()].faName
+      return props.needCategories[val.toString()].faName
     } else if (cat === "title") {
-      return needCategories[props.receipts[activeStep].category.toString()].items[val]
+      return props.needCategories[props.receipts[activeStep].category.toString()].items[val]
     } else if (cat === "urgent") {
       switch (val) {
         case 1:
@@ -132,7 +131,7 @@ const Receipt = props => {
               </Grid>
               <Grid item xs={7}>
                 <Paper className={classes.value}
-                       elevation={0}>{disasterCategories[props.type] ? disasterCategories[props.type] : '-'}</Paper>
+                       elevation={0}>{props.disasterCategories[props.type] ? props.disasterCategories[props.type] : '-'}</Paper>
               </Grid>
               {Object.keys(props.receipts[activeStep]).map((need, i) => (<>
                 <Grid key={i + 1} item xs={5}>
@@ -172,6 +171,8 @@ const Receipt = props => {
 
 Receipt.propTypes = {
   className: PropTypes.string,
+  disasterCategories: PropTypes.object,
+  needCategories: PropTypes.object,
   type: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,

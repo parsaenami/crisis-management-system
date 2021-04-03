@@ -20,6 +20,7 @@ import Done from "./components/Done";
 import NotFound from "./components/NotFound";
 import { routes } from "./assets/routes";
 import Footer from "./components/common/Footer";
+import PrivateRoute from "./helpers/PrivateRoute";
 
 export const history = createBrowserHistory();
 
@@ -51,9 +52,9 @@ const App = () => {
                   <Route exact path={routes.HOME} component={Home}/>
                   <Route path={routes.SIGN_IN} component={Account}/>
                   <Route path={routes.ABOUT} component={About}/>
-                  <Route path={routes.PROFILE} component={Profile}/>
-                  <Route path={routes.ADD_NEED} component={AddNeed}/>
-                  <Route path={routes.DONE} component={Done}/>
+                  <PrivateRoute path={routes.PROFILE} component={Profile}/>
+                  <PrivateRoute path={routes.ADD_NEED} component={AddNeed}/>
+                  <PrivateRoute path={routes.DONE} component={Done}/>
                   <Route exact path={'*'} component={NotFound}/>
                 </Switch>
                 <Footer className="footer"/>

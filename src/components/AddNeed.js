@@ -6,7 +6,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
-  Chip,
+  Chip, CircularProgress,
   Collapse,
   IconButton,
   List,
@@ -49,6 +49,8 @@ import { useAlert } from "../hooks/useAlert";
 import { messages } from "../assets/messages";
 import Loader from "./common/Loader";
 import { Context } from "../Context";
+import { api, config, get_user_info, rest } from "../helpers/api";
+import { usePosition } from "../hooks/usePosition";
 
 const emptyOpenList = {
   menu: false,
@@ -294,7 +296,10 @@ const AddNeed = () => {
   const theme = useTheme()
   const history = useHistory()
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'))
-  const [loading, setLoading] = useState(true)
+  const [pageLoading, setPageLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [needCategories, setNeedCategories] = useState(true)
+  const [disasterCategories, setDisasterCategories] = useState(true)
   const [expanded, setExpanded] = React.useState('panel0')
   const [openList, setOpenList] = useState(emptyOpenList)
   const [need: NeedType[], setNeed] = useState([emptyNeed])
@@ -303,14 +308,23 @@ const AddNeed = () => {
   const [disasterError, setDisasterError] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
+  const {latitude, longitude, error} = usePosition(get_user_info().allow_location);
+
+  useEffect(() => {
+    api.get(rest.getNeeds)
+        .then((res) => {
+          setNeedCategories(res.data.needsCategory)
+          setDisasterCategories(res.data.DisasterCategory)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+        .finally(() => setPageLoading(false))
+  }, [])
 
   useEffect(() => {
     setContext(showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز')
   }, [setContext, showReceipt])
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 3000)
-  }, [])
 
   const handleOpenList = (e, name) => {
     setOpenList({
@@ -426,8 +440,23 @@ const AddNeed = () => {
   }
 
   const submitNeed = () => {
-    showAlert(messages.INFO_NEED_ADDED, "success", 3000, () => () => history.push(routes.DONE))
-    // history.push(routes.DONE)
+    setLoading(true)
+    const data = {
+      type: disaster,
+      lat: latitude,
+      long: longitude,
+      needs: need,
+    }
+    api.post(`${rest.request}/${get_user_info().id}`, data, config("json"))
+        .then((res) => {
+          setLoading(false)
+          showAlert(res.data.msg, "success", 3000)
+          history.push(routes.DONE)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+        .finally(() => setLoading(false))
   }
 
   const needItemForm = index => {
@@ -463,7 +492,7 @@ const AddNeed = () => {
           >
             <span>
               {need[index].title !== ""
-                  ? `درخواست برای ${needCategories[need[index].category.toString()].items[need[index].title]}`
+                  ? `درخواست برای ${needCategories[need[index].category.toString()].items[need[index].title.toString()]}`
                   : need.length > 1
                       ? `جزئیات درخواست ${index + 1}`
                       : `جزئیات درخواست`}
@@ -474,7 +503,7 @@ const AddNeed = () => {
             {index !== 0 && <div className={classnames(classes.needPart, "suggest")}>
               <Typography>شاید به این موارد هم نیاز داشته باشید:</Typography>
               <CardSlider>
-                {[[0, 12], [5, 2], [0, 3], [3, 8], [2, 12]].map((x, k) => (
+                {[[1, 4], [1, 2], [1, 3], [1, 8], [1, 9]].map((x, k) => (
                     <Card
                         k={k}
                         onClick={selectNeed(index, ...x)}
@@ -487,7 +516,7 @@ const AddNeed = () => {
                             size={"small"}
                             style={{fontSize: 10}}
                         />
-                        <div className={"text-center"}>{needCategories[x[0].toString()].items[x[1]]}</div>
+                        <div className={"text-center"}>{needCategories[x[0].toString()].items[x[1].toString()]}</div>
                       </div>
                     </Card>
                 ))}
@@ -545,21 +574,28 @@ const AddNeed = () => {
                       >
                         <div className={classes.hideBorders}/>
                         <Collapse in={openList.menu} timeout="auto" unmountOnExit>
-                          {Object.values(needCategories).map((need, i) => (
-                              <div key={need.enName}>
-                                <ListItem button onClick={e => handleOpenList(e, need.enName)}>
-                                  <ListItemText primary={need.faName}/>
-                                  {openList[need.enName] ? <ExpandLess/> : <ExpandMore/>}
+                          {Object.values(needCategories).map((n, i) => (
+                              <div key={n.enName}>
+                                <ListItem button onClick={e => handleOpenList(e, n.enName)}>
+                                  <ListItemText primary={n.faName}/>
+                                  {openList[n.enName] ? <ExpandLess/> : <ExpandMore/>}
                                 </ListItem>
-                                <Collapse in={openList[need.enName]} timeout="auto" unmountOnExit>
+                                <Collapse in={openList[n.enName]} timeout="auto" unmountOnExit>
                                   <List component="div" disablePadding>
-                                    {need.items.map((item, j) => (
-                                        <ListItem className={classes.listItem} key={j} button
-                                                  onClick={selectNeed(index, i, j)}>
+                                    {Object.keys(n.items).map((item, j) => (
+                                        <ListItem
+                                            className={classes.listItem}
+                                            key={j}
+                                            button
+                                            onClick={
+                                              selectNeed(index, i + 1, parseInt(item))
+                                            }
+                                        >
                                           <ListItemIcon style={{minWidth: Theme.spacing(4)}}>
                                             <span>{j + 1}</span>
                                           </ListItemIcon>
-                                          <ListItemText primary={item}/>
+                                          <ListItemText
+                                              primary={n.items[item]}/>
                                         </ListItem>
                                     ))}
                                   </List>
@@ -571,7 +607,7 @@ const AddNeed = () => {
                   ) : (
                       <div className={classes.selectedNeed}>
                         <Chip color={"primary"} label={needCategories[need[index].category.toString()].faName}/>
-                        <span>{needCategories[need[index].category.toString()].items[need[index].title]}</span>
+                        <span>{needCategories[need[index].category.toString()].items[need[index].title.toString()]}</span>
                         <IconButton edge={"end"} color={"inherit"} onClick={selectNeed(index, '', '')}>
                           <EditRoundedIcon/>
                         </IconButton>
@@ -614,7 +650,7 @@ const AddNeed = () => {
     )
   }
 
-  return loading ? <Loader/> : (
+  return pageLoading ? <Loader/> : (
       <div className={classes.container}>
         <Helmet><title>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</title></Helmet>
         <div className={classes.title}>
@@ -646,13 +682,19 @@ const AddNeed = () => {
 
           </div>}
           {(showReceipt || !isMobileDisplay) && <div className={classes.receipt}>
-            <Receipt receipts={need} type={disaster} current={expanded ? parseInt(expanded.slice(5)) : 0}/>
+            <Receipt
+                disasterCategories={disasterCategories}
+                needCategories={needCategories}
+                receipts={need}
+                type={disaster}
+                current={expanded ? parseInt(expanded.slice(5)) : 0}
+            />
             <div className={classes.desktopBtn}>
               <CustomButton variant={"contained"} onClick={showReceipt ? handleShowReceipt : addRequest}>
                 {showReceipt ? 'ویرایش' : 'درخواست جدید'}
               </CustomButton>
               <CustomButton variant={"contained"} onClick={showReceipt ? submitNeed : handleShowReceipt}>
-                {showReceipt ? 'تأیید و ثبت' : 'مرحله‌ی بعد'}
+                {loading ? <CircularProgress size={26}/> : showReceipt ? 'تأیید و ثبت' : 'مرحله‌ی بعد'}
               </CustomButton>
             </div>
           </div>}
@@ -664,6 +706,7 @@ const AddNeed = () => {
             onClickFn: showReceipt ? handleShowReceipt : addRequest,
           },
           {
+            loading: loading,
             title: showReceipt ? 'تأیید و ثبت' : 'مرحله‌ی بعد',
             onClickFn: showReceipt ? submitNeed : handleShowReceipt,
           },

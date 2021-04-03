@@ -1,8 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { IconButton, TextField, Typography } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  IconButton,
+  TextField,
+  Typography
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
 import { CustomButton } from "./buttons/CustomButton";
 import DataTable from "./table/DataTable";
 import { useAlert } from "../hooks/useAlert";
@@ -10,6 +20,9 @@ import FloatingAlert from "./common/FloatingAlert";
 import { messages } from "../assets/messages";
 import { Context } from "../Context";
 import Helmet from 'react-helmet';
+import Loader from "./common/Loader";
+import { api, config, get_user_info, rest } from "../helpers/api";
+import { routes } from "../assets/routes";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -62,11 +75,19 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     margin: theme.spacing(.5),
   },
+  admin: {
+    display: "flex",
+    alignItems: "center",
+    border: "1px solid",
+    borderRadius: theme.spacing(.5),
+    padding: theme.spacing(.5),
+    marginRight: theme.spacing(1.5),
+  },
 }));
 
 const translate = {
-  firstName: 'نام',
-  lastName: 'نام‌خانوادگی',
+  firstname: 'نام',
+  lastname: 'نام‌خانوادگی',
   phoneNumber: 'شماره‌ی تماس',
   nationalId: 'کد ملی',
   email: 'ایمیل',
@@ -74,39 +95,66 @@ const translate = {
 }
 
 const info = {
-  firstName: 'پارسا',
-  lastName: 'انعامی',
-  phoneNumber: '09109122944',
-  nationalId: '0021268622',
-  email: '-',
-  address: 'ایران - تهران - خیابان جمهوری - خیابان باستان جنوبی - خیابان حاج ملاعلی - پلاک ۴۹ - واحد ۵',
+  firstname: '',
+  lastname: '',
+  email: '',
+  address: '',
+  phoneNumber: '',
+  nationalId: '',
 }
 
 const Profile = () => {
   const classes = useStyles();
   const {setContext} = useContext(Context)
-  const [editMode, setEditMode] = useState({
-    firstName: false,
-    lastName: false,
-    phoneNumber: false,
-    nationalId: false,
-    email: false,
-    address: false,
-  });
+  const history = useHistory();
+  const [editMode, setEditMode] = useState(info);
   const [profile, setProfile] = useState(info);
-  const [showConfirmBtn, setShowConfirmBtn] = useState(false);
+  const [requests, setRequests] = useState([]);
+  const [admin, setAdmin] = useState(false);
+  const [location, setLocation] = useState(false);
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
+  const [pageLoading, setPageLoading] = useState(true)
+  const [loading, setLoading] = useState({...info, allowLocation: '', logout: ''})
+
+  useEffect(() => {
+    api.get(`${rest.profile}/${get_user_info().id}`, config("json"))
+        .then((res) => {
+          setAdmin(res.data.isAdmin)
+          setLocation(res.data.allowLocation)
+          delete res.data.isAdmin
+          delete res.data.allowLocation
+          setProfile(res.data)
+
+          api.get(`${rest.request}/${get_user_info().id}`, config("json"))
+              .then((res) => {
+                setRequests(res.data)
+              })
+              .catch((err) => {
+                showAlert(err.response.data.error, "error", 3000);
+              })
+        })
+        .catch((err) => {
+          if (err.response) {
+            showAlert(err.response.data.error, "error", 3000);
+          }
+          console.log(err.response)
+        })
+        .finally(() => setPageLoading(false))
+  }, [])
 
   useEffect(() => {
     setContext('پروفایل')
   }, [setContext])
 
   const editField = value => {
+    const currentEditState = editMode[value]
     setEditMode({
       ...editMode,
       [value]: !editMode[value],
     })
-    setShowConfirmBtn(true);
+    if (currentEditState) {
+      confirmChanges(value)
+    }
   }
 
   const handleEditProfile = e => {
@@ -116,16 +164,57 @@ const Profile = () => {
     })
   }
 
-  const confirmChanges = () => {
-    showAlert(messages.INFO_CHANGES_SAVED, 'success');
-    setShowConfirmBtn(false);
+  const confirmChanges = value => {
+    setLoading({...loading, [value]: true})
+    api.patch(`${rest.profile}/${get_user_info().id}`, {[value]: profile[value]}, config("json"))
+        .then(() => {
+          showAlert(messages.INFO_CHANGES_SAVED, 'success');
+          setLoading({...loading, [value]: false})
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
   }
 
-  return (
+  const updateLocationAccess = () => {
+    setLoading({...loading, allowLocation: true})
+    api.patch(`${rest.profile}/${get_user_info().id}`, {allowLocation: !location}, config("json"))
+        .then(() => {
+          setLocation(!location)
+          showAlert(messages.INFO_CHANGES_SAVED, 'success', 3000);
+          setLoading({...loading, allowLocation: false})
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+  }
+
+  const signOut = () => {
+    setLoading({...loading, logout: true})
+    api.patch(`${rest.signOut}/${get_user_info().id}`, {allowLocation: !location}, config("json"))
+        .then((res) => {
+          localStorage.removeItem('token')
+          showAlert(res.data.msg, 'success', 3000);
+          setLoading({...loading, logout: false})
+          history.push(routes.HOME)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+  }
+
+  return pageLoading ? <Loader/> : (
       <div className={classes.container}>
         <Helmet><title>پروفایل</title></Helmet>
         <div className={classes.title}>
           <Typography variant={"h3"}>پروفایل</Typography>
+          {admin && <div className={classes.admin}>
+            <StarsRoundedIcon/>
+            <Typography>ادمین</Typography>
+          </div>}
+          <div className="btn btn-danger mr-auto" onClick={signOut}>
+            {loading.logout ? <CircularProgress color={"secondary"} size={20}/> : 'خروج'}
+          </div>
         </div>
         <hr/>
         <div className={classes.cardContainer}>
@@ -135,11 +224,12 @@ const Profile = () => {
                   <div className={classes.infoTitle}>
                     <Typography>{translate[value]}</Typography>
                     <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={() => editField(value)}>
-                      {!editMode[value] ? <EditRoundedIcon/> : <CheckRoundedIcon/>}
+                      {loading[value] ? <CircularProgress size={24}/> : !editMode[value] ? <EditRoundedIcon/> :
+                          <CheckRoundedIcon/>}
                     </IconButton>
                   </div>
                   {!editMode[value]
-                      ? <Typography color={"textSecondary"}>{profile[value]}</Typography>
+                      ? <Typography color={"textSecondary"}>{profile[value] || '-'}</Typography>
                       : <TextField
                           variant="standard"
                           name={value}
@@ -148,15 +238,25 @@ const Profile = () => {
                       />}
                 </div>
             ))}
+            <FormControlLabel
+                control={
+                  <Checkbox
+                      edge={"end"}
+                      checked={location}
+                      onChange={updateLocationAccess}
+                      name="location"
+                      color="primary"
+                  />
+                }
+                label={<div className="d-flex align-items-center">
+                  <span>استفاده از لوکیشن برای امدادرسانی</span>
+                  {loading.allowLocation && <CircularProgress size={20} className="mr-2"/>}
+                </div>}
+            />
           </div>
-          {showConfirmBtn && <CustomButton
-              className={classes.btn}
-              variant="contained"
-              onClick={confirmChanges}
-          >ثبت تغییرات</CustomButton>}
         </div>
 
-        <DataTable title={'وضعیت درخواست‌ها'}/>
+        <DataTable title={'وضعیت درخواست‌ها'} rows={requests}/>
 
         <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
       </div>

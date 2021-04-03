@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
-import { Divider, Drawer, IconButton, List, ListItem, ListItemText } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { routes } from "../../assets/routes";
 import { NavLink } from "react-router-dom";
 import { Swipe } from "react-swipe-component";
 import Footer from "./Footer";
+import { Context } from "../../Context";
+import { get_token } from "../../helpers/api";
+import AccessDenied from "./AccessDenied";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -40,31 +54,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const listItems = [
-  {
-    text: 'صفحه‌ی اصلی',
-    url: routes.HOME,
-  },
-  {
-    text: 'ورود | ثبت‌نام',
-    url: routes.SIGN_IN,
-  },
-  {
-    text: 'پروفایل',
-    url: routes.PROFILE,
-  },
-  {
-    text: 'ثبت نیاز',
-    url: routes.ADD_NEED,
-  },
-  {
-    text: 'درباره‌ی ما',
-    url: routes.ABOUT,
-  },
-];
-
 const NavDrawer = props => {
   const classes = useStyles();
+  const {context} = useContext(Context)
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const history = useHistory();
+
+  const listItems = [
+    {
+      text: 'صفحه‌ی اصلی',
+      url: routes.HOME,
+    },
+    {
+      text: get_token() ? 'پروفایل' : 'ورود | ثبت‌نام',
+      url: get_token() ? routes.PROFILE : routes.SIGN_IN,
+    },
+    {
+      text: 'ثبت نیاز',
+      url: routes.ADD_NEED,
+    },
+    {
+      text: 'درباره‌ی ما',
+      url: routes.ABOUT,
+    },
+  ];
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleDialogOpen = () => {
+    if (get_token()) {
+      history.push(routes.ADD_NEED)
+    } else {
+      setDialogOpen(true);
+    }
+  };
 
   const list = (
       <div className={classes.list} role="presentation" onClick={props.toggleFn(false)}>
@@ -72,9 +97,17 @@ const NavDrawer = props => {
           {listItems.map((navItem, index) => (
               <div key={navItem.text}>
                 <ListItem button>
-                  <NavLink exact to={navItem.url} className={classes.nav}>
-                    <ListItemText primary={navItem.text}/>
-                  </NavLink>
+                  {navItem.text !== 'ثبت نیاز'
+                      ? <NavLink exact to={navItem.url} className={classes.nav}>
+                        <ListItemText primary={navItem.text}/>
+                      </NavLink>
+                      : get_token()
+                          ? <NavLink to={routes.ADD_NEED} className={classes.nav}>
+                            <Button color="inherit">ثبت نیاز</Button>
+                          </NavLink>
+                          : <div onClick={handleDialogOpen} className={classes.nav}>
+                            <Button color="inherit">ثبت نیاز</Button>
+                          </div>}
                 </ListItem>
                 {index !== listItems.length - 1 && <Divider/>}
               </div>
@@ -104,8 +137,9 @@ const NavDrawer = props => {
               </IconButton>
             </div>
             {list}
-            <Footer />
+            <Footer/>
           </Drawer>
+          <AccessDenied open={dialogOpen} handleClose={handleDialogClose} action={() => history.push(routes.ADD_NEED)}/>
         </Swipe>
       </nav>
   );
