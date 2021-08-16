@@ -74,24 +74,24 @@ const DataTableRow = props => {
           <TableCell align="right">{row.helpDate || '-'}</TableCell>
           <TableCell align="right">{row.status || '-'}</TableCell>
           <TableCell align="right">{row.type || '-'}</TableCell>
-          <ClickAwayListener onClickAway={handleTooltipClose}>
+          {row.desc ? <ClickAwayListener onClickAway={handleTooltipClose}>
             <CustomTooltip
-                // PopperProps={{disablePortal: false}}
-                disableFocusListener={isMobileDisplay}
-                disableHoverListener={isMobileDisplay}
-                // disableTouchListener
-                open={openTooltip}
-                onClose={handleTooltipClose}
-                title={row.desc}
-                placement="right"
-                className={classes.tooltip}
-                classes={{tooltip: classes.tooltip}}
+              // PopperProps={{disablePortal: false}}
+              disableFocusListener={isMobileDisplay}
+              disableHoverListener={isMobileDisplay}
+              // disableTouchListener
+              open={openTooltip}
+              onClose={handleTooltipClose}
+              title={row.desc}
+              placement="right"
+              className={classes.tooltip}
+              classes={{tooltip: classes.tooltip}}
             >
-              <TableCell className={classes.desc} onClick={handleTooltipOpen} align="right">
+              <TableCell className={classes.desc} onClick={handleTooltipOpen} align="center">
                 <HelpOutlineRoundedIcon/>
               </TableCell>
             </CustomTooltip>
-          </ClickAwayListener>
+          </ClickAwayListener> : <TableCell align="center">-</TableCell>}
         </TableRow>
         <TableRow key={props.k + Math.random()}>
           <TableCell className={classes.root} style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>

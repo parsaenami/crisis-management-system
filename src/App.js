@@ -9,7 +9,7 @@ import { Container, CssBaseline, MuiThemeProvider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Helmet from 'react-helmet';
 import Theme from "./helpers/Theme";
-import { Context } from "./Context";
+import { Context, UserContext } from "./Context";
 import Header from "./components/common/Header";
 import Home from "./components/Home";
 import Account from "./components/Account";
@@ -21,6 +21,7 @@ import NotFound from "./components/NotFound";
 import { routes } from "./assets/routes";
 import Footer from "./components/common/Footer";
 import PrivateRoute from "./helpers/PrivateRoute";
+import AdminPanel from "./components/AdminPanel";
 
 export const history = createBrowserHistory();
 
@@ -38,10 +39,12 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   const [context, setContext] = useState("default");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   return (
-      <HttpsRedirect>
-        <BrowserRouter>
+    <HttpsRedirect>
+      <BrowserRouter>
+        <UserContext.Provider value={{isAdmin, setIsAdmin}}>
           <Context.Provider value={{context, setContext}}>
             <MuiThemeProvider theme={Theme}>
               <CssBaseline/>
@@ -55,14 +58,16 @@ const App = () => {
                   <PrivateRoute path={routes.PROFILE} component={Profile}/>
                   <PrivateRoute path={routes.ADD_NEED} component={AddNeed}/>
                   <PrivateRoute path={routes.DONE} component={Done}/>
+                  <PrivateRoute path={routes.ADMIN} component={AdminPanel}/>
                   <Route exact path={'*'} component={NotFound}/>
                 </Switch>
                 <Footer className="footer"/>
               </Container>
             </MuiThemeProvider>
           </Context.Provider>
-        </BrowserRouter>
-      </HttpsRedirect>
+        </UserContext.Provider>
+      </BrowserRouter>
+    </HttpsRedirect>
   );
 };
 

@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -19,8 +20,8 @@ import { NavLink } from "react-router-dom";
 import { routes } from "../../assets/routes";
 import Logo from '../../assets/icons/simorgh.svg';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
-import { Context } from "../../Context";
-import { get_token } from "../../helpers/api";
+import { Context, UserContext } from "../../Context";
+import { api, config, get_token, get_user_info, rest } from "../../helpers/api";
 import AccessDenied from "./AccessDenied";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     '& > button > span': {
       direction: "ltr",
     },
+  },
+  admin: {
+    border: "1px solid",
+    borderRadius: theme.spacing(.5),
   },
   navContainer: {
     display: "flex",
@@ -71,6 +76,7 @@ const Header = props => {
   const {window} = props;
   const classes = useStyles();
   const {context} = useContext(Context);
+  const {isAdmin, setIsAdmin} = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const history = useHistory();
@@ -81,6 +87,14 @@ const Header = props => {
     threshold: 80,
     target: window ? window() : undefined,
   });
+
+
+  useEffect(() => {
+    api.get(`${rest.profile}/${get_user_info().id}`, config("json"))
+      .then((res) => {
+        setIsAdmin(res.data.isAdmin)
+      })
+  }, [])
 
   const toggleDrawer = open => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -103,61 +117,64 @@ const Header = props => {
   };
 
   return (
-      <HeaderScrollEffect {...props}>
-        <AppBar position={"fixed"} className={classes.header}>
-          <Container maxWidth="lg" className={classes.container}>
-            <Toolbar>
-              {
-                <div className={classes.navContainer}>
-                  <NavLink exact to={routes.HOME} className={classes.btn}>
-                    <Button color="inherit">صفحه‌ی اصلی</Button>
+    <HeaderScrollEffect {...props}>
+      <AppBar position={"fixed"} className={classes.header}>
+        <Container maxWidth="lg" className={classes.container}>
+          <Toolbar>
+            {
+              <div className={classes.navContainer}>
+                <NavLink exact to={routes.HOME} className={classes.btn}>
+                  <Button color="inherit">صفحه‌ی اصلی</Button>
+                </NavLink>
+                {get_token()
+                  ? <NavLink to={routes.ADD_NEED} className={classes.btn}>
+                    <Button color="inherit">ثبت نیاز</Button>
                   </NavLink>
-                  {get_token()
-                      ? <NavLink to={routes.ADD_NEED} className={classes.btn}>
-                        <Button color="inherit">ثبت نیاز</Button>
-                      </NavLink>
-                      : <div onClick={handleDialogOpen} className={classes.btn}>
-                        <Button color="inherit">ثبت نیاز</Button>
-                      </div>}
-                  <NavLink to={routes.ABOUT} className={classes.btn}>
-                    <Button color="inherit">درباره‌ی ما</Button>
+                  : <div onClick={handleDialogOpen} className={classes.btn}>
+                    <Button color="inherit">ثبت نیاز</Button>
+                  </div>}
+                <NavLink to={routes.ABOUT} className={classes.btn}>
+                  <Button color="inherit">درباره‌ی ما</Button>
+                </NavLink>
+                {get_token()
+                  ? <NavLink to={routes.PROFILE} className={classes.btn}>
+                    <Button color="inherit">پروفایل</Button>
                   </NavLink>
-                  {get_token()
-                      ? <NavLink to={routes.PROFILE} className={classes.btn}>
-                        <Button color="inherit">پروفایل</Button>
-                      </NavLink>
-                      : <NavLink to={routes.SIGN_IN} className={classes.btn}>
-                        <Button color="inherit">ورود | ثبت‌نام</Button>
-                      </NavLink>}
-                </div>
-              }
-              <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
-                <MenuRoundedIcon/>
-              </IconButton>
-              {isMobileDisplay && trigger &&
-              <Typography color={"textSecondary"} className="ml-auto">{context}</Typography>}
-              {
-                props.location.pathname === routes.HOME
-                    ?
-                    get_token()
-                        ? <NavLink to={routes.PROFILE} className={classes.btn} id='home'>
-                          <Button color="inherit" startIcon={<PersonRoundedIcon/>}>پروفایل</Button>
-                        </NavLink>
-                        : <NavLink to={routes.SIGN_IN} className={classes.btn} id='home'>
-                          <Button color="inherit">ورود | ثبت‌نام</Button>
-                        </NavLink>
-                    :
-                    <NavLink to={routes.HOME} className={classes.btn}>
-                      <IconButton edge="start"><img src={Logo} alt="logo"/></IconButton>
-                    </NavLink>
-              }
-              <NavDrawer open={open} toggleFn={toggleDrawer}/>
-            </Toolbar>
-            <AccessDenied open={dialogOpen} handleClose={handleDialogClose}
-                          action={() => history.push(routes.ADD_NEED)}/>
-          </Container>
-        </AppBar>
-      </HeaderScrollEffect>
+                  : <NavLink to={routes.SIGN_IN} className={classes.btn}>
+                    <Button color="inherit">ورود | ثبت‌نام</Button>
+                  </NavLink>}
+                {isAdmin && <NavLink to={routes.ADMIN} className={classnames(classes.btn, classes.admin)}>
+                  <Button color="inherit">پنل ادمین</Button>
+                </NavLink>}
+              </div>
+            }
+            <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
+              <MenuRoundedIcon/>
+            </IconButton>
+            {isMobileDisplay && trigger &&
+            <Typography color={"textSecondary"} className="ml-auto">{context}</Typography>}
+            {
+              props.location.pathname === routes.HOME
+                ?
+                get_token()
+                  ? <NavLink to={routes.PROFILE} className={classes.btn} id='home'>
+                    <Button color="inherit" startIcon={<PersonRoundedIcon/>}>پروفایل</Button>
+                  </NavLink>
+                  : <NavLink to={routes.SIGN_IN} className={classes.btn} id='home'>
+                    <Button color="inherit">ورود | ثبت‌نام</Button>
+                  </NavLink>
+                :
+                <NavLink to={routes.HOME} className={classes.btn}>
+                  <IconButton edge="start"><img src={Logo} alt="logo"/></IconButton>
+                </NavLink>
+            }
+            <NavDrawer open={open} toggleFn={toggleDrawer}/>
+          </Toolbar>
+          <AccessDenied open={dialogOpen} handleClose={handleDialogClose}
+                        action={() => history.push(routes.ADD_NEED)}/>
+        </Container>
+      </AppBar>
+    </HeaderScrollEffect>
   );
 };
 

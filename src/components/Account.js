@@ -221,8 +221,6 @@ const Account = props => {
     const signInMethod = signInWithNid ? userInfo.nationalId : userInfo.phoneNumber;
     let data = {};
 
-    console.log('error:', checkError())
-
     if (!checkError()) {
       setLoading({...loading, account: true})
       if (isRegister) {

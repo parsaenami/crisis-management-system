@@ -85,6 +85,4 @@ const Done = () => {
   );
 };
 
-Done.propTypes = {};
-
 export default Done;

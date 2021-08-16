@@ -1,7 +1,8 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-const baseUrl = "https://flaskprojectback1.herokuapp.com/";
+const baseUrl = "http://127.0.0.1:5000/";
+// const baseUrl = "https://flaskprojectback1.herokuapp.com/";
 
 const api = axios.create({
   baseURL: baseUrl
@@ -16,6 +17,7 @@ const rest = {
   getNeeds: '/get-needs',
   profile: '/profile',
   getOtp: '/otp',
+  recent: '/request/recent',
 };
 
 const set_token = token => {

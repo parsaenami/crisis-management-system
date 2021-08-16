@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import DataTableRow from "./DataTableRow";
 import DataTableHead from "./DataTableHead";
+import Loader from "../common/Loader";
+import { CircularProgress } from "@material-ui/core";
 
 
 const columns = [
@@ -142,9 +144,9 @@ const DataTable = props => {
                   rowCount={props.rows.length}
               />
               <TableBody>
-                {stableSort(props.rows, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(row => <DataTableRow k={row.name} row={row}/>)}
+                {props.loading ? <CircularProgress size={26}/> : stableSort(props.rows, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(row => <DataTableRow k={row.name} row={row}/>)}
                 {props.showEmptyRows && emptyRows > 0 && (
                     <TableRow style={{height: 53 * emptyRows}}>
                       <TableCell colSpan={6}/>

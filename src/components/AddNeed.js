@@ -23,6 +23,7 @@ import {
   useTheme
 } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 import classnames from "classnames";
 import Helmet from 'react-helmet';
 import RTL from "../helpers/RTL";
@@ -53,6 +54,7 @@ import Loader from "./common/Loader";
 import { Context } from "../Context";
 import { api, config, get_user_info, rest } from "../helpers/api";
 import { usePosition } from "../hooks/usePosition";
+import RecentNeeds from "./RecentNeeds";
 
 const emptyOpenList = {
   menu: false,
@@ -311,20 +313,73 @@ const AddNeed = () => {
   const [disaster, setDisaster] = useState(false)
   const [disasterError, setDisasterError] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
+  const [showRecentRequests, setShowRecentRequests] = useState(null)
+  const [recentRequests, setRecentRequests] = useState(null)
+  const [preSelected, setPreSelected] = useState(null)
+
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
   const {latitude, longitude} = usePosition(get_user_info().allow_location);
 
-  useEffect(() => {
+  const getData = () => {
     api.get(rest.getNeeds)
-        .then((res) => {
-          setNeedCategories(res.data.needsCategory)
-          setDisasterCategories(res.data.DisasterCategory)
+      .then((res) => {
+        setNeedCategories(res.data.needsCategory)
+        setDisasterCategories(res.data.DisasterCategory)
+      })
+      .catch((err) => {
+        showAlert(err.response?.data?.error, "error", 3000);
+      })
+      .finally(() => setPageLoading(false))
+  }
+
+  useEffect(() => {
+    if (latitude && longitude && recentRequests === null) {
+      api.get(`${rest.recent}/${latitude}/${longitude}`)
+        .then(res => {
+          console.log(res)
+          setShowRecentRequests(res.data.status)
+          if (res.data.status) {
+            setRecentRequests(res.data.result)
+          } else {
+            getData()
+            setRecentRequests(null)
+          }
+          setPageLoading(false)
         })
         .catch((err) => {
           showAlert(err.response.data.error, "error", 3000);
         })
-        .finally(() => setPageLoading(false))
-  }, [])
+      // .finally(() => setPageLoading(false))}
+    }
+  }, [latitude, longitude])
+
+  useEffect(() => {
+    if (showRecentRequests === false) {
+      console.log('eeeee')
+      setPageLoading(true)
+      getData()
+    }
+  }, [showRecentRequests])
+
+  useEffect(() => {
+    if (typeof needCategories === "object" && typeof disasterCategories === "object" && preSelected) {
+      selectNeed(0, preSelected[0], preSelected[1])()
+      handleDisaster(preSelected[2])()
+    }
+  }, [needCategories, disasterCategories])
+
+  // useEffect(() => {
+  //   console.log(1)
+  //   api.get(rest.getNeeds)
+  //       .then((res) => {
+  //         setNeedCategories(res.data.needsCategory)
+  //         setDisasterCategories(res.data.DisasterCategory)
+  //       })
+  //       .catch((err) => {
+  //         showAlert(err.response.data.error, "error", 3000);
+  //       })
+  //       .finally(() => setPageLoading(false))
+  // }, [])
 
   useEffect(() => {
     setContext(showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز')
@@ -373,6 +428,7 @@ const AddNeed = () => {
   }
 
   const selectNeed = (index, i, j) => () => {
+    console.log(index, i, j)
     setNeed([
       ...need.slice(0, index),
       {...need[index], category: i, title: j},
@@ -454,15 +510,15 @@ const AddNeed = () => {
       needs: need,
     }
     api.post(`${rest.request}/${get_user_info().id}`, data, config("json"))
-        .then((res) => {
-          setLoading(false)
-          showAlert(res.data.msg, "success", 3000)
-          history.push(routes.DONE)
-        })
-        .catch((err) => {
-          showAlert(err.response.data.error, "error", 3000);
-        })
-        .finally(() => setLoading(false))
+      .then((res) => {
+        setLoading(false)
+        showAlert(res.data.msg, "success", 3000)
+        history.push(routes.DONE)
+      })
+      .catch((err) => {
+        showAlert(err.response.data.error, "error", 3000);
+      })
+      .finally(() => setLoading(false))
   }
 
   const toggleSearchMode = e => {
@@ -503,184 +559,195 @@ const AddNeed = () => {
     ];
 
     return (
-        <Accordion className={classes.accordion} expanded={expanded === `panel${index}`}
-                   onChange={handleExpand(`panel${index}`)} key={index}>
-          <AccordionSummary
-              expandIcon={<ExpandMoreIcon/>}
-              className={classnames('header', {"error": needError[index].amount || needError[index].title})}
-          >
+      <Accordion className={classes.accordion} expanded={expanded === `panel${index}`}
+                 onChange={handleExpand(`panel${index}`)} key={index}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon/>}
+          className={classnames('header', {"error": needError[index].amount || needError[index].title})}
+        >
             <span>
               {need[index].title !== ""
-                  ? `درخواست برای ${needCategories[need[index].category.toString()].items[need[index].title.toString()]}`
-                  : need.length > 1
-                      ? `جزئیات درخواست ${index + 1}`
-                      : `جزئیات درخواست`}
+                ? `درخواست برای ${needCategories[need[index].category.toString()].items[need[index].title.toString()]}`
+                : need.length > 1
+                  ? `جزئیات درخواست ${index + 1}`
+                  : `جزئیات درخواست`}
             </span>
-            {(needError[index].amount || needError[index].title) && <ErrorRoundedIcon/>}
-          </AccordionSummary>
-          <AccordionDetails className={"details"}>
-            {index !== 0 && <div className={classnames(classes.needPart, "suggest")}>
-              <Typography>شاید به این موارد هم نیاز داشته باشید:</Typography>
-              <CardSlider>
-                {[[1, 4], [1, 2], [1, 3], [1, 8], [1, 9]].map((x, k) => (
-                    <Card
-                        k={k}
-                        onClick={selectNeed(index, ...x)}
-                        selected={x[0] === need[index].category && x[1] === need[index].title}
-                    >
-                      <div className={classes.suggestionCard}>
-                        <Chip
-                            label={needCategories[x[0].toString()].faName}
-                            color={x[0] === need[index].category && x[1] === need[index].title ? "secondary" : "primary"}
-                            size={"small"}
-                            style={{fontSize: 10}}
-                        />
-                        <div className={"text-center"}>{needCategories[x[0].toString()].items[x[1].toString()]}</div>
-                      </div>
-                    </Card>
-                ))}
-              </CardSlider>
-            </div>}
-            <RTL>
-              <MuiThemeProvider theme={Theme}>
-                <div className={classes.needPart}>
-                  <div className={classes.headerAmount}>
-                    <Typography>چه نیازی دارید؟</Typography>
-                    <div>
-                      <div className="amountBtn" onClick={setNeedAmountBtn(index, 1)}>+</div>
-                      <TextField
-                          placeholder={'تعداد'}
-                          type={"number"}
-                          variant={"outlined"}
-                          size={"small"}
-                          inputProps={{
-                            "min": 0
-                          }}
-                          name={'amount'}
-                          className={"needAmount"}
-                          value={need[index].amount || ''}
-                          onChange={setNeedInfo(index)}
-                          error={!!needError[index].amount}
-                      />
-                      <div className="amountBtn" onClick={setNeedAmountBtn(index, -1)}>-</div>
-                    </div>
+          {(needError[index].amount || needError[index].title) && <ErrorRoundedIcon/>}
+        </AccordionSummary>
+        <AccordionDetails className={"details"}>
+          {index !== 0 && <div className={classnames(classes.needPart, "suggest")}>
+            <Typography>شاید به این موارد هم نیاز داشته باشید:</Typography>
+            <CardSlider>
+              {[[1, 4], [1, 2], [2, 30], [3, 50], [5, 70]].map((x, k) => (
+                <Card
+                  k={k}
+                  onClick={selectNeed(index, ...x)}
+                  selected={x[0] === need[index].category && x[1] === need[index].title}
+                >
+                  <div className={classes.suggestionCard}>
+                    <Chip
+                      label={needCategories[x[0].toString()].faName}
+                      color={x[0] === need[index].category && x[1] === need[index].title ? "secondary" : "primary"}
+                      size={"small"}
+                      style={{fontSize: 10}}
+                    />
+                    <div className={"text-center"}>{needCategories[x[0].toString()].items[x[1].toString()]}</div>
                   </div>
-                  {need[index].category === '' || need[index].title === '' ? (
-                      <List
-                          disablePadding
-                          className={classnames(classes.list, {"error": needError[index].amount || needError[index].title})}
-                          subheader={
-                            <ListSubheader
-                                className={classnames('header', {"error": needError[index].amount || needError[index].title})}
-                                component="div"
-                                id="nested-list-subheader"
-                                onClick={e => handleOpenList(e, 'menu')}
-                            >
-                              {isSearchMode
-                                  ? <TextField
-                                      style={{width: 150}}
-                                      size={"small"}
-                                      value={search}
-                                      onChange={searchNeed}
-                                      placeholder={"عنوان نیاز"}
-                                      onClick={e => e.stopPropagation()}
-                                      autoFocus
-                                  />
-                                  : <span>دسته‌بندی نیازمندی‌ها</span>}
-                              <div>
-                                <IconButton color={"inherit"} className={""} onClick={toggleSearchMode}>
-                                  {isSearchMode ? <CloseRoundedIcon/> : <SearchRoundedIcon/>}
-                                </IconButton>
-                                <IconButton edge={"end"} color={"inherit"}>
-                                  {openList.menu ? <ExpandLess/> : <ExpandMore/>}
-                                </IconButton>
-                              </div>
-                            </ListSubheader>
-                          }
-                      >
-                        <div className={classes.hideBorders}/>
-                        <Collapse in={openList.menu} timeout="auto" unmountOnExit>
-                          {Object.values(needCategories).filter(val => {
-                            return Object.values(val.items).join().indexOf(search) >= 0
-                          }).map((n, i) => (
-                              <div key={n.enName}>
-                                <ListItem button onClick={e => handleOpenList(e, n.enName)}>
-                                  <ListItemText primary={n.faName}/>
-                                  {openList[n.enName] ? <ExpandLess/> : <ExpandMore/>}
-                                </ListItem>
-                                <Collapse in={openList[n.enName]} timeout="auto" unmountOnExit>
-                                  <List component="div" disablePadding>
-                                    {Object.keys(n.items).filter(value => {
-                                      return n.items[value].indexOf(search) >= 0
-                                    }).map((item, j) => (
-                                        <ListItem
-                                            className={classes.listItem}
-                                            key={j}
-                                            button
-                                            onClick={
-                                              selectNeed(index, i + 1, parseInt(item))
-                                            }
-                                        >
-                                          <ListItemIcon style={{minWidth: Theme.spacing(4)}}>
-                                            <span>{j + 1}</span>
-                                          </ListItemIcon>
-                                          <ListItemText
-                                              primary={n.items[item]}/>
-                                        </ListItem>
-                                    ))}
-                                  </List>
-                                </Collapse>
-                              </div>
-                          ))}
-                        </Collapse>
-                      </List>
-                  ) : (
-                      <div className={classes.selectedNeed}>
-                        <Chip color={"primary"} label={needCategories[need[index].category.toString()].faName}/>
-                        <span>{needCategories[need[index].category.toString()].items[need[index].title.toString()]}</span>
-                        <IconButton edge={"end"} color={"inherit"} onClick={selectNeed(index, '', '')}>
-                          <EditRoundedIcon/>
-                        </IconButton>
-                      </div>
-                  )}
-                </div>
-                <div className={classes.needPart}>
-                  <Typography>نیازتان چقدر ضروری است؟</Typography>
-                  <Slider
-                      min={1}
-                      max={5}
-                      step={1}
-                      marks={marks}
-                      defaultValue={1}
-                      name={'urgent'}
-                      value={need[index].urgent}
-                      onChange={handleSliderChange(index)}
-                  />
-                </div>
-                <div className={classes.needPart}>
-                  <Typography>آیا توضیح خاصی لازم است؟ (اختیاری)</Typography>
-                  <TextField
-                      multiline
-                      variant={"filled"}
-                      label={"توضیحات"}
-                      name={'desc'}
-                      value={need[index].desc}
+                </Card>
+              ))}
+            </CardSlider>
+          </div>}
+          <RTL>
+            <MuiThemeProvider theme={Theme}>
+              <div className={classes.needPart}>
+                <div className={classes.headerAmount}>
+                  <Typography>چه نیازی دارید؟</Typography>
+                  <div>
+                    <div className="amountBtn" onClick={setNeedAmountBtn(index, 1)}>+</div>
+                    <TextField
+                      placeholder={'تعداد'}
+                      type={"number"}
+                      variant={"outlined"}
+                      size={"small"}
+                      inputProps={{
+                        "min": 0
+                      }}
+                      name={'amount'}
+                      className={"needAmount"}
+                      value={need[index].amount || ''}
                       onChange={setNeedInfo(index)}
-                  />
+                      error={!!needError[index].amount}
+                    />
+                    <div className="amountBtn" onClick={setNeedAmountBtn(index, -1)}>-</div>
+                  </div>
                 </div>
-              </MuiThemeProvider>
-            </RTL>
-            {need.length > 1 && <div className={classnames(classes.needPart, "deleteBtn")}>
-              <Button variant={"outlined"} color={"primary"} size={"small"} onClick={deleteRequest(index)}>
-                حذف درخواست
-              </Button>
-            </div>}
-          </AccordionDetails>
-        </Accordion>
+                <caption style={{paddingTop: 0, display: 'flex',}}>
+                  <InfoRoundedIcon/>
+                  <span>چنانچه نیاز مورد نظر شما در موارد زیر نبود، گزینه‌ی «غیره» را انتخاب نموده در قسمت توضیحات نیاز خود را شرح دهید.</span>
+                </caption>
+                {need[index].category === '' || need[index].title === '' ? (
+                  <List
+                    disablePadding
+                    className={classnames(classes.list, {"error": needError[index].amount || needError[index].title})}
+                    subheader={
+                      <ListSubheader
+                        className={classnames('header', {"error": needError[index].amount || needError[index].title})}
+                        component="div"
+                        id="nested-list-subheader"
+                        onClick={e => handleOpenList(e, 'menu')}
+                      >
+                        {isSearchMode
+                          ? <TextField
+                            style={{width: 150}}
+                            size={"small"}
+                            value={search}
+                            onChange={searchNeed}
+                            placeholder={"عنوان نیاز"}
+                            onClick={e => e.stopPropagation()}
+                            autoFocus
+                          />
+                          : <span>دسته‌بندی نیازمندی‌ها</span>}
+                        <div>
+                          <IconButton color={"inherit"} className={""} onClick={toggleSearchMode}>
+                            {isSearchMode ? <CloseRoundedIcon/> : <SearchRoundedIcon/>}
+                          </IconButton>
+                          <IconButton edge={"end"} color={"inherit"}>
+                            {openList.menu ? <ExpandLess/> : <ExpandMore/>}
+                          </IconButton>
+                        </div>
+                      </ListSubheader>
+                    }
+                  >
+                    <div className={classes.hideBorders}/>
+                    <Collapse in={openList.menu} timeout="auto" unmountOnExit>
+                      {Object.values(needCategories).filter(val => {
+                        return Object.values(val.items).join().indexOf(search) >= 0
+                      }).map((n, i) => (
+                        <div key={n.enName}>
+                          <ListItem button onClick={e => handleOpenList(e, n.enName)}>
+                            <ListItemText primary={n.faName}/>
+                            {openList[n.enName] ? <ExpandLess/> : <ExpandMore/>}
+                          </ListItem>
+                          <Collapse in={openList[n.enName]} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                              {Object.keys(n.items).filter(value => {
+                                return n.items[value].indexOf(search) >= 0
+                              }).map((item, j) => (
+                                <ListItem
+                                  className={classes.listItem}
+                                  key={j}
+                                  button
+                                  onClick={
+                                    selectNeed(index, Object.keys(needCategories).filter(t => needCategories[t] === n)[0], parseInt(item))
+                                  }
+                                >
+                                  <ListItemIcon style={{minWidth: Theme.spacing(4)}}>
+                                    <span>{j + 1}</span>
+                                  </ListItemIcon>
+                                  <ListItemText
+                                    primary={n.items[item]}/>
+                                </ListItem>
+                              ))}
+                            </List>
+                          </Collapse>
+                        </div>
+                      ))}
+                    </Collapse>
+                  </List>
+                ) : (
+                  <div className={classes.selectedNeed}>
+                    <Chip color={"primary"} label={needCategories[need[index].category.toString()].faName}/>
+                    <span>{needCategories[need[index].category.toString()].items[need[index].title.toString()]}</span>
+                    <IconButton edge={"end"} color={"inherit"} onClick={selectNeed(index, '', '')}>
+                      <EditRoundedIcon/>
+                    </IconButton>
+                  </div>
+                )}
+              </div>
+              <div className={classes.needPart}>
+                <Typography>نیازتان چقدر ضروری است؟</Typography>
+                <Slider
+                  min={1}
+                  max={5}
+                  step={1}
+                  marks={marks}
+                  defaultValue={1}
+                  name={'urgent'}
+                  value={need[index].urgent}
+                  onChange={handleSliderChange(index)}
+                />
+              </div>
+              <div className={classes.needPart}>
+                <Typography>آیا توضیح خاصی لازم است؟ (اختیاری)</Typography>
+                <TextField
+                  multiline
+                  variant={"filled"}
+                  label={"توضیحات"}
+                  name={'desc'}
+                  value={need[index].desc}
+                  onChange={setNeedInfo(index)}
+                />
+              </div>
+            </MuiThemeProvider>
+          </RTL>
+          {need.length > 1 && <div className={classnames(classes.needPart, "deleteBtn")}>
+            <Button variant={"outlined"} color={"primary"} size={"small"} onClick={deleteRequest(index)}>
+              حذف درخواست
+            </Button>
+          </div>}
+        </AccordionDetails>
+      </Accordion>
     )
   }
 
   return pageLoading ? <Loader/> : (
+    showRecentRequests ? (
+      <RecentNeeds
+        requests={recentRequests}
+        select={(i, j, k) => setPreSelected([i, j, k])}
+        close={() => setShowRecentRequests(false)}
+      />
+    ) : (
       <div className={classes.container}>
         <Helmet><title>{showReceipt ? 'تأیید اطلاعات' : 'ثبت نیاز'}</title></Helmet>
         <div className={classes.title}>
@@ -693,15 +760,15 @@ const AddNeed = () => {
             <Typography color={disasterError ? "error" : "inherit"}>نوع حادثه را مشخص کنید</Typography>
             <CardSlider>
               {Object.keys(disasterCategories).map((d, i) => (
-                  <Card
-                      k={i}
-                      icon={disasterIcons[d]}
-                      selected={disaster === d}
-                      onClick={handleDisaster(d)}
-                      error={disasterError}
-                  >
-                    <div>{disasterCategories[d]}</div>
-                  </Card>
+                <Card
+                  k={i}
+                  icon={disasterIcons[d]}
+                  selected={disaster === d}
+                  onClick={handleDisaster(d)}
+                  error={disasterError}
+                >
+                  <div>{disasterCategories[d]}</div>
+                </Card>
               ))}
             </CardSlider>
 
@@ -713,11 +780,11 @@ const AddNeed = () => {
           </div>}
           {(showReceipt || !isMobileDisplay) && <div className={classes.receipt}>
             <Receipt
-                disasterCategories={disasterCategories}
-                needCategories={needCategories}
-                receipts={need}
-                type={disaster}
-                current={expanded ? parseInt(expanded.slice(5)) : 0}
+              disasterCategories={disasterCategories}
+              needCategories={needCategories}
+              receipts={need}
+              type={disaster}
+              current={expanded ? parseInt(expanded.slice(5)) : 0}
             />
             <div className={classes.desktopBtn}>
               <CustomButton variant={"contained"} onClick={showReceipt ? handleShowReceipt : addRequest}>
@@ -744,6 +811,7 @@ const AddNeed = () => {
 
         <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
       </div>
+    )
   );
 };
 

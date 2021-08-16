@@ -5,5 +5,6 @@ export const routes = {
   ABOUT: `/about`,
   PROFILE: `/profile`,
   DONE: `/done`,
+  ADMIN: '/admin',
   NOT_FOUND: `/404`,
 }

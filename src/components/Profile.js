@@ -18,7 +18,7 @@ import DataTable from "./table/DataTable";
 import { useAlert } from "../hooks/useAlert";
 import FloatingAlert from "./common/FloatingAlert";
 import { messages } from "../assets/messages";
-import { Context } from "../Context";
+import { Context, UserContext } from "../Context";
 import Helmet from 'react-helmet';
 import Loader from "./common/Loader";
 import { api, config, get_user_info, rest } from "../helpers/api";
@@ -106,6 +106,7 @@ const info = {
 const Profile = () => {
   const classes = useStyles();
   const {setContext} = useContext(Context)
+  const {setIsAdmin} = useContext(UserContext);
   const history = useHistory();
   const [editMode, setEditMode] = useState(info);
   const [profile, setProfile] = useState(info);
@@ -114,12 +115,13 @@ const Profile = () => {
   const [location, setLocation] = useState(false);
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
   const [pageLoading, setPageLoading] = useState(true)
-  const [loading, setLoading] = useState({...info, allowLocation: '', logout: ''})
+  const [loading, setLoading] = useState({...info, allowLocation: '', logout: '', table: true,})
 
   useEffect(() => {
     api.get(`${rest.profile}/${get_user_info().id}`, config("json"))
         .then((res) => {
           setAdmin(res.data.isAdmin)
+          setIsAdmin(res.data.isAdmin)
           setLocation(res.data.allowLocation)
           delete res.data.isAdmin
           delete res.data.allowLocation
@@ -127,17 +129,21 @@ const Profile = () => {
 
           api.get(`${rest.request}/${get_user_info().id}`, config("json"))
               .then((res) => {
-                setRequests(res.data)
+                if (res.status === 200) {
+                  setRequests(res.data)
+                } else if (res.status === 201) {
+                  showAlert(res.data.error, "warning", 3000);
+                }
               })
               .catch((err) => {
                 showAlert(err.response.data.error, "error", 3000);
               })
+              .finally(() => setLoading({...loading, table: false}))
         })
         .catch((err) => {
           if (err.response) {
             showAlert(err.response.data.error, "error", 3000);
           }
-          console.log(err.response)
         })
         .finally(() => setPageLoading(false))
   }, [])
@@ -256,7 +262,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <DataTable title={'وضعیت درخواست‌ها'} rows={requests}/>
+        <DataTable title={'وضعیت درخواست‌ها'} rows={requests} loading={loading.table}/>
 
         <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
       </div>
