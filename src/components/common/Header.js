@@ -90,11 +90,13 @@ const Header = props => {
 
 
   useEffect(() => {
-    api.get(`${rest.profile}/${get_user_info().id}`, config("json"))
-      .then((res) => {
-        setIsAdmin(res.data.isAdmin)
-      })
-  }, [])
+    if (get_token()) {
+      api.get(`${rest.profile}/${get_user_info().id}`, config("json"))
+        .then((res) => {
+          setIsAdmin(res.data.isAdmin)
+        })
+    }
+  }, [props.location.pathname])
 
   const toggleDrawer = open => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
