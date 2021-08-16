@@ -244,21 +244,21 @@ const Profile = () => {
                       />}
                 </div>
             ))}
-            <FormControlLabel
-                control={
-                  <Checkbox
-                      edge={"end"}
-                      checked={location}
-                      onChange={updateLocationAccess}
-                      name="location"
-                      color="primary"
-                  />
-                }
-                label={<div className="d-flex align-items-center">
-                  <span>استفاده از لوکیشن برای امدادرسانی</span>
-                  {loading.allowLocation && <CircularProgress size={20} className="mr-2"/>}
-                </div>}
-            />
+            {/*<FormControlLabel*/}
+            {/*    control={*/}
+            {/*      <Checkbox*/}
+            {/*          edge={"end"}*/}
+            {/*          checked={location}*/}
+            {/*          onChange={updateLocationAccess}*/}
+            {/*          name="location"*/}
+            {/*          color="primary"*/}
+            {/*      />*/}
+            {/*    }*/}
+            {/*    label={<div className="d-flex align-items-center">*/}
+            {/*      <span>استفاده از لوکیشن برای امدادرسانی</span>*/}
+            {/*      {loading.allowLocation && <CircularProgress size={20} className="mr-2"/>}*/}
+            {/*    </div>}*/}
+            {/*/>*/}
           </div>
         </div>
 

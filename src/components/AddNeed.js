@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
+import { geolocated } from "react-geolocated";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Accordion,
@@ -294,7 +295,7 @@ const disasterIcons = {
   avalanche: AvalancheIcon,
 }
 
-const AddNeed = () => {
+const AddNeed = props => {
   const classes = useStyles()
   const {setContext} = useContext(Context)
   const theme = useTheme()
@@ -318,7 +319,7 @@ const AddNeed = () => {
   const [preSelected, setPreSelected] = useState(null)
 
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
-  const {latitude, longitude} = usePosition(get_user_info().allow_location);
+  const {latitude, longitude, error} = usePosition(get_user_info().allow_location);
 
   const getData = () => {
     api.get(rest.getNeeds)
@@ -333,10 +334,9 @@ const AddNeed = () => {
   }
 
   useEffect(() => {
-    if (latitude && longitude && recentRequests === null) {
-      api.get(`${rest.recent}/${latitude}/${longitude}`)
+    if (props.coords?.latitude && props.coords?.longitude && recentRequests === null) {
+      api.get(`${rest.recent}/${props.coords?.latitude}/${props.coords?.longitude}`)
         .then(res => {
-          console.log(res)
           setShowRecentRequests(res.data.status)
           if (res.data.status) {
             setRecentRequests(res.data.result)
@@ -349,13 +349,11 @@ const AddNeed = () => {
         .catch((err) => {
           showAlert(err.response.data.error, "error", 3000);
         })
-      // .finally(() => setPageLoading(false))}
     }
-  }, [latitude, longitude])
+  }, [props.coords?.latitude, props.coords?.longitude])
 
   useEffect(() => {
     if (showRecentRequests === false) {
-      console.log('eeeee')
       setPageLoading(true)
       getData()
     }
@@ -428,7 +426,6 @@ const AddNeed = () => {
   }
 
   const selectNeed = (index, i, j) => () => {
-    console.log(index, i, j)
     setNeed([
       ...need.slice(0, index),
       {...need[index], category: i, title: j},
@@ -505,8 +502,8 @@ const AddNeed = () => {
     setLoading(true)
     const data = {
       type: disaster,
-      lat: latitude,
-      long: longitude,
+      lat: props.coords?.latitude || latitude,
+      long: props.coords?.longitude || longitude,
       needs: need,
     }
     api.post(`${rest.request}/${get_user_info().id}`, data, config("json"))
@@ -817,4 +814,9 @@ const AddNeed = () => {
 
 AddNeed.propTypes = {};
 
-export default AddNeed;
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(AddNeed);

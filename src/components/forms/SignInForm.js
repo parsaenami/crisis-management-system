@@ -43,6 +43,8 @@ const SignInForm = props => {
         <TextField
             variant={"filled"}
             type="number"
+            id={props.type ? 'nationalId' : 'phoneNumber'}
+            name={props.type ? 'nationalId' : 'phoneNumber'}
             label={props.type ? 'کد ملی' : 'شماره‌ی تماس'}
             value={props.userNumber}
             onChange={props.onUserNumberChangeFn}

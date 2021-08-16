@@ -39,7 +39,6 @@ let Theme = createMuiTheme({
     },
   },
 });
-console.log(window.location.pathname)
 Theme = responsiveFontSizes(Theme);
 
 export default Theme;

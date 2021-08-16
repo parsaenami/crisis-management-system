@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
+import { geolocated } from "react-geolocated";
 import classnames from 'classnames';
 import { Button, MuiThemeProvider, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import RTL from "../helpers/RTL";
@@ -231,8 +232,8 @@ const Account = props => {
           nationalId: userInfo.nationalId,
           address: userInfo.address,
           locationAccess: permission,
-          lat: latitude,
-          long: longitude,
+          lat: props.coords?.latitude || latitude,
+          long: props.coords?.longitude || longitude,
         }
       } else {
         data = {
@@ -388,7 +389,7 @@ const Account = props => {
               onConfirm={handleDialogClose(true)}
               title={'اجازه‌ی دسترسی به موقعیت مکانی'}
               text={messages.INFO_ALLOW_LOCATION}
-              denyBtn={'فعلاً نه'}
+              // denyBtn={'فعلاً نه'}
               confirmBtn={'قبول'}
           />
 
@@ -408,4 +409,9 @@ const Account = props => {
 
 Account.propTypes = {};
 
-export default Account;
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(Account);
