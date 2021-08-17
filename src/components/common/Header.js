@@ -78,6 +78,7 @@ const Header = props => {
   const {context} = useContext(Context);
   const {isAdmin, setIsAdmin} = useContext(UserContext);
   const [open, setOpen] = useState(false);
+  const [path, setPath] = useState(props.location.pathname);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const history = useHistory();
   const theme = useTheme()
@@ -88,6 +89,7 @@ const Header = props => {
     target: window ? window() : undefined,
   });
 
+  useEffect(() => setPath(props.location.pathname), [props.location.pathname])
 
   useEffect(() => {
     if (get_token()) {
@@ -96,7 +98,7 @@ const Header = props => {
           setIsAdmin(res.data.isAdmin)
         })
     }
-  }, [props.location.pathname])
+  }, [path])
 
   const toggleDrawer = open => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {

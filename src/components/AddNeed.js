@@ -334,7 +334,10 @@ const AddNeed = props => {
   }
 
   useEffect(() => {
-    if (props.coords?.latitude && props.coords?.longitude && recentRequests === null) {
+    if (props.coords?.latitude
+      && props.coords?.longitude
+      && recentRequests === null
+      && typeof needCategories !== "object") {
       api.get(`${rest.recent}/${props.coords?.latitude}/${props.coords?.longitude}`)
         .then(res => {
           setShowRecentRequests(res.data.status)
@@ -351,6 +354,16 @@ const AddNeed = props => {
         })
     }
   }, [props.coords?.latitude, props.coords?.longitude])
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!(props.coords?.latitude && props.coords?.longitude && recentRequests === null)) {
+        getData()
+      }
+    }, 5000)
+
+    return () => clearTimeout(timeout)
+  }, [])
 
   useEffect(() => {
     if (showRecentRequests === false) {

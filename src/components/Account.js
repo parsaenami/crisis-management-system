@@ -231,7 +231,7 @@ const Account = props => {
           phoneNumber: userInfo.phoneNumber,
           nationalId: userInfo.nationalId,
           address: userInfo.address,
-          locationAccess: permission,
+          locationAccess: true,
           lat: props.coords?.latitude || latitude,
           long: props.coords?.longitude || longitude,
         }
