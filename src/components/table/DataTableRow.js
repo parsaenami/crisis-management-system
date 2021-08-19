@@ -58,7 +58,7 @@ const DataTableRow = props => {
 
   return (
       <React.Fragment>
-        <TableRow key={props.k + Math.random()}>
+        <TableRow>
           <TableCell>
             <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
               {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -125,25 +125,7 @@ const DataTableRow = props => {
 };
 
 DataTableRow.propTypes = {
-  k: PropTypes.any,
-  row: PropTypes.shape({
-    info: PropTypes.shape({
-      address: PropTypes.string.isRequired,
-      location: PropTypes.shape({
-        lat: PropTypes.string,
-        long: PropTypes.string,
-      }),
-    }).isRequired,
-    name: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired,
-    urgent: PropTypes.string.isRequired,
-    askDate: PropTypes.string.isRequired,
-    changeDate: PropTypes.string,
-    helpDate: PropTypes.string,
-    type: PropTypes.string,
-    status: PropTypes.string.isRequired,
-    desc: PropTypes.string.isRequired,
-  }).isRequired,
+  row: PropTypes.object.isRequired,
 };
 
 export default DataTableRow;

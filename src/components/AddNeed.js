@@ -317,6 +317,7 @@ const AddNeed = props => {
   const [showRecentRequests, setShowRecentRequests] = useState(null)
   const [recentRequests, setRecentRequests] = useState(null)
   const [preSelected, setPreSelected] = useState(null)
+  const [trigger, setTrigger] = useState(false)
 
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
   const {latitude, longitude, error} = usePosition(get_user_info().allow_location);
@@ -344,7 +345,6 @@ const AddNeed = props => {
           if (res.data.status) {
             setRecentRequests(res.data.result)
           } else {
-            getData()
             setRecentRequests(null)
           }
           setPageLoading(false)
@@ -357,13 +357,17 @@ const AddNeed = props => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (!(props.coords?.latitude && props.coords?.longitude && recentRequests === null)) {
-        getData()
-      }
+      setTrigger(true)
     }, 5000)
 
     return () => clearTimeout(timeout)
   }, [])
+
+  useEffect(() => {
+    if (trigger && !(props.coords?.latitude && props.coords?.longitude && recentRequests === null)) {
+      getData()
+    }
+  }, [trigger])
 
   useEffect(() => {
     if (showRecentRequests === false) {

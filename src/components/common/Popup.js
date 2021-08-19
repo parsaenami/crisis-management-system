@@ -12,9 +12,10 @@ const Popup = props => {
       >
         <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          {!!props.text && <DialogContentText>
             {props.text}
-          </DialogContentText>
+          </DialogContentText>}
+          {!!props.context && props.context}
         </DialogContent>
         <DialogActions>
           {props.denyBtn && <Button onClick={props.onDeny} color="primary">
@@ -37,6 +38,7 @@ Popup.propTypes = {
   onDeny: PropTypes.func,
   confirmBtn: PropTypes.string,
   onConfirm: PropTypes.func,
+  context: PropTypes.any,
 };
 
 export default Popup;

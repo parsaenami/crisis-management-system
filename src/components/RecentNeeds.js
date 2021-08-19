@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Chip, makeStyles, Typography, useTheme } from "@material-ui/core";
+import { Chip, makeStyles, Typography } from "@material-ui/core";
 import Card from "./card/Card";
 import CardSlider from "./card/CardSlider";
 import { CustomButton } from "./buttons/CustomButton";
@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
 const RecentNeeds = props => {
   const classes = useStyles()
-  const theme = useTheme()
 
   return (
     <div className={classes.container}>

@@ -14,6 +14,7 @@ import DataTableRow from "./DataTableRow";
 import DataTableHead from "./DataTableHead";
 import Loader from "../common/Loader";
 import { CircularProgress } from "@material-ui/core";
+import AdminDataTableRow from "./AdminDataTableRow";
 
 
 const columns = [
@@ -81,8 +82,8 @@ const descendingComparator = (a, b, orderBy) => {
 };
 
 const getComparator = (order, orderBy) => order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+  ? (a, b) => descendingComparator(a, b, orderBy)
+  : (a, b) => -descendingComparator(a, b, orderBy);
 
 const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -101,7 +102,7 @@ const DataTable = props => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -110,71 +111,85 @@ const DataTable = props => {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    if (props.isAdmin) {
+      props.getNewResults(newPage, props.limit)
+    } else {
+      setPage(newPage);
+    }
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    if (props.isAdmin) {
+      props.getNewResults(0, parseInt(event.target.value, 10))
+    } else {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    }
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.rows.length - page * rowsPerPage);
+  const rowsArray = props.isAdmin
+    ? stableSort(props.rows, getComparator(order, orderBy))
+    : stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
   return (
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <Toolbar>
-            <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-              {props.title}
-            </Typography>
-          </Toolbar>
-          <TableContainer>
-            <Table
-                className={classes.table}
-                aria-labelledby="tableTitle"
-                size={'medium'}
-                aria-label="enhanced table"
-            >
-              <DataTableHead
-                  columns={columns}
-                  classes={classes}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                  rowCount={props.rows.length}
-              />
-              <TableBody>
-                {props.loading ? <CircularProgress size={26}/> : stableSort(props.rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(row => <DataTableRow k={row.name} row={row}/>)}
-                {props.showEmptyRows && emptyRows > 0 && (
-                    <TableRow style={{height: 53 * emptyRows}}>
-                      <TableCell colSpan={6}/>
-                    </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-              rowsPerPageOptions={[5, 10, 25, 50]}
-              component="div"
-              count={props.rows.length}
-              rowsPerPage={rowsPerPage}
-              labelDisplayedRows={({from, to, count}) => `[${from} تا ${to}] از ${count}`}
-              labelRowsPerPage={'تعداد:'}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              className={classes.footer}
-          />
-        </Paper>
-      </div>
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Toolbar>
+          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+            {props.title}
+          </Typography>
+        </Toolbar>
+        <TableContainer>
+          <Table
+            className={classes.table}
+            aria-labelledby="tableTitle"
+            size={'medium'}
+            aria-label="enhanced table"
+          >
+            <DataTableHead
+              columns={props.columns}
+              classes={classes}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              rowCount={props.rows.length}
+            />
+            <TableBody>
+              {props.loading ? <CircularProgress size={26}/> : rowsArray.map((row, i) => props.isAdmin
+                ? <AdminDataTableRow key={i} row={row} loading={props.rowLoading[i]}
+                                     statusFn={x => props.statusFn(i, x, row.id)}/>
+                : <DataTableRow key={i} row={row}/>)}
+              {props.showEmptyRows && emptyRows > 0 && (
+                <TableRow style={{height: 53 * emptyRows}}>
+                  <TableCell colSpan={6}/>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50]}
+          component="div"
+          count={props.isAdmin ? props.total : props.rows.length}
+          rowsPerPage={props.isAdmin ? props.limit : rowsPerPage}
+          labelDisplayedRows={({from, to, count}) => `[${from} تا ${to}] از ${count}`}
+          labelRowsPerPage={'تعداد:'}
+          page={props.isAdmin ? props.page : page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+          className={classes.footer}
+        />
+      </Paper>
+    </div>
   );
 };
 
 DataTable.propTypes = {
   title: PropTypes.string,
   showEmptyRows: PropTypes.bool,
+  isAdmin: PropTypes.bool,
+  columns: PropTypes.array,
   rows: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
@@ -193,6 +208,17 @@ DataTable.propTypes = {
       }),
     }).isRequired,
   })).isRequired,
+  statusFn: PropTypes.func,
+  getNewResults: PropTypes.func,
+  loading: PropTypes.bool,
+  rowLoading: PropTypes.bool,
+  total: PropTypes.number,
+  limit: PropTypes.number,
+  page: PropTypes.number,
+}
+
+DataTable.defaultProps = {
+  columns: columns,
 }
 
 export default DataTable;

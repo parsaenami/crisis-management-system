@@ -2,6 +2,10 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { AppBar, Box, makeStyles, Tab, Tabs, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import Dashboard from "./admin/Dashboard";
+import Users from "./admin/Users";
+import Requests from "./admin/Requests";
+import Needs from "./admin/Needs";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -12,11 +16,12 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
+      style={{paddingTop: 24}}
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box>
+          {children}
         </Box>
       )}
     </div>
@@ -39,10 +44,10 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    // maxWidth: 600,
   },
   tab: {
     flex: 1,
+    maxWidth: 'unset',
   },
 }));
 
@@ -74,23 +79,19 @@ const AdminPanel = () => {
           <Tab className={classes.tab} label="کاربران" {...a11yProps(1)} />
           <Tab className={classes.tab} label="درخواست‌ها" {...a11yProps(2)} />
           <Tab className={classes.tab} label="نیازها" {...a11yProps(3)} />
-          <Tab className={classes.tab} label="حوادث" {...a11yProps(4)} />
         </Tabs>
       </AppBar>
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Item One
+          <Dashboard />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
+          <Users />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
+          <Requests/>
         </TabPanel>
         <TabPanel value={value} index={3} dir={theme.direction}>
-          Item Four
-        </TabPanel>
-        <TabPanel value={value} index={4} dir={theme.direction}>
-          Item Five
+          <Needs />
         </TabPanel>
     </div>
   );

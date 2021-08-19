@@ -1,8 +1,8 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-// const baseUrl = "http://127.0.0.1:5000/";
-const baseUrl = "https://flaskprojectback1.herokuapp.com/";
+const baseUrl = "http://127.0.0.1:5000/";
+// const baseUrl = "https://flaskprojectback1.herokuapp.com/";
 
 const api = axios.create({
   baseURL: baseUrl
@@ -18,6 +18,14 @@ const rest = {
   profile: '/profile',
   getOtp: '/otp',
   recent: '/request/recent',
+  admin: {
+    dashboard: '/admin/dashboard',
+    users: '/admin/users',
+    user: '/admin/user',
+    requests: '/admin/requests',
+    request: '/admin/request',
+    need: '/admin/need',
+  }
 };
 
 const set_token = token => {
@@ -43,7 +51,7 @@ const get_user_info = () => {
   }
 }
 
-const config = (type: 'formData' | 'json' | 'text') => {
+const config = (type: 'formData' | 'json' | 'text', params: Object) => {
   let contentType;
   switch (type) {
     case 'formData':
@@ -61,6 +69,7 @@ const config = (type: 'formData' | 'json' | 'text') => {
   }
 
   return ({
+    params,
     headers: {
       Accept: '*/*',
       'Content-Type': contentType,
