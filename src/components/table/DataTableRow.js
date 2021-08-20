@@ -28,6 +28,16 @@ const useRowStyles = makeStyles(theme => ({
   tooltip: {
     // maxWidth: theme.spacing(25),
   },
+  row: {
+    backgroundColor: props => props === 2
+        ? theme.palette.error.light
+        : (props === 6
+            ? theme.palette.info.light
+            : 'inherit')
+  },
+  subRow: {
+    backgroundColor: theme.palette.background.box,
+  },
 }));
 
 const CustomTooltip = withStyles((theme) => ({
@@ -43,7 +53,7 @@ const CustomTooltip = withStyles((theme) => ({
 const DataTableRow = props => {
   const {row} = props;
   const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
+  const classes = useRowStyles(row.status?.id);
   const [openTooltip, setOpenTooltip] = React.useState(false);
   const theme = useTheme()
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'))
@@ -58,7 +68,7 @@ const DataTableRow = props => {
 
   return (
       <React.Fragment>
-        <TableRow>
+        <TableRow className={classes.row}>
           <TableCell>
             <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
               {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -72,7 +82,7 @@ const DataTableRow = props => {
           <TableCell align="right">{row.askDate || '-'}</TableCell>
           <TableCell align="right">{row.changeDate || '-'}</TableCell>
           <TableCell align="right">{row.helpDate || '-'}</TableCell>
-          <TableCell align="right">{row.status || '-'}</TableCell>
+          <TableCell align="right">{row.status?.text || '-'}</TableCell>
           <TableCell align="right">{row.type || '-'}</TableCell>
           {row.desc ? <ClickAwayListener onClickAway={handleTooltipClose}>
             <CustomTooltip
@@ -93,7 +103,7 @@ const DataTableRow = props => {
             </CustomTooltip>
           </ClickAwayListener> : <TableCell align="center">-</TableCell>}
         </TableRow>
-        <TableRow key={props.k + Math.random()}>
+        <TableRow key={props.k + Math.random()} className={classes.subRow}>
           <TableCell className={classes.root} style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box margin={1}>

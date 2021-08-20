@@ -58,6 +58,9 @@ const useRowStyles = makeStyles((theme) => ({
             ? theme.palette.info.light
             : 'inherit')
   },
+  subRow: {
+    backgroundColor: theme.palette.background.box,
+  },
 }));
 
 const CustomTooltip = withStyles((theme) => ({
@@ -148,7 +151,7 @@ const AdminDataTableRow = props => {
             </div>
           </TableCell>
         </TableRow>
-        <TableRow>
+        <TableRow className={classes.subRow}>
           <TableCell className={classes.root} style={{paddingBottom: 0, paddingTop: 0}} colSpan={8}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box margin={1}>
