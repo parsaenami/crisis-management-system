@@ -122,8 +122,6 @@ const Profile = () => {
               .then((res) => {
                 if (res.status === 200) {
                   setRequests(res.data)
-                } else if (res.status === 204) {
-                  showAlert(res.data.error, "warning", 3000);
                 }
               })
               .catch((err) => {
