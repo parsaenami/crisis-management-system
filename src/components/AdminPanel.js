@@ -11,20 +11,20 @@ function TabPanel(props) {
   const {children, value, index, ...other} = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      style={{paddingTop: 24}}
-      {...other}
-    >
-      {value === index && (
-        <Box>
-          {children}
-        </Box>
-      )}
-    </div>
+      <div
+          role="tabpanel"
+          hidden={value !== index}
+          id={`full-width-tabpanel-${index}`}
+          aria-labelledby={`full-width-tab-${index}`}
+          style={{paddingTop: 24}}
+          {...other}
+      >
+        {value === index && (
+            <Box>
+              {children}
+            </Box>
+        )}
+      </div>
   );
 }
 
@@ -67,36 +67,36 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="full width tabs"
-        >
-          <Tab className={classes.tab} label="داشبورد" {...a11yProps(0)} />
-          <Tab className={classes.tab} label="کاربران" {...a11yProps(1)} />
-          <Tab className={classes.tab} label="درخواست‌ها" {...a11yProps(2)} />
-          <Tab className={classes.tab} label="نیازها" {...a11yProps(3)} />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0} dir={theme.direction}>
-        <Dashboard/>
-      </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        <Users/>
-      </TabPanel>
-      <TabPanel value={value} index={2} dir={theme.direction}>
-        <Requests/>
-      </TabPanel>
-      <TabPanel value={value} index={3} dir={theme.direction}>
-        <Needs/>
-      </TabPanel>
-    </div>
+      <div className={classes.root}>
+        <AppBar position="static" color="default">
+          <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="scrollable"
+              scrollButtons="auto"
+              aria-label="full width tabs"
+          >
+            <Tab className={classes.tab} label="داشبورد" {...a11yProps(0)} />
+            <Tab className={classes.tab} label="کاربران" {...a11yProps(1)} />
+            <Tab className={classes.tab} label="درخواست‌ها" {...a11yProps(2)} />
+            <Tab className={classes.tab} label="نیازها" {...a11yProps(3)} />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          <Dashboard/>
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          <Users/>
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction}>
+          <Requests/>
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
+          <Needs/>
+        </TabPanel>
+      </div>
   );
 };
 

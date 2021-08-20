@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, CircularProgress,
+  Button,
+  CircularProgress,
   Collapse,
   IconButton,
   List,
@@ -10,7 +11,7 @@ import {
   ListItemText,
   makeStyles
 } from "@material-ui/core";
-import { AccountBoxRounded, DeleteRounded, StarsRounded, ExpandLess, ExpandMore } from "@material-ui/icons";
+import { AccountBoxRounded, DeleteRounded, ExpandLess, ExpandMore, StarsRounded } from "@material-ui/icons";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,38 +36,39 @@ const UserListRow = props => {
   }
 
   return (
-    <>
-      <ListItem button onClick={props.handleClick}>
-        <ListItemIcon>
-          <AccountBoxRounded/>
-          {props.items["وضعیت کاربری"] === 'ادمین' && <StarsRounded/>}
-        </ListItemIcon>
-        <ListItemText primary={props.title}/>
-        <IconButton className={classes.deleteIcon} onClick={deleteFn}>
-          {props.loading[0] ? <CircularProgress size={24}/> : <DeleteRounded/>}
-        </IconButton>
-        <IconButton edge={"start"}>
-          {props.open ? <ExpandLess/> : <ExpandMore/>}
-        </IconButton>
-      </ListItem>
-      <Collapse in={props.open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {Object.keys(props.items).map((item, i) => (
-            <ListItem key={i} className={classes.nested}>
-              <ListItemIcon className={classes.info}>{item}</ListItemIcon>
-              <ListItemText primary={props.items[item] ?? '-'}/>
-              {item === "وضعیت کاربری" && <Button variant={"outlined"} color={"primary"} onClick={() => props.handleAdmin(props.userId)}>
-                {props.loading[1]
-                  ? <CircularProgress size={24}/>
-                  : (props.items["وضعیت کاربری"] === 'ادمین'
-                    ? "تغییر به کاربر عادی"
-                    : "ارتقا به ادمین")}
-              </Button>}
-            </ListItem>
-          ))}
-        </List>
-      </Collapse>
-    </>
+      <>
+        <ListItem button onClick={props.handleClick}>
+          <ListItemIcon>
+            <AccountBoxRounded/>
+            {props.items["وضعیت کاربری"] === 'ادمین' && <StarsRounded/>}
+          </ListItemIcon>
+          <ListItemText primary={props.title}/>
+          <IconButton className={classes.deleteIcon} onClick={deleteFn}>
+            {props.loading[0] ? <CircularProgress size={24}/> : <DeleteRounded/>}
+          </IconButton>
+          <IconButton edge={"start"}>
+            {props.open ? <ExpandLess/> : <ExpandMore/>}
+          </IconButton>
+        </ListItem>
+        <Collapse in={props.open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {Object.keys(props.items).map((item, i) => (
+                <ListItem key={i} className={classes.nested}>
+                  <ListItemIcon className={classes.info}>{item}</ListItemIcon>
+                  <ListItemText primary={props.items[item] ?? '-'}/>
+                  {item === "وضعیت کاربری" &&
+                  <Button variant={"outlined"} color={"primary"} onClick={() => props.handleAdmin(props.userId)}>
+                    {props.loading[1]
+                        ? <CircularProgress size={24}/>
+                        : (props.items["وضعیت کاربری"] === 'ادمین'
+                            ? "تغییر به کاربر عادی"
+                            : "ارتقا به ادمین")}
+                  </Button>}
+                </ListItem>
+            ))}
+          </List>
+        </Collapse>
+      </>
   );
 };
 

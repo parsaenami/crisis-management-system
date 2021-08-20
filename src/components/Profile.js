@@ -1,19 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import {
-  Button,
-  Checkbox,
-  CircularProgress,
-  FormControlLabel,
-  IconButton,
-  TextField,
-  Typography
-} from "@material-ui/core";
+import { CircularProgress, IconButton, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
-import { CustomButton } from "./buttons/CustomButton";
 import DataTable from "./table/DataTable";
 import { useAlert } from "../hooks/useAlert";
 import FloatingAlert from "./common/FloatingAlert";
@@ -176,19 +167,6 @@ const Profile = () => {
         .then(() => {
           showAlert(messages.INFO_CHANGES_SAVED, 'success');
           setLoading({...loading, [value]: false})
-        })
-        .catch((err) => {
-          showAlert(err.response.data.error, "error", 3000);
-        })
-  }
-
-  const updateLocationAccess = () => {
-    setLoading({...loading, allowLocation: true})
-    api.patch(`${rest.profile}/${get_user_info().id}`, {allowLocation: !location}, config("json"))
-        .then(() => {
-          setLocation(!location)
-          showAlert(messages.INFO_CHANGES_SAVED, 'success', 3000);
-          setLoading({...loading, allowLocation: false})
         })
         .catch((err) => {
           showAlert(err.response.data.error, "error", 3000);

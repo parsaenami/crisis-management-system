@@ -11,7 +11,7 @@ import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import SignUpForm from "./forms/SignUpForm";
 import SignInForm from "./forms/SignInForm";
 import OtpForm from "./forms/OtpForm";
-import { emptyUserInfo, UserInfoType } from '../types/userInfoType'
+import { emptyUserInfo } from '../types/userInfoType'
 import { usePosition } from "../hooks/usePosition";
 import { messages } from "../assets/messages";
 import { routes } from "../assets/routes";
@@ -96,7 +96,7 @@ const objectCheckEmpty = obj => {
 
 const Account = props => {
   const theme = useTheme();
-  const {context, setContext} = useContext(Context)
+  const {setContext} = useContext(Context)
   const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'));
   const [pageLoading, setPageLoading] = useState(true);
   const [loading, setLoading] = useState({otp: false, account: false});
@@ -130,7 +130,7 @@ const Account = props => {
   }, [setContext, isOtp, isRegister])
 
   useEffect(() => setDialogOpen(true), [])
-  const {latitude, longitude, error} = usePosition(permission);
+  const {latitude, longitude} = usePosition(permission);
 
   useEffect(() => {
     if (isOtp && countdown > 0) {

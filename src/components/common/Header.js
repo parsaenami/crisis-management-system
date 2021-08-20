@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import {
@@ -10,13 +10,13 @@ import {
   Toolbar,
   Typography,
   useMediaQuery,
-  useScrollTrigger, useTheme
+  useScrollTrigger,
+  useTheme
 } from "@material-ui/core";
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import { HeaderScrollEffect } from "../../helpers/HeaderScrollEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import NavDrawer from "./NavDrawer";
-import { NavLink } from "react-router-dom";
 import { routes } from "../../assets/routes";
 import Logo from '../../assets/icons/simorgh.svg';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
@@ -95,9 +95,9 @@ const Header = props => {
     console.log(path)
     if (get_token()) {
       api.get(`${rest.profile}/${get_user_info().id}`, config("json"))
-        .then((res) => {
-          setIsAdmin(res.data.isAdmin)
-        })
+          .then((res) => {
+            setIsAdmin(res.data.isAdmin)
+          })
     } else {
       setIsAdmin(false)
     }
@@ -124,64 +124,64 @@ const Header = props => {
   };
 
   return (
-    <HeaderScrollEffect {...props}>
-      <AppBar position={"fixed"} className={classes.header}>
-        <Container maxWidth="lg" className={classes.container}>
-          <Toolbar>
-            {
-              <div className={classes.navContainer}>
-                <NavLink exact to={routes.HOME} className={classes.btn}>
-                  <Button color="inherit">صفحه‌ی اصلی</Button>
-                </NavLink>
-                {get_token()
-                  ? <NavLink to={routes.ADD_NEED} className={classes.btn}>
-                    <Button color="inherit">ثبت نیاز</Button>
+      <HeaderScrollEffect {...props}>
+        <AppBar position={"fixed"} className={classes.header}>
+          <Container maxWidth="lg" className={classes.container}>
+            <Toolbar>
+              {
+                <div className={classes.navContainer}>
+                  <NavLink exact to={routes.HOME} className={classes.btn}>
+                    <Button color="inherit">صفحه‌ی اصلی</Button>
                   </NavLink>
-                  : <div onClick={handleDialogOpen} className={classes.btn}>
-                    <Button color="inherit">ثبت نیاز</Button>
-                  </div>}
-                <NavLink to={routes.ABOUT} className={classes.btn}>
-                  <Button color="inherit">درباره‌ی ما</Button>
-                </NavLink>
-                {get_token()
-                  ? <NavLink to={routes.PROFILE} className={classes.btn}>
-                    <Button color="inherit">پروفایل</Button>
+                  {get_token()
+                      ? <NavLink to={routes.ADD_NEED} className={classes.btn}>
+                        <Button color="inherit">ثبت نیاز</Button>
+                      </NavLink>
+                      : <div onClick={handleDialogOpen} className={classes.btn}>
+                        <Button color="inherit">ثبت نیاز</Button>
+                      </div>}
+                  <NavLink to={routes.ABOUT} className={classes.btn}>
+                    <Button color="inherit">درباره‌ی ما</Button>
                   </NavLink>
-                  : <NavLink to={routes.SIGN_IN} className={classes.btn}>
-                    <Button color="inherit">ورود | ثبت‌نام</Button>
+                  {get_token()
+                      ? <NavLink to={routes.PROFILE} className={classes.btn}>
+                        <Button color="inherit">پروفایل</Button>
+                      </NavLink>
+                      : <NavLink to={routes.SIGN_IN} className={classes.btn}>
+                        <Button color="inherit">ورود | ثبت‌نام</Button>
+                      </NavLink>}
+                  {isAdmin && <NavLink to={routes.ADMIN} className={classnames(classes.btn, classes.admin)}>
+                    <Button color="inherit">پنل ادمین</Button>
                   </NavLink>}
-                {isAdmin && <NavLink to={routes.ADMIN} className={classnames(classes.btn, classes.admin)}>
-                  <Button color="inherit">پنل ادمین</Button>
-                </NavLink>}
-              </div>
-            }
-            <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
-              <MenuRoundedIcon/>
-            </IconButton>
-            {isMobileDisplay && trigger &&
-            <Typography color={"textSecondary"} className="ml-auto">{context}</Typography>}
-            {
-              props.location.pathname === routes.HOME
-                ?
-                get_token()
-                  ? <NavLink to={routes.PROFILE} className={classes.btn} id='home'>
-                    <Button color="inherit" startIcon={<PersonRoundedIcon/>}>پروفایل</Button>
-                  </NavLink>
-                  : <NavLink to={routes.SIGN_IN} className={classes.btn} id='home'>
-                    <Button color="inherit">ورود | ثبت‌نام</Button>
-                  </NavLink>
-                :
-                <NavLink to={routes.HOME} className={classes.btn}>
-                  <IconButton edge="start"><img src={Logo} alt="logo"/></IconButton>
-                </NavLink>
-            }
-            <NavDrawer open={open} toggleFn={toggleDrawer}/>
-          </Toolbar>
-          <AccessDenied open={dialogOpen} handleClose={handleDialogClose}
-                        action={() => history.push(routes.ADD_NEED)}/>
-        </Container>
-      </AppBar>
-    </HeaderScrollEffect>
+                </div>
+              }
+              <IconButton edge="end" className={classes.icon} aria-label="menu" onClick={toggleDrawer(true)}>
+                <MenuRoundedIcon/>
+              </IconButton>
+              {isMobileDisplay && trigger &&
+              <Typography color={"textSecondary"} className="ml-auto">{context}</Typography>}
+              {
+                props.location.pathname === routes.HOME
+                    ?
+                    get_token()
+                        ? <NavLink to={routes.PROFILE} className={classes.btn} id='home'>
+                          <Button color="inherit" startIcon={<PersonRoundedIcon/>}>پروفایل</Button>
+                        </NavLink>
+                        : <NavLink to={routes.SIGN_IN} className={classes.btn} id='home'>
+                          <Button color="inherit">ورود | ثبت‌نام</Button>
+                        </NavLink>
+                    :
+                    <NavLink to={routes.HOME} className={classes.btn}>
+                      <IconButton edge="start"><img src={Logo} alt="logo"/></IconButton>
+                    </NavLink>
+              }
+              <NavDrawer open={open} toggleFn={toggleDrawer}/>
+            </Toolbar>
+            <AccessDenied open={dialogOpen} handleClose={handleDialogClose}
+                          action={() => history.push(routes.ADD_NEED)}/>
+          </Container>
+        </AppBar>
+      </HeaderScrollEffect>
   );
 };
 

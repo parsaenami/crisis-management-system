@@ -12,7 +12,7 @@ const Fab = props => {
                 variant={"contained"}
                 onClick={btn.onClickFn}
                 size={"large"}>
-              {btn.loading ? <CircularProgress size={26}/> :btn.title}
+              {btn.loading ? <CircularProgress size={26}/> : btn.title}
             </CustomButton>
         ))}
       </div>

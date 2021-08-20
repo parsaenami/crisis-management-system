@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 const AccessDenied = props => {

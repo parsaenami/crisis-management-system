@@ -5,7 +5,8 @@ export const useAlert = () => {
   const [type, setType] = useState('info')
   const [open, setOpen] = useState(false)
   const [duration, setDuration] = useState(5000)
-  const [callBack, setCallBack] = useState(() => {})
+  const [callBack, setCallBack] = useState(() => {
+  })
 
   useEffect(() => {
     if (open && callBack) {

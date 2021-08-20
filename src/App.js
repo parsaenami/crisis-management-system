@@ -42,32 +42,32 @@ const App = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   return (
-    <HttpsRedirect>
-      <BrowserRouter>
-        <UserContext.Provider value={{isAdmin, setIsAdmin}}>
-          <Context.Provider value={{context, setContext}}>
-            <MuiThemeProvider theme={Theme}>
-              <CssBaseline/>
-              <Helmet defaultTitle="سیمرغ" titleTemplate="سیمرغ | %s"/>
-              <Container maxWidth="lg" className={classes.root} id="app">
-                <Route path={routes.HOME} component={Header}/>
-                <Switch>
-                  <Route exact path={routes.HOME} component={Home}/>
-                  <Route path={routes.SIGN_IN} component={Account}/>
-                  <Route path={routes.ABOUT} component={About}/>
-                  <PrivateRoute path={routes.PROFILE} component={Profile}/>
-                  <PrivateRoute path={routes.ADD_NEED} component={AddNeed}/>
-                  <PrivateRoute path={routes.DONE} component={Done}/>
-                  <PrivateRoute path={routes.ADMIN} component={AdminPanel}/>
-                  <Route exact path={'*'} component={NotFound}/>
-                </Switch>
-                <Footer className="footer"/>
-              </Container>
-            </MuiThemeProvider>
-          </Context.Provider>
-        </UserContext.Provider>
-      </BrowserRouter>
-    </HttpsRedirect>
+      <HttpsRedirect>
+        <BrowserRouter>
+          <UserContext.Provider value={{isAdmin, setIsAdmin}}>
+            <Context.Provider value={{context, setContext}}>
+              <MuiThemeProvider theme={Theme}>
+                <CssBaseline/>
+                <Helmet defaultTitle="سیمرغ" titleTemplate="سیمرغ | %s"/>
+                <Container maxWidth="lg" className={classes.root} id="app">
+                  <Route path={routes.HOME} component={Header}/>
+                  <Switch>
+                    <Route exact path={routes.HOME} component={Home}/>
+                    <Route path={routes.SIGN_IN} component={Account}/>
+                    <Route path={routes.ABOUT} component={About}/>
+                    <PrivateRoute path={routes.PROFILE} component={Profile}/>
+                    <PrivateRoute path={routes.ADD_NEED} component={AddNeed}/>
+                    <PrivateRoute path={routes.DONE} component={Done}/>
+                    <PrivateRoute path={routes.ADMIN} component={AdminPanel}/>
+                    <Route exact path={'*'} component={NotFound}/>
+                  </Switch>
+                  <Footer className="footer"/>
+                </Container>
+              </MuiThemeProvider>
+            </Context.Provider>
+          </UserContext.Provider>
+        </BrowserRouter>
+      </HttpsRedirect>
   );
 };
 

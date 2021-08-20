@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import Loader from "../common/Loader";
 import {
-  Button, CircularProgress, FormControl, InputLabel,
+  Button,
+  CircularProgress,
   List,
   ListSubheader,
   makeStyles,
   MenuItem,
   MuiThemeProvider,
-  Select,
   TextField
 } from "@material-ui/core";
-import UserListRow from "../common/UserListRow";
 import FloatingAlert from "../common/FloatingAlert";
 import { useAlert } from "../../hooks/useAlert";
 import { api, config, rest } from "../../helpers/api";
@@ -53,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Needs = props => {
+const Needs = () => {
   const classes = useStyles()
   const {open, message, type, duration, closeAlert, showAlert} = useAlert()
 
@@ -71,14 +69,14 @@ const Needs = props => {
 
   useEffect(() => {
     api.get(rest.getNeeds, config("json"))
-      .then((response) => {
-        setData(response.data.needsCategory)
-        setCategoryOpen(new Array(Object.keys(response.data.needsCategory).length).fill(false))
-      })
-      .catch((err) => {
-        showAlert(err.response.data.error, "error", 3000);
-      })
-      .finally(() => setLoading(false))
+        .then((response) => {
+          setData(response.data.needsCategory)
+          setCategoryOpen(new Array(Object.keys(response.data.needsCategory).length).fill(false))
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+        .finally(() => setLoading(false))
   }, [])
 
   const handleDialogClose = () => {
@@ -97,19 +95,19 @@ const Needs = props => {
 
     setAddLoading(true)
     api.post(rest.admin.need, {title: newTitle, category_id: newCategory}, config("json"))
-      .then((response) => {
-        showAlert(response.data.msg, "success", 3000);
-        setData(response.data.needsCategory)
-        handleDialogClose()
-        setNewCategory(null)
-        setNewTitle(null)
-      })
-      .catch((err) => {
-        showAlert(err.response.data.error, "error", 3000);
-      })
-      .finally(() => {
-        setAddLoading(false)
-      })
+        .then((response) => {
+          showAlert(response.data.msg, "success", 3000);
+          setData(response.data.needsCategory)
+          handleDialogClose()
+          setNewCategory(null)
+          setNewTitle(null)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+        .finally(() => {
+          setAddLoading(false)
+        })
   };
 
   const checkError = () => {
@@ -132,31 +130,31 @@ const Needs = props => {
   const handleDelete = (categoryId, needId) => () => {
     setNeedLoading(needId)
     api.delete(`${rest.admin.need}/${needId}`, config("json"))
-      .then((response) => {
-        showAlert(response.data.msg, "success", 3000);
-        let temp = data
-        delete temp[categoryId].items[needId]
-        setData(temp)
-      })
-      .catch((err) => {
-        showAlert(err.response.data.error, "error", 3000);
-      })
-      .finally(() => setNeedLoading(null))
+        .then((response) => {
+          showAlert(response.data.msg, "success", 3000);
+          let temp = data
+          delete temp[categoryId].items[needId]
+          setData(temp)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+        .finally(() => setNeedLoading(null))
   }
 
   const handleEdit = (needId) => () => {
     // console.log(needId)
     setNeedLoading(needId)
     api.patch(`${rest.admin.need}/${needId}`, {title: needEditValue}, config("json"))
-      .then((response) => {
-        showAlert(response.data.msg, "success", 3000);
-        setData(response.data.needsCategory)
-        setNeedEdit(null)
-      })
-      .catch((err) => {
-        showAlert(err.response.data.error, "error", 3000);
-      })
-      .finally(() => setNeedLoading(null))
+        .then((response) => {
+          showAlert(response.data.msg, "success", 3000);
+          setData(response.data.needsCategory)
+          setNeedEdit(null)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+        .finally(() => setNeedLoading(null))
   }
 
   const handleChange = e => {
@@ -169,94 +167,94 @@ const Needs = props => {
   }
 
   const addForm = (
-    <RTL>
-      <MuiThemeProvider theme={Theme}>
-        <div className={classes.form}>
-          <TextField
-            select
-            variant={"filled"}
-            className={classes.formInput}
-            label={"دسته‌بندی"}
-            value={newCategory}
-            onChange={e => setNewCategory(e.target.value)}
-            inputProps={{
-              name: 'category',
-              id: 'category',
-            }}
-            helperText={error.category}
-            error={!!error.category}
-          >
-            {Object.values(data).map((cat, i) => (
-              <MenuItem key={i} value={cat.id}>{cat.faName}</MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            className={classes.formInput}
-            variant={"filled"}
-            type="text"
-            id={'need'}
-            name={'need'}
-            label={'عنوان نیاز'}
-            value={newTitle}
-            onChange={e => setNewTitle(e.target.value)}
-            error={!!error.title}
-            helperText={error.title}
-          />
-        </div>
-      </MuiThemeProvider>
-    </RTL>
+      <RTL>
+        <MuiThemeProvider theme={Theme}>
+          <div className={classes.form}>
+            <TextField
+                select
+                variant={"filled"}
+                className={classes.formInput}
+                label={"دسته‌بندی"}
+                value={newCategory}
+                onChange={e => setNewCategory(e.target.value)}
+                inputProps={{
+                  name: 'category',
+                  id: 'category',
+                }}
+                helperText={error.category}
+                error={!!error.category}
+            >
+              {Object.values(data).map((cat, i) => (
+                  <MenuItem key={i} value={cat.id}>{cat.faName}</MenuItem>
+              ))}
+            </TextField>
+            <TextField
+                className={classes.formInput}
+                variant={"filled"}
+                type="text"
+                id={'need'}
+                name={'need'}
+                label={'عنوان نیاز'}
+                value={newTitle}
+                onChange={e => setNewTitle(e.target.value)}
+                error={!!error.title}
+                helperText={error.title}
+            />
+          </div>
+        </MuiThemeProvider>
+      </RTL>
   )
 
   return (
-    loading ? <Loader/> : <div className={classes.container}>
-      <RTL>
-        <MuiThemeProvider theme={Theme}>
-          <List
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader" className={classes.subheader}>
-                <span>لیست نیازها</span>
-                <Button variant="contained" color="primary" size={"small"} onClick={handleDialogOpen}>افزودن نیاز
-                  جدید</Button>
-              </ListSubheader>
-            }
-            className={classes.root}
-          >
-            {Object.values(data).map((category, i) => <NeedListRow
-              key={i}
-              open={categoryOpen[i]}
-              categoryId={category.id}
-              category={category.faName}
-              items={category.items}
-              handleClick={handleClick(i)}
-              loading={needLoading}
-              handleDelete={j => handleDelete(category.id, j)()}
-              editMode={needEdit}
-              toggleEditMode={i => toggleEditMode(i)}
-              handleEdit={(id, value) => handleEdit(id, value)()}
-              editValue={needEditValue}
-              handleChange={handleChange}
+      loading ? <Loader/> : <div className={classes.container}>
+        <RTL>
+          <MuiThemeProvider theme={Theme}>
+            <List
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader" className={classes.subheader}>
+                    <span>لیست نیازها</span>
+                    <Button variant="contained" color="primary" size={"small"} onClick={handleDialogOpen}>افزودن نیاز
+                      جدید</Button>
+                  </ListSubheader>
+                }
+                className={classes.root}
+            >
+              {Object.values(data).map((category, i) => <NeedListRow
+                  key={i}
+                  open={categoryOpen[i]}
+                  categoryId={category.id}
+                  category={category.faName}
+                  items={category.items}
+                  handleClick={handleClick(i)}
+                  loading={needLoading}
+                  handleDelete={j => handleDelete(category.id, j)()}
+                  editMode={needEdit}
+                  toggleEditMode={i => toggleEditMode(i)}
+                  handleEdit={(id, value) => handleEdit(id, value)()}
+                  editValue={needEditValue}
+                  handleChange={handleChange}
 
-            />)}
-          </List>
-        </MuiThemeProvider>
-      </RTL>
+              />)}
+            </List>
+          </MuiThemeProvider>
+        </RTL>
 
-      <Popup
-        open={dialogOpen}
-        onClose={handleDialogClose}
-        onDeny={handleDialogClose}
-        onConfirm={handleDialogConfirm}
-        title={'اضافه کردن نیاز جدید'}
-        text={'لطفاً دسته‌بندی و عنوان نیاز را وارد کنید.'}
-        context={addForm}
-        denyBtn={'انصراف'}
-        confirmBtn={addLoading ? <CircularProgress color={"secondary"} size={24} /> : 'ثبت'}
-      />
+        <Popup
+            open={dialogOpen}
+            onClose={handleDialogClose}
+            onDeny={handleDialogClose}
+            onConfirm={handleDialogConfirm}
+            title={'اضافه کردن نیاز جدید'}
+            text={'لطفاً دسته‌بندی و عنوان نیاز را وارد کنید.'}
+            context={addForm}
+            denyBtn={'انصراف'}
+            confirmBtn={addLoading ? <CircularProgress color={"secondary"} size={24}/> : 'ثبت'}
+        />
 
-      <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
-    </div>
+        <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
+      </div>
   );
 };
 

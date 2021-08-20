@@ -1,13 +1,11 @@
-import React, { useContext, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { NavLink, useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CustomButton } from "./buttons/CustomButton";
 import Logo from "../assets/icons/simorgh.svg"
-import { NavLink } from "react-router-dom";
 import { routes } from "../assets/routes";
-import { api, get_token, rest } from "../helpers/api";
-import { Context } from "../Context";
+import { api, get_token } from "../helpers/api";
 import AccessDenied from "./common/AccessDenied";
 
 const useStyles = makeStyles((theme) => ({
@@ -137,7 +135,7 @@ const Home = () => {
           <Typography component="span" className={classes.text}>
             در این سامانه شما می‌توانید در زمان وقوع بحران نیازهای خود را وارد کنید تا در اسرع وقت، برطرف شود.
           </Typography>
-          {get_token() ?  <NavLink to={routes.ADD_NEED} className={classes.btnContainer}>
+          {get_token() ? <NavLink to={routes.ADD_NEED} className={classes.btnContainer}>
             <CustomButton className={classes.btn} variant={"contained"} size={"large"}>ثبت نیاز</CustomButton>
           </NavLink> : <div onClick={handleDialogOpen} className={classes.btnContainer}>
             <CustomButton className={classes.btn} variant={"contained"} size={"large"}>ثبت نیاز</CustomButton>

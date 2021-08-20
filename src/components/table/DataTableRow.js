@@ -76,16 +76,16 @@ const DataTableRow = props => {
           <TableCell align="right">{row.type || '-'}</TableCell>
           {row.desc ? <ClickAwayListener onClickAway={handleTooltipClose}>
             <CustomTooltip
-              // PopperProps={{disablePortal: false}}
-              disableFocusListener={isMobileDisplay}
-              disableHoverListener={isMobileDisplay}
-              // disableTouchListener
-              open={openTooltip}
-              onClose={handleTooltipClose}
-              title={row.desc}
-              placement="right"
-              className={classes.tooltip}
-              classes={{tooltip: classes.tooltip}}
+                // PopperProps={{disablePortal: false}}
+                disableFocusListener={isMobileDisplay}
+                disableHoverListener={isMobileDisplay}
+                // disableTouchListener
+                open={openTooltip}
+                onClose={handleTooltipClose}
+                title={row.desc}
+                placement="right"
+                className={classes.tooltip}
+                classes={{tooltip: classes.tooltip}}
             >
               <TableCell className={classes.desc} onClick={handleTooltipOpen} align="center">
                 <HelpOutlineRoundedIcon/>

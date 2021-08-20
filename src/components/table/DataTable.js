@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import DataTableRow from "./DataTableRow";
 import DataTableHead from "./DataTableHead";
-import Loader from "../common/Loader";
 import { CircularProgress } from "@material-ui/core";
 import AdminDataTableRow from "./AdminDataTableRow";
 
@@ -82,8 +81,8 @@ const descendingComparator = (a, b, orderBy) => {
 };
 
 const getComparator = (order, orderBy) => order === 'desc'
-  ? (a, b) => descendingComparator(a, b, orderBy)
-  : (a, b) => -descendingComparator(a, b, orderBy);
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 
 const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -129,59 +128,59 @@ const DataTable = props => {
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.rows.length - page * rowsPerPage);
   const rowsArray = props.isAdmin
-    ? stableSort(props.rows, getComparator(order, orderBy))
-    : stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      ? stableSort(props.rows, getComparator(order, orderBy))
+      : stableSort(props.rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            {props.title}
-          </Typography>
-        </Toolbar>
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={'medium'}
-            aria-label="enhanced table"
-          >
-            <DataTableHead
-              columns={props.columns}
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={props.rows.length}
-            />
-            <TableBody>
-              {props.loading ? <CircularProgress size={26}/> : rowsArray.map((row, i) => props.isAdmin
-                ? <AdminDataTableRow key={i} row={row} loading={props.rowLoading[i]}
-                                     statusFn={x => props.statusFn(i, x, row.id)}/>
-                : <DataTableRow key={i} row={row}/>)}
-              {props.showEmptyRows && emptyRows > 0 && (
-                <TableRow style={{height: 53 * emptyRows}}>
-                  <TableCell colSpan={6}/>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
-          component="div"
-          count={props.isAdmin ? props.total : props.rows.length}
-          rowsPerPage={props.isAdmin ? props.limit : rowsPerPage}
-          labelDisplayedRows={({from, to, count}) => `[${from} تا ${to}] از ${count}`}
-          labelRowsPerPage={'تعداد:'}
-          page={props.isAdmin ? props.page : page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-          className={classes.footer}
-        />
-      </Paper>
-    </div>
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+          <Toolbar>
+            <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+              {props.title}
+            </Typography>
+          </Toolbar>
+          <TableContainer>
+            <Table
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                size={'medium'}
+                aria-label="enhanced table"
+            >
+              <DataTableHead
+                  columns={props.columns}
+                  classes={classes}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  rowCount={props.rows.length}
+              />
+              <TableBody>
+                {props.loading ? <CircularProgress size={26}/> : rowsArray.map((row, i) => props.isAdmin
+                    ? <AdminDataTableRow key={i} row={row} loading={props.rowLoading[i]}
+                                         statusFn={x => props.statusFn(i, x, row.id)}/>
+                    : <DataTableRow key={i} row={row}/>)}
+                {props.showEmptyRows && emptyRows > 0 && (
+                    <TableRow style={{height: 53 * emptyRows}}>
+                      <TableCell colSpan={6}/>
+                    </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+              rowsPerPageOptions={[10, 25, 50]}
+              component="div"
+              count={props.isAdmin ? props.total : props.rows.length}
+              rowsPerPage={props.isAdmin ? props.limit : rowsPerPage}
+              labelDisplayedRows={({from, to, count}) => `[${from} تا ${to}] از ${count}`}
+              labelRowsPerPage={'تعداد:'}
+              page={props.isAdmin ? props.page : page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+              className={classes.footer}
+          />
+        </Paper>
+      </div>
   );
 };
 

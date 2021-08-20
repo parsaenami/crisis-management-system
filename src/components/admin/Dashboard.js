@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { api, config, rest } from "../../helpers/api";
 import { useAlert } from "../../hooks/useAlert";
 import FloatingAlert from "../common/FloatingAlert";
@@ -84,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = props => {
+const Dashboard = () => {
   const classes = useStyles()
   const {open, message, type, duration, closeAlert, showAlert} = useAlert();
 
@@ -93,58 +92,58 @@ const Dashboard = props => {
 
   useEffect(() => {
     api.get(rest.admin.dashboard, config("json"))
-      .then((response) => {
-        setData(response.data)
-      })
-      .catch((err) => {
-        showAlert(err.response.data.error, "error", 3000);
-      })
-      .finally(() => setLoading(false))
+        .then((response) => {
+          setData(response.data)
+        })
+        .catch((err) => {
+          showAlert(err.response.data.error, "error", 3000);
+        })
+        .finally(() => setLoading(false))
   }, [])
 
   return (
-    loading ? <Loader/> : <div className={classes.container}>
-      <div className={classes.top}>
-        <CardSlider>
-          <div className={classes.numbers}>
-            <Typography className={classes.number}>{data.users}</Typography>
-            <Typography className={classes.title}>کل کاربران</Typography>
-          </div>
-          <div className={classes.numbers}>
-            <Typography className={classes.number}>{data.requests?.total}</Typography>
-            <Typography className={classes.title}>کل درخواست‌ها</Typography>
-          </div>
-          <div className={classes.numbers}>
-            <Typography className={classes.number}>{data.recent_requests}</Typography>
-            <Typography className={classes.title}>درخواست‌های ۲۴ ساعت اخیر</Typography>
-          </div>
-          <div className={classes.numbers}>
-            <Typography className={classes.number}>{data.recent_disasters?.total}</Typography>
-            <Typography className={classes.title}>حوادث ۳۰ روز اخیر</Typography>
-          </div>
-          <div className={classes.numbers}>
-            <Typography className={classes.number}>{data.processed_requests}</Typography>
-            <Typography className={classes.title}>کل درخواست‌های پردازش‌شده</Typography>
-          </div>
-        </CardSlider>
-      </div>
-      <div className={classes.bottom}>
-        <div className={classes.chart}>
+      loading ? <Loader/> : <div className={classes.container}>
+        <div className={classes.top}>
+          <CardSlider>
+            <div className={classes.numbers}>
+              <Typography className={classes.number}>{data.users}</Typography>
+              <Typography className={classes.title}>کل کاربران</Typography>
+            </div>
+            <div className={classes.numbers}>
+              <Typography className={classes.number}>{data.requests?.total}</Typography>
+              <Typography className={classes.title}>کل درخواست‌ها</Typography>
+            </div>
+            <div className={classes.numbers}>
+              <Typography className={classes.number}>{data.recent_requests}</Typography>
+              <Typography className={classes.title}>درخواست‌های ۲۴ ساعت اخیر</Typography>
+            </div>
+            <div className={classes.numbers}>
+              <Typography className={classes.number}>{data.recent_disasters?.total}</Typography>
+              <Typography className={classes.title}>حوادث ۳۰ روز اخیر</Typography>
+            </div>
+            <div className={classes.numbers}>
+              <Typography className={classes.number}>{data.processed_requests}</Typography>
+              <Typography className={classes.title}>کل درخواست‌های پردازش‌شده</Typography>
+            </div>
+          </CardSlider>
+        </div>
+        <div className={classes.bottom}>
+          <div className={classes.chart}>
             <Typography className={classes.title}>پراکندگی دسته‌بندی‌های درخواست‌ها</Typography>
-          <DataChart type={"pie"} data={data.requests?.data} label={'تعداد درخواست‌ها'}/>
-        </div>
-        <div className={classes.chart}>
+            <DataChart type={"pie"} data={data.requests?.data} label={'تعداد درخواست‌ها'}/>
+          </div>
+          <div className={classes.chart}>
             <Typography className={classes.title}>درخواست‌های دریافت‌شده به تفکیک حادثه</Typography>
-          <DataChart type={"bar"} data={data.recent_disasters?.data} label={'تعداد درخواست‌ها'}/>
-        </div>
-        <div className={classnames(classes.chart, classes.flex1)}>
+            <DataChart type={"bar"} data={data.recent_disasters?.data} label={'تعداد درخواست‌ها'}/>
+          </div>
+          <div className={classnames(classes.chart, classes.flex1)}>
             <Typography className={classes.title}>تعداد نیازهای درخواست‌شده</Typography>
-          <DataChart type={"bar"} data={data.needs_amount} label={'تعداد درخواست‌ها'}/>
+            <DataChart type={"bar"} data={data.needs_amount} label={'تعداد درخواست‌ها'}/>
+          </div>
         </div>
-      </div>
 
-      <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
-    </div>
+        <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
+      </div>
   );
 };
 

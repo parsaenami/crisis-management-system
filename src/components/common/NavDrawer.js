@@ -1,24 +1,13 @@
 import React, { useContext } from 'react';
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
-import {
-  Button,
-  Container,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Toolbar
-} from "@material-ui/core";
+import { Button, Divider, Drawer, IconButton, List, ListItem, ListItemText } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
 import { routes } from "../../assets/routes";
-import { NavLink } from "react-router-dom";
 import { Swipe } from "react-swipe-component";
 import Footer from "./Footer";
-import { Context, UserContext } from "../../Context";
+import { UserContext } from "../../Context";
 import { get_token } from "../../helpers/api";
 import AccessDenied from "./AccessDenied";
 
@@ -96,62 +85,62 @@ const NavDrawer = props => {
   };
 
   const list = (
-    <div className={classes.list} role="presentation" onClick={props.toggleFn(false)}>
-      <List>
-        {listItems.map((navItem, index) => (
-          <div key={navItem.text}>
-            <ListItem button>
-              {navItem.text === 'ثبت نیاز'
-                ? (get_token()
-                  ? <NavLink to={routes.ADD_NEED} className={classes.nav}>
-                    <Button color="inherit">ثبت نیاز</Button>
-                  </NavLink>
-                  : <div onClick={handleDialogOpen} className={classes.nav}>
-                    <Button color="inherit">ثبت نیاز</Button>
-                  </div>)
-                : navItem.text === 'پنل ادمین'
-                  ? (isAdmin
-                    ? <NavLink exact to={navItem.url} className={classes.nav}>
-                      <ListItemText primary={navItem.text}/>
-                    </NavLink>
-                    : null)
-                  : <NavLink exact to={navItem.url} className={classes.nav}>
-                    <ListItemText primary={navItem.text}/>
-                  </NavLink>}
-            </ListItem>
-            {index !== listItems.length - 1 && <Divider/>}
-          </div>
-        ))}
-      </List>
-    </div>
+      <div className={classes.list} role="presentation" onClick={props.toggleFn(false)}>
+        <List>
+          {listItems.map((navItem, index) => (
+              <div key={navItem.text}>
+                <ListItem button>
+                  {navItem.text === 'ثبت نیاز'
+                      ? (get_token()
+                          ? <NavLink to={routes.ADD_NEED} className={classes.nav}>
+                            <Button color="inherit">ثبت نیاز</Button>
+                          </NavLink>
+                          : <div onClick={handleDialogOpen} className={classes.nav}>
+                            <Button color="inherit">ثبت نیاز</Button>
+                          </div>)
+                      : navItem.text === 'پنل ادمین'
+                          ? (isAdmin
+                              ? <NavLink exact to={navItem.url} className={classes.nav}>
+                                <ListItemText primary={navItem.text}/>
+                              </NavLink>
+                              : null)
+                          : <NavLink exact to={navItem.url} className={classes.nav}>
+                            <ListItemText primary={navItem.text}/>
+                          </NavLink>}
+                </ListItem>
+                {index !== listItems.length - 1 && <Divider/>}
+              </div>
+          ))}
+        </List>
+      </div>
   )
 
   return (
-    <nav>
-      <Swipe
-        nodeName="div"
-        onSwipedLeft={props.toggleFn(true)}
-        detectTouch
-      >
-        <div className={classes.swipeArea}/>
-      </Swipe>
-      <Swipe
-        nodeName="div"
-        onSwipedRight={props.toggleFn(false)}
-        detectTouch
-      >
-        <Drawer anchor="left" open={props.open} onClose={props.toggleFn(false)}>
-          <div className={classes.close}>
-            <IconButton edge="end" className={classes.icon} aria-label="close" onClick={props.toggleFn(false)}>
-              <CloseIcon/>
-            </IconButton>
-          </div>
-          {list}
-          <Footer/>
-        </Drawer>
-        <AccessDenied open={dialogOpen} handleClose={handleDialogClose} action={() => history.push(routes.ADD_NEED)}/>
-      </Swipe>
-    </nav>
+      <nav>
+        <Swipe
+            nodeName="div"
+            onSwipedLeft={props.toggleFn(true)}
+            detectTouch
+        >
+          <div className={classes.swipeArea}/>
+        </Swipe>
+        <Swipe
+            nodeName="div"
+            onSwipedRight={props.toggleFn(false)}
+            detectTouch
+        >
+          <Drawer anchor="left" open={props.open} onClose={props.toggleFn(false)}>
+            <div className={classes.close}>
+              <IconButton edge="end" className={classes.icon} aria-label="close" onClick={props.toggleFn(false)}>
+                <CloseIcon/>
+              </IconButton>
+            </div>
+            {list}
+            <Footer/>
+          </Drawer>
+          <AccessDenied open={dialogOpen} handleClose={handleDialogClose} action={() => history.push(routes.ADD_NEED)}/>
+        </Swipe>
+      </nav>
   );
 };
 

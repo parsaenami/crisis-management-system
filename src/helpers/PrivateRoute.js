@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { routes } from "../assets/routes";
 import { get_token, get_user_info } from "./api";
 
@@ -10,7 +10,7 @@ const PrivateRoute = props => {
     if (get_token() && get_user_info().exp > new Date().getTime()) {
       return <Component {...props} />;
     } else {
-      return <Redirect to={routes.SIGN_IN} />;
+      return <Redirect to={routes.SIGN_IN}/>;
     }
   }
 

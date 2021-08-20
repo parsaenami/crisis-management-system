@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, CircularProgress,
+  CircularProgress,
   Collapse,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles, TextField
+  makeStyles,
+  TextField
 } from "@material-ui/core";
 import { CheckRounded, DeleteRounded, EditRounded, ExpandLess, ExpandMore } from "@material-ui/icons";
 
@@ -41,40 +42,40 @@ const NeedListRow = props => {
   }
 
   return (
-    <>
-      <ListItem button onClick={props.handleClick}>
-        <ListItemText primary={props.category}/>
-        {props.open ? <ExpandLess/> : <ExpandMore/>}
-      </ListItem>
-      <Collapse in={props.open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {Object.keys(props.items).map((needId, i) => (
-            <ListItem key={i} className={classes.nested}>
-              <ListItemIcon className={classes.info}>{i + 1}</ListItemIcon>
-              {props.editMode === needId ? <TextField
-                variant="outlined"
-                size="small"
-                value={props.editValue}
-                className={classes.input}
-                onChange={props.handleChange}
-              /> : <ListItemText primary={props.items[needId] ?? '-'}/>}
-              {props.loading === needId && <CircularProgress size={24}/>}
-              {props.editMode === needId
-                ? <IconButton className={classes.editIcon} onClick={() => props.handleEdit(needId)}>
-                  <CheckRounded/>
-                </IconButton>
-                : <IconButton className={classes.editIcon} onClick={toggleEdit(needId)}>
-                  <EditRounded/>
-                </IconButton>}
-              <IconButton className={classes.deleteIcon} edge="end"
-                          onClick={() => props.handleDelete(needId)}>
-                <DeleteRounded/>
-              </IconButton>
-            </ListItem>
-          ))}
-        </List>
-      </Collapse>
-    </>
+      <>
+        <ListItem button onClick={props.handleClick}>
+          <ListItemText primary={props.category}/>
+          {props.open ? <ExpandLess/> : <ExpandMore/>}
+        </ListItem>
+        <Collapse in={props.open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {Object.keys(props.items).map((needId, i) => (
+                <ListItem key={i} className={classes.nested}>
+                  <ListItemIcon className={classes.info}>{i + 1}</ListItemIcon>
+                  {props.editMode === needId ? <TextField
+                      variant="outlined"
+                      size="small"
+                      value={props.editValue}
+                      className={classes.input}
+                      onChange={props.handleChange}
+                  /> : <ListItemText primary={props.items[needId] ?? '-'}/>}
+                  {props.loading === needId && <CircularProgress size={24}/>}
+                  {props.editMode === needId
+                      ? <IconButton className={classes.editIcon} onClick={() => props.handleEdit(needId)}>
+                        <CheckRounded/>
+                      </IconButton>
+                      : <IconButton className={classes.editIcon} onClick={toggleEdit(needId)}>
+                        <EditRounded/>
+                      </IconButton>}
+                  <IconButton className={classes.deleteIcon} edge="end"
+                              onClick={() => props.handleDelete(needId)}>
+                    <DeleteRounded/>
+                  </IconButton>
+                </ListItem>
+            ))}
+          </List>
+        </Collapse>
+      </>
   );
 };
 

@@ -15,14 +15,14 @@ import TableBody from "@material-ui/core/TableBody";
 import PropTypes from "prop-types";
 import {
   CircularProgress,
-  ClickAwayListener, FormControl, MenuItem,
+  ClickAwayListener,
+  MenuItem,
   Select,
   Tooltip,
   useMediaQuery,
   useTheme,
   withStyles
 } from "@material-ui/core";
-import { DeleteRounded } from "@material-ui/icons";
 
 const useRowStyles = makeStyles((theme) => ({
   root: {
@@ -53,10 +53,10 @@ const useRowStyles = makeStyles((theme) => ({
   },
   row: {
     backgroundColor: props => props === 2
-      ? theme.palette.error.light
-      : (props === 6
-        ? theme.palette.info.light
-        : 'inherit')
+        ? theme.palette.error.light
+        : (props === 6
+            ? theme.palette.info.light
+            : 'inherit')
   },
 }));
 
@@ -87,97 +87,97 @@ const AdminDataTableRow = props => {
   };
 
   return (
-    <React.Fragment>
-      <TableRow className={classes.row}>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-          </IconButton>
-        </TableCell>
-        <TableCell align="right" component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.amount || '-'}</TableCell>
-        <TableCell align="right">{row.urgent || '-'}</TableCell>
-        <TableCell align="right">{row.askDate || '-'}</TableCell>
-        <TableCell align="right">{row.changeDate || '-'}</TableCell>
-        <TableCell align="right">{row.helpDate || '-'}</TableCell>
-        <TableCell align="right">{row.status?.text || '-'}</TableCell>
-        <TableCell align="right">{row.type || '-'}</TableCell>
-        {row.desc ? <ClickAwayListener onClickAway={handleTooltipClose}>
-          <CustomTooltip
-            // PopperProps={{disablePortal: false}}
-            disableFocusListener={isMobileDisplay}
-            disableHoverListener={isMobileDisplay}
-            // disableTouchListener
-            open={openTooltip}
-            onClose={handleTooltipClose}
-            title={row.desc}
-            placement="right"
-            className={classes.tooltip}
-            classes={{tooltip: classes.tooltip}}
-          >
-            <TableCell className={classes.desc} onClick={handleTooltipOpen} align="center">
-              <HelpOutlineRoundedIcon/>
-            </TableCell>
-          </CustomTooltip>
-        </ClickAwayListener> : <TableCell align="center">-</TableCell>}
-        <TableCell align="right">
-          <div className={classes.actions}>
-            {props.loading ? <CircularProgress/> :
-              <Select
-                variant={"outlined"}
-                className={classes.select}
-                disabled={row.status?.id === 6}
-                color={"primary"}
-                value={row.status?.id}
-                onChange={e => props.statusFn(e.target.value)}
-                inputProps={{
-                  name: 'age',
-                  id: 'outlined-age-native-simple',
-                }}
-              >
-                <MenuItem value={0}>در انتظار تأیید</MenuItem>
-                <MenuItem value={1}>تأیید شده</MenuItem>
-                <MenuItem value={2}>رد شده</MenuItem>
-                <MenuItem value={3}>در حال ارسال</MenuItem>
-                <MenuItem value={4}>در حال آماده‌سازی</MenuItem>
-                <MenuItem value={5}>ارسال شده</MenuItem>
-                <MenuItem value={6}>دریافت شده</MenuItem>
-              </Select>}
-          </div>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell className={classes.root} style={{paddingBottom: 0, paddingTop: 0}} colSpan={8}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                اطلاعات ارسال
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align={"right"}>درخواست‌دهنده</TableCell>
-                    <TableCell align={"right"}>آدرس</TableCell>
-                    <TableCell align={"right"}>موقعیت مکانی</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow className={classes.root}>
-                    <TableCell align="right">{row.user_info.fullname}</TableCell>
-                    <TableCell align="right" component="th" scope="row">
-                      {row.user_info.address}
-                    </TableCell>
-                    <TableCell align="right">[{row.user_info.location.lat}, {row.user_info.location.long}]</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
+      <React.Fragment>
+        <TableRow className={classes.row}>
+          <TableCell>
+            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+              {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+            </IconButton>
+          </TableCell>
+          <TableCell align="right" component="th" scope="row">
+            {row.name}
+          </TableCell>
+          <TableCell align="right">{row.amount || '-'}</TableCell>
+          <TableCell align="right">{row.urgent || '-'}</TableCell>
+          <TableCell align="right">{row.askDate || '-'}</TableCell>
+          <TableCell align="right">{row.changeDate || '-'}</TableCell>
+          <TableCell align="right">{row.helpDate || '-'}</TableCell>
+          <TableCell align="right">{row.status?.text || '-'}</TableCell>
+          <TableCell align="right">{row.type || '-'}</TableCell>
+          {row.desc ? <ClickAwayListener onClickAway={handleTooltipClose}>
+            <CustomTooltip
+                // PopperProps={{disablePortal: false}}
+                disableFocusListener={isMobileDisplay}
+                disableHoverListener={isMobileDisplay}
+                // disableTouchListener
+                open={openTooltip}
+                onClose={handleTooltipClose}
+                title={row.desc}
+                placement="right"
+                className={classes.tooltip}
+                classes={{tooltip: classes.tooltip}}
+            >
+              <TableCell className={classes.desc} onClick={handleTooltipOpen} align="center">
+                <HelpOutlineRoundedIcon/>
+              </TableCell>
+            </CustomTooltip>
+          </ClickAwayListener> : <TableCell align="center">-</TableCell>}
+          <TableCell align="right">
+            <div className={classes.actions}>
+              {props.loading ? <CircularProgress/> :
+                  <Select
+                      variant={"outlined"}
+                      className={classes.select}
+                      disabled={row.status?.id === 6}
+                      color={"primary"}
+                      value={row.status?.id}
+                      onChange={e => props.statusFn(e.target.value)}
+                      inputProps={{
+                        name: 'age',
+                        id: 'outlined-age-native-simple',
+                      }}
+                  >
+                    <MenuItem value={0}>در انتظار تأیید</MenuItem>
+                    <MenuItem value={1}>تأیید شده</MenuItem>
+                    <MenuItem value={2}>رد شده</MenuItem>
+                    <MenuItem value={3}>در حال ارسال</MenuItem>
+                    <MenuItem value={4}>در حال آماده‌سازی</MenuItem>
+                    <MenuItem value={5}>ارسال شده</MenuItem>
+                    <MenuItem value={6}>دریافت شده</MenuItem>
+                  </Select>}
+            </div>
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell className={classes.root} style={{paddingBottom: 0, paddingTop: 0}} colSpan={8}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box margin={1}>
+                <Typography variant="h6" gutterBottom component="div">
+                  اطلاعات ارسال
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align={"right"}>درخواست‌دهنده</TableCell>
+                      <TableCell align={"right"}>آدرس</TableCell>
+                      <TableCell align={"right"}>موقعیت مکانی</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow className={classes.root}>
+                      <TableCell align="right">{row.user_info.fullname}</TableCell>
+                      <TableCell align="right" component="th" scope="row">
+                        {row.user_info.address}
+                      </TableCell>
+                      <TableCell align="right">[{row.user_info.location.lat}, {row.user_info.location.long}]</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
   );
 };
 
