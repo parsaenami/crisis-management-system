@@ -96,6 +96,19 @@ span, p {
   align-items: center;
 }
 
+.map-sidebar {
+  background-color: rgba(245, 242, 235, 0.78);
+  //color: #ffffff;
+  padding: 6px 12px;
+  font-family: monospace;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 12px;
+  border-radius: 4px;
+}
+
 @media screen and (max-width: 960px) {
   .footer {
     display: none !important;

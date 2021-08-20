@@ -165,11 +165,13 @@ const RequestMap = props => {
 
   return (
       <div>
-        <span>request map</span>
-        <div className="sidebar">
-          Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+        <h4>نحوه‌ی توزیع درخواست‌ها روی نقشه</h4>
+        <div style={{position: 'relative'}}>
+          <div className="map-sidebar">
+            Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+          </div>
+          <div ref={mapContainer} style={{height: 500}}/>
         </div>
-        <div ref={mapContainer} style={{height: 500}}/>
       </div>
   );
 };
