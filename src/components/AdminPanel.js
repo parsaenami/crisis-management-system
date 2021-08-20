@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Box, makeStyles, Tab, Tabs, useTheme } from "@material-ui/core";
 import Dashboard from "./admin/Dashboard";
@@ -6,6 +6,10 @@ import Users from "./admin/Users";
 import Requests from "./admin/Requests";
 import Needs from "./admin/Needs";
 import { Context } from "../Context";
+import RequestMap from "./common/RequestMap";
+import { api, config, rest } from "../helpers/api";
+import { useAlert } from "../hooks/useAlert";
+import FloatingAlert from "./common/FloatingAlert";
 
 function TabPanel(props) {
   const {children, value, index, ...other} = props;
@@ -55,12 +59,25 @@ const AdminPanel = () => {
   const classes = useStyles()
   const theme = useTheme()
   const {setContext} = useContext(Context)
+  const {open, message, type, duration, closeAlert, showAlert} = useAlert();
 
   const [value, setValue] = React.useState(0);
+  const [data, setData] = useState({})
 
   useEffect(() => {
     setContext('پنل ادمین')
   }, [setContext])
+
+  useEffect(() => {
+    api.get(rest.admin.requestsMap, config("json"))
+        .then(res => {
+          setData(res.data)
+        })
+        .catch((err) => {
+          showAlert(err.response, "error", 3000);
+        })
+        // .finally(() => setLoading(false))
+  }, [value])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -82,6 +99,7 @@ const AdminPanel = () => {
             <Tab className={classes.tab} label="کاربران" {...a11yProps(1)} />
             <Tab className={classes.tab} label="درخواست‌ها" {...a11yProps(2)} />
             <Tab className={classes.tab} label="نیازها" {...a11yProps(3)} />
+            <Tab className={classes.tab} label="نقشه" {...a11yProps(4)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0} dir={theme.direction}>
@@ -96,6 +114,11 @@ const AdminPanel = () => {
         <TabPanel value={value} index={3} dir={theme.direction}>
           <Needs/>
         </TabPanel>
+        <TabPanel value={value} index={4} dir={theme.direction}>
+          <RequestMap data={data}/>
+        </TabPanel>
+
+        <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
       </div>
   );
 };

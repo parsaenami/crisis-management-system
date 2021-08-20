@@ -23,6 +23,7 @@ const rest = {
     users: '/admin/users',
     user: '/admin/user',
     requests: '/admin/requests',
+    requestsMap: '/admin/requests/map',
     request: '/admin/request',
     need: '/admin/need',
   }

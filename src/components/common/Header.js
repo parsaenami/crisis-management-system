@@ -92,7 +92,6 @@ const Header = props => {
   useEffect(() => setPath(props.location.pathname), [props.location.pathname])
 
   useEffect(() => {
-    console.log(path)
     if (get_token()) {
       api.get(`${rest.profile}/${get_user_info().id}`, config("json"))
           .then((res) => {
