@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '70%',
     backgroundColor: theme.palette.background.paper,
+    boxShadow: "0 0 8px 1px #00000052",
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -99,6 +100,7 @@ const Needs = props => {
       .then((response) => {
         showAlert(response.data.msg, "success", 3000);
         setData(response.data.needsCategory)
+        handleDialogClose()
         setNewCategory(null)
         setNewTitle(null)
       })
@@ -106,7 +108,6 @@ const Needs = props => {
         showAlert(err.response.data.error, "error", 3000);
       })
       .finally(() => {
-        handleDialogClose()
         setAddLoading(false)
       })
   };

@@ -1,14 +1,14 @@
-import React from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { AppBar, Box, makeStyles, Tab, Tabs, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { AppBar, Box, makeStyles, Tab, Tabs, useTheme } from "@material-ui/core";
 import Dashboard from "./admin/Dashboard";
 import Users from "./admin/Users";
 import Requests from "./admin/Requests";
 import Needs from "./admin/Needs";
+import { Context } from "../Context";
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const {children, value, index, ...other} = props;
 
   return (
     <div
@@ -41,7 +41,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
   },
@@ -54,10 +54,13 @@ const useStyles = makeStyles((theme) => ({
 const AdminPanel = () => {
   const classes = useStyles()
   const theme = useTheme()
-  const history = useHistory()
-  const isMobileDisplay = useMediaQuery(theme.breakpoints.down('sm'))
+  const {setContext} = useContext(Context)
 
   const [value, setValue] = React.useState(0);
+
+  useEffect(() => {
+    setContext('پنل ادمین')
+  }, [setContext])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -81,18 +84,18 @@ const AdminPanel = () => {
           <Tab className={classes.tab} label="نیازها" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <Dashboard />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <Users />
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          <Requests/>
-        </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
-          <Needs />
-        </TabPanel>
+      <TabPanel value={value} index={0} dir={theme.direction}>
+        <Dashboard/>
+      </TabPanel>
+      <TabPanel value={value} index={1} dir={theme.direction}>
+        <Users/>
+      </TabPanel>
+      <TabPanel value={value} index={2} dir={theme.direction}>
+        <Requests/>
+      </TabPanel>
+      <TabPanel value={value} index={3} dir={theme.direction}>
+        <Needs/>
+      </TabPanel>
     </div>
   );
 };

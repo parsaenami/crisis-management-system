@@ -16,8 +16,7 @@ import { CheckRounded, DeleteRounded, EditRounded, ExpandLess, ExpandMore } from
 const useStyles = makeStyles((theme) => ({
   nested: {
     paddingLeft: theme.spacing(4),
-    borderColor: `${theme.palette.text.hint} !important`,
-    borderBottom: "1px solid",
+    borderBottom: "1px solid #00000024 !important",
   },
   info: {
     minWidth: theme.spacing(5),

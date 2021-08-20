@@ -16,6 +16,7 @@ import { AccountBoxRounded, DeleteRounded, StarsRounded, ExpandLess, ExpandMore 
 const useStyles = makeStyles((theme) => ({
   nested: {
     paddingLeft: theme.spacing(4),
+    borderBottom: "1px solid #00000024 !important",
   },
   info: {
     minWidth: theme.spacing(12.5),

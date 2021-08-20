@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '70%',
     backgroundColor: theme.palette.background.paper,
+    boxShadow: "0 0 8px 1px #00000052",
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',
