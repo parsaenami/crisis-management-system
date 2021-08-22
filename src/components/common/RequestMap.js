@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import { api, config, rest } from "../../helpers/api";
-import { useAlert } from "../../hooks/useAlert";
-import FloatingAlert from "./FloatingAlert";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFyc2FlbmFtaSIsImEiOiJja3E1bjQ5b3gxamluMnNxcjk2MmtodTk1In0.v-laqFH1Y9H7RCOmYat6hA';
+mapboxgl.setRTLTextPlugin(
+    'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
+    null,
+    true // Lazy load the plugin
+);
 
 const RequestMap = props => {
   const mapContainer = useRef(null);
