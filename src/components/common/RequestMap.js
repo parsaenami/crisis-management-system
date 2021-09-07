@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import { api, config, rest } from "../../helpers/api";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFyc2FlbmFtaSIsImEiOiJja3E1bjQ5b3gxamluMnNxcjk2MmtodTk1In0.v-laqFH1Y9H7RCOmYat6hA';
 mapboxgl.setRTLTextPlugin(
@@ -22,23 +23,26 @@ const RequestMap = props => {
     } // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v10',
+      style: 'mapbox://styles/mapbox/outdoors-v11',
       center: [lng, lat],
       zoom: zoom
     });
   });
 
   useEffect(() => {
-    map.current.on('load', () => {
+    map.current.on('load', async () => {
       // Add a new source from our GeoJSON data and
       // set the 'cluster' option to true. GL-JS will
       // add the point_count property to your source data.
+
+      const response = await api.get(rest.admin.requestsMap, config("json"))
+      const data = response.data
       map.current.addSource('requests', {
         type: 'geojson',
         // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
         // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
         // data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
-        data: props.data,
+        data: data,
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -58,11 +62,11 @@ const RequestMap = props => {
           'circle-color': [
             'step',
             ['get', 'point_count'],
-            '#51bbd6',
-            100,
-            '#f1f075',
-            750,
-            '#f28cb1'
+            '#ff5959',
+            50,
+            '#d70000',
+            200,
+            '#9a0000'
           ],
           'circle-radius': [
             'step',
@@ -94,10 +98,10 @@ const RequestMap = props => {
         source: 'requests',
         filter: ['!', ['has', 'point_count']],
         paint: {
-          'circle-color': '#11b4da',
-          'circle-radius': 4,
+          'circle-color': '#ff5959',
+          'circle-radius': 6,
           'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff'
+          'circle-stroke-color': '#000'
         }
       });
 
@@ -140,7 +144,7 @@ const RequestMap = props => {
         new mapboxgl.Popup()
             .setLngLat(coordinates)
             .setHTML(
-                `درخواست: ${properties.name}<br>تعداد: ${properties.amount}<br>ضروری؟: ${properties.urgent}<br>حادثه: ${properties.disaster}<br>زمان: ${properties.time_pretty}`
+                `درخواست: ${properties.name}<br>تعداد: ${properties.amount}<br>ضروری؟ ${properties.urgent}<br>حادثه: ${properties.disaster}<br>زمان: ${properties.time_pretty}`
             )
             .addTo(map.current);
       });
@@ -153,6 +157,13 @@ const RequestMap = props => {
       });
     });
   }, [])
+
+  // TO CHANGE DATA ON DEMAND
+  // useEffect(() => {
+  //   if (props.data) {
+  //     map.current.getSource('requests')?.setData(props.data)
+  //   }
+  // }, [props.data])
 
   useEffect(() => {
     if (!map.current) {
@@ -172,7 +183,7 @@ const RequestMap = props => {
           <div className="map-sidebar">
             Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
           </div>
-          <div ref={mapContainer} style={{height: 500}}/>
+          <div ref={mapContainer} style={{height: 'calc(100vh - 218px)'}}/>
         </div>
       </div>
   );

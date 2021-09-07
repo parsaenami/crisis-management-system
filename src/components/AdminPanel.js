@@ -62,22 +62,22 @@ const AdminPanel = () => {
   const {open, message, type, duration, closeAlert, showAlert} = useAlert();
 
   const [value, setValue] = React.useState(0);
-  const [data, setData] = useState({})
+  // const [data, setData] = useState({})
 
   useEffect(() => {
     setContext('پنل ادمین')
   }, [setContext])
 
-  useEffect(() => {
-    api.get(rest.admin.requestsMap, config("json"))
-        .then(res => {
-          setData(res.data)
-        })
-        .catch((err) => {
-          showAlert(err.response, "error", 3000);
-        })
-        // .finally(() => setLoading(false))
-  }, [value])
+  // useEffect(() => {
+  //   api.get(rest.admin.requestsMap, config("json"))
+  //       .then(res => {
+  //         setData(res.data)
+  //       })
+  //       .catch((err) => {
+  //         showAlert(err.response, "error", 3000);
+  //       })
+  //       // .finally(() => setLoading(false))
+  // }, [value])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -115,7 +115,7 @@ const AdminPanel = () => {
           <Needs/>
         </TabPanel>
         <TabPanel value={value} index={4} dir={theme.direction}>
-          <RequestMap data={data}/>
+          <RequestMap/>
         </TabPanel>
 
         <FloatingAlert text={message} open={open} handleClose={closeAlert} duration={duration} type={type}/>
