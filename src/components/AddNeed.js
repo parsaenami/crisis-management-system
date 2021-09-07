@@ -378,8 +378,10 @@ const AddNeed = props => {
 
   useEffect(() => {
     if (typeof needCategories === "object" && typeof disasterCategories === "object" && preSelected) {
+      console.log(preSelected)
       selectNeed(0, preSelected[0], preSelected[1])()
-      handleDisaster(preSelected[2])()
+      // handleDisaster(preSelected[2])()
+      setDisaster(preSelected[2])
     }
   }, [needCategories, disasterCategories])
 
